@@ -2528,3 +2528,434 @@ L’automate reconnaît les mots dont la troisième lettre en partant de la fin 
   <path d="M795 165 C735 105, 905 105, 845 165" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
   <text x="820" y="120" text-anchor="middle" font-size="20">a,b</text>
 </svg>
+
+
+
+
+
+
+# TD5 — Exercice 5
+
+## Construire un automate déterministe reconnaissant un langage fini
+
+## Énoncé
+
+Construire un automate déterministe qui reconnaît le langage fini :
+
+```text
+L = {a, ba, aba, bab, bbba}
+```
+
+On travaille sur l’alphabet :
+
+```text
+A = {a, b}
+```
+
+---
+
+# 1. Idée importante
+
+Le langage demandé est **fini**.
+
+Cela veut dire qu’il contient seulement ces cinq mots :
+
+```text
+a
+ba
+aba
+bab
+bbba
+```
+
+Donc l’automate doit accepter **exactement** ces mots, et aucun autre.
+
+Il ne doit pas accepter :
+
+```text
+b
+aa
+ab
+baa
+bbbb
+abab
+```
+
+---
+
+# 2. Pourquoi une boucle générale est fausse ?
+
+Si on construit un automate comme ceci :
+
+```text
+0 --a--> 1
+0 --b--> 1
+1 --a--> 1
+1 --b--> 1
+```
+
+et si l’état `1` est final, alors l’automate accepte presque tous les mots non vides.
+
+Par exemple, il accepte :
+
+```text
+b
+aa
+ab
+bb
+aaa
+```
+
+Mais ces mots ne sont pas tous dans :
+
+```text
+{a, ba, aba, bab, bbba}
+```
+
+Donc ce type d’automate est faux.
+
+---
+
+# 3. Méthode correcte pour un langage fini
+
+Pour un langage fini, il faut construire un **chemin exact** pour chaque mot accepté.
+
+Ici, on doit avoir un chemin pour :
+
+```text
+a
+ba
+aba
+bab
+bbba
+```
+
+Chaque fin de mot accepté doit être un état final.
+
+Toutes les mauvaises lettres doivent aller vers un **état puits** `P`.
+
+Un état puits est un état dans lequel on reste pour toujours.
+
+---
+
+# 4. Construction des états
+
+On construit l’automate comme un arbre de préfixes.
+
+```text
+0 = début
+
+1 = on a lu a
+2 = on a lu b
+
+3 = on a lu ba
+4 = on a lu ab
+
+5 = on a lu aba
+6 = on a lu bab
+
+7 = on a lu bb
+8 = on a lu bbb
+9 = on a lu bbba
+
+P = état puits
+```
+
+---
+
+# 5. États finaux
+
+Les mots acceptés sont :
+
+```text
+a
+ba
+aba
+bab
+bbba
+```
+
+Donc les états finaux sont :
+
+```text
+1, 3, 5, 6, 9
+```
+
+Car :
+
+```text
+1 correspond à a
+3 correspond à ba
+5 correspond à aba
+6 correspond à bab
+9 correspond à bbba
+```
+
+---
+
+# 6. Table complète de l’automate
+
+```text
+État        a        b
+→ 0         1        2
+* 1         P        4
+  2         3        7
+* 3         P        6
+  4         5        P
+* 5         P        P
+* 6         P        P
+  7         P        8
+  8         9        P
+* 9         P        P
+  P         P        P
+```
+
+---
+
+# 7. Dessin de l’automate
+
+<svg width="1100" height="560" viewBox="0 0 1100 560" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_td5_ex5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <!-- initial arrow -->
+
+  <line x1="40" y1="260" x2="105" y2="260" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+
+  <!-- states -->
+
+  <circle cx="150" cy="260" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <text x="150" y="267" text-anchor="middle" font-size="20">0</text>
+
+  <circle cx="330" cy="145" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="330" cy="145" r="26" fill="none" stroke="black" stroke-width="2"/>
+  <text x="330" y="152" text-anchor="middle" font-size="20">1</text>
+
+  <circle cx="330" cy="375" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <text x="330" y="382" text-anchor="middle" font-size="20">2</text>
+
+  <circle cx="530" cy="330" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="530" cy="330" r="26" fill="none" stroke="black" stroke-width="2"/>
+  <text x="530" y="337" text-anchor="middle" font-size="20">3</text>
+
+  <circle cx="530" cy="145" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <text x="530" y="152" text-anchor="middle" font-size="20">4</text>
+
+  <circle cx="730" cy="145" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="730" cy="145" r="26" fill="none" stroke="black" stroke-width="2"/>
+  <text x="730" y="152" text-anchor="middle" font-size="20">5</text>
+
+  <circle cx="730" cy="330" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="730" cy="330" r="26" fill="none" stroke="black" stroke-width="2"/>
+  <text x="730" y="337" text-anchor="middle" font-size="20">6</text>
+
+  <circle cx="530" cy="470" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <text x="530" y="477" text-anchor="middle" font-size="20">7</text>
+
+  <circle cx="730" cy="470" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <text x="730" y="477" text-anchor="middle" font-size="20">8</text>
+
+  <circle cx="930" cy="470" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="930" cy="470" r="26" fill="none" stroke="black" stroke-width="2"/>
+  <text x="930" y="477" text-anchor="middle" font-size="20">9</text>
+
+  <circle cx="930" cy="260" r="34" fill="white" stroke="black" stroke-width="2"/>
+  <text x="930" y="267" text-anchor="middle" font-size="20">P</text>
+
+  <!-- main accepted paths -->
+
+  <path d="M180 242 L300 165" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="240" y="185" text-anchor="middle" font-size="18">a</text>
+
+  <path d="M180 278 L300 357" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="240" y="345" text-anchor="middle" font-size="18">b</text>
+
+  <path d="M360 360 L500 338" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="430" y="335" text-anchor="middle" font-size="18">a</text>
+
+  <path d="M360 150 L500 145" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="430" y="130" text-anchor="middle" font-size="18">b</text>
+
+  <path d="M560 145 L696 145" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="630" y="125" text-anchor="middle" font-size="18">a</text>
+
+  <path d="M560 330 L696 330" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="630" y="310" text-anchor="middle" font-size="18">b</text>
+
+  <path d="M360 390 L500 455" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="430" y="445" text-anchor="middle" font-size="18">b</text>
+
+  <path d="M564 470 L696 470" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="630" y="450" text-anchor="middle" font-size="18">b</text>
+
+  <path d="M764 470 L896 470" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="830" y="450" text-anchor="middle" font-size="18">a</text>
+
+  <!-- wrong transitions to P -->
+
+  <path d="M340 112 C460 40, 780 40, 910 230" fill="none" stroke="black" stroke-width="1.7" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="625" y="50" text-anchor="middle" font-size="16">a</text>
+
+  <path d="M545 295 C630 240, 760 230, 896 255" fill="none" stroke="black" stroke-width="1.7" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="720" y="235" text-anchor="middle" font-size="16">a</text>
+
+  <path d="M535 180 C630 245, 760 265, 896 260" fill="none" stroke="black" stroke-width="1.7" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="720" y="278" text-anchor="middle" font-size="16">b</text>
+
+  <path d="M730 180 C760 230, 820 250, 896 260" fill="none" stroke="black" stroke-width="1.7" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="800" y="220" text-anchor="middle" font-size="16">a,b</text>
+
+  <path d="M730 365 C760 330, 820 290, 896 270" fill="none" stroke="black" stroke-width="1.7" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="820" y="330" text-anchor="middle" font-size="16">a,b</text>
+
+  <path d="M530 436 C590 360, 760 285, 896 265" fill="none" stroke="black" stroke-width="1.7" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="705" y="350" text-anchor="middle" font-size="16">a</text>
+
+  <path d="M730 436 C760 365, 830 300, 900 275" fill="none" stroke="black" stroke-width="1.7" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="820" y="380" text-anchor="middle" font-size="16">b</text>
+
+  <path d="M930 436 C920 370, 910 320, 920 295" fill="none" stroke="black" stroke-width="1.7" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="895" y="365" text-anchor="middle" font-size="16">a,b</text>
+
+  <!-- loop on P -->
+
+  <path d="M905 225 C845 165, 1015 165, 955 225" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5_ex5)"/>
+  <text x="930" y="180" text-anchor="middle" font-size="18">a,b</text>
+</svg>
+
+---
+
+# 8. Vérification des mots acceptés
+
+## Mot `a`
+
+```text
+a : 0 --a--> 1
+```
+
+L’état `1` est final, donc `a` est accepté.
+
+---
+
+## Mot `ba`
+
+```text
+ba : 0 --b--> 2 --a--> 3
+```
+
+L’état `3` est final, donc `ba` est accepté.
+
+---
+
+## Mot `aba`
+
+```text
+aba : 0 --a--> 1 --b--> 4 --a--> 5
+```
+
+L’état `5` est final, donc `aba` est accepté.
+
+---
+
+## Mot `bab`
+
+```text
+bab : 0 --b--> 2 --a--> 3 --b--> 6
+```
+
+L’état `6` est final, donc `bab` est accepté.
+
+---
+
+## Mot `bbba`
+
+```text
+bbba : 0 --b--> 2 --b--> 7 --b--> 8 --a--> 9
+```
+
+L’état `9` est final, donc `bbba` est accepté.
+
+---
+
+# 9. Vérification de quelques mots refusés
+
+## Mot `b`
+
+```text
+b : 0 --b--> 2
+```
+
+L’état `2` n’est pas final, donc `b` est refusé.
+
+---
+
+## Mot `aa`
+
+```text
+aa : 0 --a--> 1 --a--> P
+```
+
+L’état `P` n’est pas final, donc `aa` est refusé.
+
+---
+
+## Mot `ab`
+
+```text
+ab : 0 --a--> 1 --b--> 4
+```
+
+L’état `4` n’est pas final, donc `ab` est refusé.
+
+---
+
+## Mot `bb`
+
+```text
+bb : 0 --b--> 2 --b--> 7
+```
+
+L’état `7` n’est pas final, donc `bb` est refusé.
+
+---
+
+# 10. Réponse modèle pour l’examen
+
+```text
+On construit un automate sous forme d’arbre de préfixes des mots du langage.
+Les états finaux sont les états atteints après lecture complète des mots a, ba, aba, bab et bbba.
+Toutes les transitions qui ne peuvent plus mener à un mot du langage vont vers l’état puits P.
+
+Ainsi, l’automate reconnaît exactement le langage {a, ba, aba, bab, bbba}.
+```
+
+---
+
+# 11. Ce qu’il faut retenir
+
+Pour un langage fini, il ne faut pas mettre une boucle générale sur un état final.
+
+Sinon, l’automate accepte trop de mots.
+
+La bonne méthode est :
+
+```text
+1) construire un chemin exact pour chaque mot accepté ;
+2) mettre final seulement les états correspondant aux fins des mots ;
+3) envoyer les mauvaises transitions vers un état puits P ;
+4) faire boucler P sur toutes les lettres.
+```
+
+
+
+
+
+
+
+
+
+
+
