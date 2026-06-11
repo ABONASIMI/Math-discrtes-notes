@@ -1,5 +1,3 @@
-
-
 # Fiche courte — Automates finis
 
 ## Version examen
@@ -231,6 +229,8 @@ On le note souvent avec une étoile :
 
 Cela veut dire que l’état `1` est final.
 
+Dans les dessins, un état final est représenté par un **double cercle**.
+
 ---
 
 ## Transition
@@ -449,6 +449,26 @@ Automate :
 | `→ 0` | `1` | `0` |
 | `* 1` | `1` | `1` |
 
+<svg width="720" height="230" viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_ex1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="80" y1="115" x2="145" y2="115" stroke="black" stroke-width="2" marker-end="url(#arrow_ex1)"/>
+  <circle cx="190" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="190" y="122" text-anchor="middle" font-size="22">0</text>
+  <circle cx="490" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="490" cy="115" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="490" y="122" text-anchor="middle" font-size="22">1</text>
+  <path d="M225 115 C310 65, 370 65, 455 115" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex1)"/>
+  <text x="340" y="70" text-anchor="middle" font-size="20">a</text>
+  <path d="M165 80 C105 20, 275 20, 215 80" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex1)"/>
+  <text x="190" y="35" text-anchor="middle" font-size="20">b</text>
+  <path d="M465 80 C405 20, 575 20, 515 80" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex1)"/>
+  <text x="490" y="35" text-anchor="middle" font-size="20">a,b</text>
+</svg>
+
 ---
 
 ## Analyse
@@ -510,6 +530,32 @@ Automate :
 | `→ 0` | `0` | `1` |
 | `* 1` | `2` | `1` |
 | `2`   | `2` | `2` |
+
+<svg width="820" height="250" viewBox="0 0 820 250" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_ex2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="60" y1="130" x2="125" y2="130" stroke="black" stroke-width="2" marker-end="url(#arrow_ex2)"/>
+  <circle cx="170" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="170" y="137" text-anchor="middle" font-size="22">0</text>
+  <circle cx="410" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="410" cy="130" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="410" y="137" text-anchor="middle" font-size="22">1</text>
+  <circle cx="650" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="650" y="137" text-anchor="middle" font-size="22">2</text>
+  <path d="M205 130 C275 85, 305 85, 375 130" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex2)"/>
+  <text x="290" y="88" text-anchor="middle" font-size="20">b</text>
+  <path d="M445 130 C515 85, 545 85, 615 130" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex2)"/>
+  <text x="530" y="88" text-anchor="middle" font-size="20">a</text>
+  <path d="M145 95 C85 35, 255 35, 195 95" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex2)"/>
+  <text x="170" y="50" text-anchor="middle" font-size="20">a</text>
+  <path d="M385 95 C325 35, 495 35, 435 95" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex2)"/>
+  <text x="410" y="50" text-anchor="middle" font-size="20">b</text>
+  <path d="M625 95 C565 35, 735 35, 675 95" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex2)"/>
+  <text x="650" y="50" text-anchor="middle" font-size="20">a,b</text>
+</svg>
 
 ---
 
@@ -576,6 +622,28 @@ Automate :
 | `→* 0` | `1` | `0` |
 | `1`    | `0` | `1` |
 
+<svg width="720" height="270" viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_ex3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="80" y1="135" x2="145" y2="135" stroke="black" stroke-width="2" marker-end="url(#arrow_ex3)"/>
+  <circle cx="190" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="190" cy="135" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="190" y="142" text-anchor="middle" font-size="22">0</text>
+  <circle cx="490" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="490" y="142" text-anchor="middle" font-size="22">1</text>
+  <path d="M225 120 C310 45, 370 45, 455 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex3)"/>
+  <text x="340" y="55" text-anchor="middle" font-size="20">a</text>
+  <path d="M455 150 C370 225, 310 225, 225 150" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex3)"/>
+  <text x="340" y="220" text-anchor="middle" font-size="20">a</text>
+  <path d="M165 100 C105 40, 275 40, 215 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex3)"/>
+  <text x="190" y="55" text-anchor="middle" font-size="20">b</text>
+  <path d="M465 100 C405 40, 575 40, 515 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex3)"/>
+  <text x="490" y="55" text-anchor="middle" font-size="20">b</text>
+</svg>
+
 ---
 
 ## Analyse
@@ -635,6 +703,28 @@ Automate :
 | ----- | --- | --- |
 | `→ 0` | `0` | `1` |
 | `* 1` | `1` | `0` |
+
+<svg width="720" height="270" viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_ex4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="80" y1="135" x2="145" y2="135" stroke="black" stroke-width="2" marker-end="url(#arrow_ex4)"/>
+  <circle cx="190" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="190" y="142" text-anchor="middle" font-size="22">0</text>
+  <circle cx="490" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="490" cy="135" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="490" y="142" text-anchor="middle" font-size="22">1</text>
+  <path d="M225 120 C310 45, 370 45, 455 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex4)"/>
+  <text x="340" y="55" text-anchor="middle" font-size="20">b</text>
+  <path d="M455 150 C370 225, 310 225, 225 150" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex4)"/>
+  <text x="340" y="220" text-anchor="middle" font-size="20">b</text>
+  <path d="M165 100 C105 40, 275 40, 215 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex4)"/>
+  <text x="190" y="55" text-anchor="middle" font-size="20">a</text>
+  <path d="M465 100 C405 40, 575 40, 515 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_ex4)"/>
+  <text x="490" y="55" text-anchor="middle" font-size="20">a</text>
+</svg>
 
 ---
 
@@ -855,35 +945,1221 @@ le rôle de chaque état
 
 car cela permet de décrire le langage reconnu.
 
+---
 
+# Fiche d’entraînement — Automates finis
 
-## Tableau des expressions classiques en langages formels
+## Questions récentes et réponses modèles
 
-| Expression | Signification en français | معنی ساده |
-|---|---|---|
-| `A` | alphabet | مجموعه حروف مجاز |
-| `A*` | tous les mots possibles sur `A` | همه کلمات ممکن با حروف `A` |
-| `ε` | mot vide | کلمه خالی، طول `0` |
-| `a*` | zéro ou plusieurs `a` | صفر یا چندتا `a` |
-| `b*` | zéro ou plusieurs `b` | صفر یا چندتا `b` |
-| `a+` | un ou plusieurs `a` | حداقل یک `a` |
-| `b+` | un ou plusieurs `b` | حداقل یک `b` |
-| `ab` | un `a` suivi d’un `b` | اول `a` بعد `b` |
-| `a* b+` | zéro ou plusieurs `a`, puis un ou plusieurs `b` | اول فقط `a`ها، بعد فقط `b`ها، حداقل یک `b` لازم است |
-| `b* a b*` | zéro ou plusieurs `b`, puis un `a`, puis zéro ou plusieurs `b` | دقیقاً یک `a` |
-| `b* a b* a b*` | mots avec exactement deux `a` | دقیقاً دو `a` |
-| `A* a A*` | mots contenant au moins un `a` | حداقل یک `a` دارد |
-| `A* b A*` | mots contenant au moins un `b` | حداقل یک `b` دارد |
-| `a A*` | mots qui commencent par `a` | با `a` شروع می‌شود |
-| `b A*` | mots qui commencent par `b` | با `b` شروع می‌شود |
-| `A* a` | mots qui se terminent par `a` | با `a` تمام می‌شود |
-| `A* b` | mots qui se terminent par `b` | با `b` تمام می‌شود |
-| `a A* b` | mots qui commencent par `a` et se terminent par `b` | با `a` شروع و با `b` تمام می‌شود |
-| `A* ab` | mots qui se terminent par `ab` | با `ab` تمام می‌شود |
-| `ab A*` | mots qui commencent par `ab` | با `ab` شروع می‌شود |
-| `(ab)*` | répétition de `ab` zéro ou plusieurs fois | تکرار `ab`: مثل `ε`, `ab`, `abab` |
-| `(a\|b)*` | tous les mots sur `{a,b}` | مثل `A*` وقتی `A = {a,b}` |
-| `A* \ L` | complémentaire de `L` dans `A*` | همه کلمات داخل `A*` که در `L` نیستند |
+Cette fiche contient les exercices déjà travaillés.
+Elle sert à réviser les réponses attendues en examen.
 
+---
 
+# Partie 1 — Langages
 
+## Question 1 — Langage défini par une longueur
+
+Soit :
+
+```text
+A = {a}
+L = { mots de longueur n | n = 2 + 3k, avec k ∈ N }
+```
+
+Les longueurs possibles sont :
+
+```text
+2, 5, 8, 11, ...
+```
+
+Donc un mot appartient à `L` si sa longueur est de la forme :
+
+```text
+2 + 3k
+```
+
+### Quatre mots de `L`
+
+```text
+aa
+aaaaa
+aaaaaaaa
+aaaaaaaaaaa
+```
+
+### Quatre mots sur `A` qui n’appartiennent pas à `L`
+
+```text
+a
+aaa
+aaaa
+aaaaaa
+```
+
+### Justification
+
+```text
+Les mots de L ont une longueur égale à 2, 5, 8, 11, ...
+Donc un mot appartient à L si sa longueur est de la forme 2 + 3k.
+```
+
+---
+
+## Question 2 — Exactement deux lettres `a`
+
+Soit :
+
+```text
+A = {a, b}
+L = { w ∈ A* | w contient exactement deux lettres a }
+```
+
+### Quatre mots de `L`
+
+```text
+aabb
+abab
+bbaa
+baab
+```
+
+### Quatre mots sur `A` qui n’appartiennent pas à `L`
+
+```text
+b
+ab
+aaa
+bbabb
+```
+
+### Justification
+
+```text
+Les mots de L sont exactement les mots sur A qui contiennent deux lettres a.
+Les mots hors de L contiennent zéro, une, trois lettres a ou plus.
+```
+
+---
+
+## Question 3 — Commencer par `a` et finir par `b`
+
+Soit :
+
+```text
+A = {a, b}
+L = { w ∈ A* | w commence par a et se termine par b }
+```
+
+### Quatre mots de `L`
+
+```text
+ab
+aaab
+abbbaab
+abbbbbabbbabab
+```
+
+### Quatre mots sur `A` qui n’appartiennent pas à `L`
+
+```text
+ba
+abba
+baaab
+abbbbaba
+```
+
+### Justification
+
+```text
+Un mot appartient à L s’il commence par a et se termine par b.
+Si une des deux conditions manque, le mot n’appartient pas à L.
+```
+
+---
+
+## Question 4 — Contenir au moins un `b`
+
+Soit :
+
+```text
+A = {a, b}
+L = { w ∈ A* | w contient au moins une lettre b }
+```
+
+### Quatre mots de `L`
+
+```text
+ab
+abb
+aaaaaab
+baaaaab
+```
+
+### Quatre mots sur `A` qui n’appartiennent pas à `L`
+
+```text
+aaaa
+a
+aaa
+aaaaaaaaa
+```
+
+### Justification
+
+```text
+Les mots de L contiennent au moins un b.
+Les mots hors de L ne contiennent aucun b.
+```
+
+---
+
+## Question 5 — Longueur paire et fin par `ab`
+
+Soit :
+
+```text
+A = {a, b}
+L = { w ∈ A* | w est de longueur paire et se termine par ab }
+```
+
+Un mot appartient à `L` s’il vérifie deux conditions :
+
+```text
+1) le mot est de longueur paire ;
+2) le mot se termine par ab.
+```
+
+### Quatre mots de `L`
+
+```text
+ab
+abab
+aaab
+bbab
+```
+
+### Quatre mots sur `A` qui n’appartiennent pas à `L`
+
+```text
+ba
+baba
+bbba
+aaba
+```
+
+### Justification
+
+```text
+Un mot appartient à L s’il vérifie les deux conditions :
+il est de longueur paire et il se termine par ab.
+```
+
+---
+
+# Partie 2 — Automates
+
+## Question 6 — Automate non déterministe et non complet
+
+Automate :
+
+```text
+État        a        b
+→ 0        {0}     {0,1}
+* 1        {1}      ∅
+```
+
+<svg width="720" height="260" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_q6" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="80" y1="130" x2="145" y2="130" stroke="black" stroke-width="2" marker-end="url(#arrow_q6)"/>
+  <circle cx="190" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="190" y="137" text-anchor="middle" font-size="22">0</text>
+  <circle cx="490" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="490" cy="130" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="490" y="137" text-anchor="middle" font-size="22">1</text>
+  <path d="M165 95 C105 35, 275 35, 215 95" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q6)"/>
+  <text x="190" y="50" text-anchor="middle" font-size="20">a</text>
+  <path d="M165 165 C105 225, 275 225, 215 165" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q6)"/>
+  <text x="190" y="220" text-anchor="middle" font-size="20">b</text>
+  <path d="M225 130 C310 85, 370 85, 455 130" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q6)"/>
+  <text x="340" y="88" text-anchor="middle" font-size="20">b</text>
+  <path d="M465 95 C405 35, 575 35, 515 95" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q6)"/>
+  <text x="490" y="50" text-anchor="middle" font-size="20">a</text>
+  <text x="490" y="210" text-anchor="middle" font-size="16">pas de transition avec b</text>
+</svg>
+
+### Déterminisme
+
+```text
+L’automate n’est pas déterministe car, depuis l’état 0 avec la lettre b, il y a deux transitions possibles : vers 0 et vers 1.
+```
+
+### Complétude
+
+```text
+L’automate n’est pas complet car, depuis l’état 1 avec la lettre b, il n’y a aucune transition.
+```
+
+---
+
+## Question 7 — Mots reconnus
+
+Automate :
+
+```text
+État        a        b
+→ 0         1        0
+  1         1        2
+* 2         1        0
+```
+
+<svg width="850" height="320" viewBox="0 0 850 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_q7" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="50" y1="155" x2="115" y2="155" stroke="black" stroke-width="2" marker-end="url(#arrow_q7)"/>
+  <circle cx="160" cy="155" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="160" y="162" text-anchor="middle" font-size="22">0</text>
+  <circle cx="410" cy="155" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="410" y="162" text-anchor="middle" font-size="22">1</text>
+  <circle cx="660" cy="155" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="660" cy="155" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="660" y="162" text-anchor="middle" font-size="22">2</text>
+  <path d="M135 120 C75 60, 245 60, 185 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q7)"/>
+  <text x="160" y="75" text-anchor="middle" font-size="20">b</text>
+  <path d="M198 155 L372 155" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q7)"/>
+  <text x="285" y="135" text-anchor="middle" font-size="20">a</text>
+  <path d="M385 120 C325 60, 495 60, 435 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q7)"/>
+  <text x="410" y="75" text-anchor="middle" font-size="20">a</text>
+  <path d="M448 155 L622 155" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q7)"/>
+  <text x="535" y="135" text-anchor="middle" font-size="20">b</text>
+  <path d="M625 180 C555 245, 515 245, 445 180" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q7)"/>
+  <text x="535" y="245" text-anchor="middle" font-size="20">a</text>
+  <path d="M630 195 C480 310, 300 310, 190 190" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q7)"/>
+  <text x="400" y="305" text-anchor="middle" font-size="20">b</text>
+</svg>
+
+### Déterminisme et complétude
+
+```text
+L’automate est déterministe et complet.
+```
+
+Il est déterministe car il y a une seule transition pour chaque état et chaque lettre.
+
+Il est complet car il y a une transition pour chaque état et chaque lettre.
+
+### Parcours des mots
+
+```text
+ε : on reste en 0.
+L’état 0 n’est pas final, donc ε est refusé.
+```
+
+```text
+a : 0 --a--> 1.
+L’état 1 n’est pas final, donc a est refusé.
+```
+
+```text
+ab : 0 --a--> 1 --b--> 2.
+L’état 2 est final, donc ab est accepté.
+```
+
+```text
+abb : 0 --a--> 1 --b--> 2 --b--> 0.
+L’état 0 n’est pas final, donc abb est refusé.
+```
+
+```text
+aab : 0 --a--> 1 --a--> 1 --b--> 2.
+L’état 2 est final, donc aab est accepté.
+```
+
+```text
+baab : 0 --b--> 0 --a--> 1 --a--> 1 --b--> 2.
+L’état 2 est final, donc baab est accepté.
+```
+
+---
+
+## Question 8 — État initial final
+
+Automate :
+
+```text
+État        a        b
+→* 0        1        0
+   1        1        2
+ * 2        1        0
+```
+
+<svg width="850" height="320" viewBox="0 0 850 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_q8" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="50" y1="155" x2="115" y2="155" stroke="black" stroke-width="2" marker-end="url(#arrow_q8)"/>
+  <circle cx="160" cy="155" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="160" cy="155" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="160" y="162" text-anchor="middle" font-size="22">0</text>
+  <circle cx="410" cy="155" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="410" y="162" text-anchor="middle" font-size="22">1</text>
+  <circle cx="660" cy="155" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="660" cy="155" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="660" y="162" text-anchor="middle" font-size="22">2</text>
+  <path d="M135 120 C75 60, 245 60, 185 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q8)"/>
+  <text x="160" y="75" text-anchor="middle" font-size="20">b</text>
+  <path d="M198 155 L372 155" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q8)"/>
+  <text x="285" y="135" text-anchor="middle" font-size="20">a</text>
+  <path d="M385 120 C325 60, 495 60, 435 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q8)"/>
+  <text x="410" y="75" text-anchor="middle" font-size="20">a</text>
+  <path d="M448 155 L622 155" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q8)"/>
+  <text x="535" y="135" text-anchor="middle" font-size="20">b</text>
+  <path d="M625 180 C555 245, 515 245, 445 180" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q8)"/>
+  <text x="535" y="245" text-anchor="middle" font-size="20">a</text>
+  <path d="M630 195 C480 310, 300 310, 190 190" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_q8)"/>
+  <text x="400" y="305" text-anchor="middle" font-size="20">b</text>
+</svg>
+
+### Déterminisme et complétude
+
+```text
+L’automate est déterministe et complet.
+```
+
+### Parcours des mots
+
+```text
+ε : on reste en 0.
+L’état 0 est final, donc ε est accepté.
+```
+
+```text
+b : 0 --b--> 0.
+L’état 0 est final, donc b est accepté.
+```
+
+```text
+ab : 0 --a--> 1 --b--> 2.
+L’état 2 est final, donc ab est accepté.
+```
+
+```text
+aabb : 0 --a--> 1 --a--> 1 --b--> 2 --b--> 0.
+L’état 0 est final, donc aabb est accepté.
+```
+
+```text
+bab : 0 --b--> 0 --a--> 1 --b--> 2.
+L’état 2 est final, donc bab est accepté.
+```
+
+```text
+bbabb : 0 --b--> 0 --b--> 0 --a--> 1 --b--> 2 --b--> 0.
+L’état 0 est final, donc bbabb est accepté.
+```
+
+---
+
+## Question 9 — Langage reconnu : au moins un `a`
+
+Même automate que l’exemple type 1.
+
+Automate :
+
+```text
+État        a        b
+→ 0         1        0
+* 1         1        1
+```
+
+### Déterminisme et complétude
+
+```text
+L’automate est déterministe et complet.
+```
+
+### Langage reconnu
+
+```text
+L = b* a A*
+```
+
+### Phrase en langage ordinaire
+
+```text
+L’automate reconnaît les mots qui contiennent au moins une lettre a.
+```
+
+### Exemples acceptés
+
+```text
+a
+ba
+aaabbababba
+abababa
+```
+
+### Exemples refusés
+
+```text
+ε
+b
+bb
+bbbb
+```
+
+---
+
+## Question 10 — Langage reconnu : `a*b+`
+
+Même automate que l’exemple type 2.
+
+Automate :
+
+```text
+État        a        b
+→ 0         0        1
+* 1         2        1
+  2         2        2
+```
+
+### Déterminisme et complétude
+
+```text
+L’automate est déterministe et complet.
+```
+
+### Langage reconnu
+
+```text
+L = a* b+
+```
+
+### Phrase en langage ordinaire
+
+```text
+L’automate reconnaît les mots composés de zéro ou plusieurs a suivis d’un ou plusieurs b.
+```
+
+### Autre phrase correcte
+
+```text
+L’automate reconnaît les mots qui contiennent au moins un b et qui n’ont plus de a après le premier b.
+```
+
+### Exemples acceptés
+
+```text
+b
+bb
+ab
+aaabb
+```
+
+### Exemples refusés
+
+```text
+ε
+a
+ba
+aba
+```
+
+---
+
+## Question 11 — Complémentaire
+
+Soit :
+
+```text
+A = {a, b}
+L = { w ∈ A* | w contient au moins un a }
+```
+
+Le complémentaire de `L` dans `A*` est :
+
+```text
+A* \ L = { w ∈ A* | w ne contient aucun a }
+```
+
+Donc :
+
+```text
+A* \ L = b*
+```
+
+### Exemples dans `L`
+
+```text
+a
+ababbb
+aaaa
+ba
+```
+
+### Exemples dans le complémentaire
+
+```text
+ε
+b
+bb
+bbb
+```
+
+---
+
+## Question 12 — Décrire des expressions
+
+### Expression 1
+
+```text
+L1 = A* ab
+```
+
+Réponse :
+
+```text
+L1 est l’ensemble des mots qui se terminent par ab.
+```
+
+Exemples :
+
+```text
+ab
+aaaab
+```
+
+---
+
+### Expression 2
+
+```text
+L2 = a A* b
+```
+
+Réponse :
+
+```text
+L2 est l’ensemble des mots qui commencent par a et se terminent par b.
+```
+
+Exemples :
+
+```text
+ab
+aaaaab
+```
+
+---
+
+### Expression 3
+
+```text
+L3 = b* a b*
+```
+
+Réponse :
+
+```text
+L3 est l’ensemble des mots qui contiennent exactement un seul a.
+```
+
+Exemples :
+
+```text
+bbbbbbabbbbbb
+bbabb
+```
+
+---
+
+### Expression 4
+
+```text
+L4 = b* a b* a b*
+```
+
+Réponse :
+
+```text
+L4 est l’ensemble des mots qui contiennent exactement deux lettres a.
+```
+
+Exemples :
+
+```text
+aa
+babab
+```
+
+---
+
+## Question 13 — Nombre pair de `a`
+
+Même automate que l’exemple type 3.
+
+Automate :
+
+```text
+État        a        b
+→* 0        1        0
+   1        0        1
+```
+
+### Déterminisme et complétude
+
+```text
+L’automate est déterministe et complet.
+```
+
+### Langage reconnu
+
+```text
+L = { w ∈ A* | |w|a est pair }
+```
+
+### Phrase en langage ordinaire
+
+```text
+L’automate reconnaît les mots qui contiennent un nombre pair de lettres a.
+```
+
+### Justification
+
+```text
+L’état 0 signifie que le nombre de a lus est pair.
+L’état 1 signifie que le nombre de a lus est impair.
+Avec b, on ne change pas d’état.
+Avec a, on change d’état.
+Comme l’état 0 est final, les mots acceptés sont ceux qui contiennent un nombre pair de a.
+```
+
+### Exemples acceptés
+
+```text
+ε
+b
+aa
+baab
+```
+
+### Exemples refusés
+
+```text
+a
+ab
+baa
+bab
+```
+
+---
+
+## Question 14 — Nombre impair de `b`
+
+Même automate que l’exemple type 4.
+
+Automate :
+
+```text
+État        a        b
+→ 0         0        1
+* 1         1        0
+```
+
+### Déterminisme et complétude
+
+```text
+L’automate est déterministe et complet.
+```
+
+### Langage reconnu
+
+```text
+L = { w ∈ A* | |w|b est impair }
+```
+
+### Phrase en langage ordinaire
+
+```text
+L’automate reconnaît les mots qui contiennent un nombre impair de lettres b.
+```
+
+### Justification
+
+```text
+L’état 0 signifie que le nombre de b lus est pair.
+L’état 1 signifie que le nombre de b lus est impair.
+Avec a, on ne change pas d’état.
+Avec b, on change d’état.
+Comme l’état 1 est final, les mots acceptés sont ceux qui contiennent un nombre impair de b.
+```
+
+### Exemples acceptés
+
+```text
+b
+ab
+baaa
+abbba
+```
+
+### Exemples refusés
+
+```text
+ε
+a
+bb
+abba
+```
+
+---
+
+# Partie 3 — TD5 officiel
+
+# TD5 — Exercice 3
+
+## Énoncé
+
+On considère l’automate suivant sur l’alphabet :
+
+```text
+A = {a, b}
+```
+
+Transitions :
+
+```text
+1 --a--> 2
+2 --b--> 3
+3 --a--> 3
+3 --b--> 3
+```
+
+<svg width="820" height="230" viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_td5ex3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="60" y1="115" x2="125" y2="115" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3)"/>
+  <circle cx="170" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="170" y="122" text-anchor="middle" font-size="22">1</text>
+  <circle cx="410" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="410" y="122" text-anchor="middle" font-size="22">2</text>
+  <circle cx="650" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="650" cy="115" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="650" y="122" text-anchor="middle" font-size="22">3</text>
+  <path d="M208 115 L372 115" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3)"/>
+  <text x="290" y="95" text-anchor="middle" font-size="20">a</text>
+  <path d="M448 115 L612 115" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3)"/>
+  <text x="530" y="95" text-anchor="middle" font-size="20">b</text>
+  <path d="M625 80 C565 20, 735 20, 675 80" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3)"/>
+  <text x="650" y="35" text-anchor="middle" font-size="20">a,b</text>
+</svg>
+
+État initial :
+
+```text
+1
+```
+
+État final :
+
+```text
+3
+```
+
+Questions :
+
+```text
+1) Expliquer pourquoi l’automate n’est pas complet.
+2) Quel langage reconnaît-il ?
+3) Donner un automate complet équivalent.
+```
+
+---
+
+## Réponse complète
+
+### 1) Pourquoi l’automate n’est pas complet ?
+
+```text
+L’automate n’est pas complet car, depuis l’état 1, il n’y a aucune transition avec la lettre b.
+Il n’est pas complet aussi car, depuis l’état 2, il n’y a aucune transition avec la lettre a.
+```
+
+Phrase générale :
+
+```text
+Un automate est complet si, pour chaque état et chaque lettre de l’alphabet, il existe au moins une transition.
+Ici, certaines transitions manquent, donc l’automate n’est pas complet.
+```
+
+---
+
+### 2) Quel langage reconnaît-il ?
+
+Pour être accepté, un mot doit suivre ce début de parcours :
+
+```text
+1 --a--> 2 --b--> 3
+```
+
+Une fois arrivé dans l’état final `3`, on peut lire n’importe quelle suite de `a` et de `b`.
+
+Donc :
+
+```text
+L = ab A*
+```
+
+Phrase en langage ordinaire :
+
+```text
+L’automate reconnaît les mots qui commencent par ab.
+```
+
+Exemples acceptés :
+
+```text
+ab
+aba
+abb
+abba
+ababab
+```
+
+Exemples refusés :
+
+```text
+ε
+a
+b
+aa
+ba
+aab
+```
+
+---
+
+### 3) Automate complet équivalent
+
+On ajoute un état puits `P`.
+
+Transitions complètes :
+
+```text
+1 --a--> 2
+1 --b--> P
+
+2 --a--> P
+2 --b--> 3
+
+3 --a--> 3
+3 --b--> 3
+
+P --a--> P
+P --b--> P
+```
+
+<svg width="850" height="390" viewBox="0 0 850 390" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_td5ex3_complete" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="60" y1="120" x2="125" y2="120" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3_complete)"/>
+  <circle cx="170" cy="120" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="170" y="127" text-anchor="middle" font-size="22">1</text>
+  <circle cx="410" cy="120" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="410" y="127" text-anchor="middle" font-size="22">2</text>
+  <circle cx="650" cy="120" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="650" cy="120" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="650" y="127" text-anchor="middle" font-size="22">3</text>
+  <circle cx="410" cy="295" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="410" y="302" text-anchor="middle" font-size="22">P</text>
+  <path d="M208 120 L372 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3_complete)"/>
+  <text x="290" y="100" text-anchor="middle" font-size="20">a</text>
+  <path d="M448 120 L612 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3_complete)"/>
+  <text x="530" y="100" text-anchor="middle" font-size="20">b</text>
+  <path d="M190 150 C250 225, 310 265, 372 290" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3_complete)"/>
+  <text x="270" y="225" text-anchor="middle" font-size="20">b</text>
+  <path d="M410 158 L410 257" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3_complete)"/>
+  <text x="430" y="215" font-size="20">a</text>
+  <path d="M625 85 C565 25, 735 25, 675 85" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3_complete)"/>
+  <text x="650" y="40" text-anchor="middle" font-size="20">a,b</text>
+  <path d="M385 330 C325 375, 495 375, 435 330" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex3_complete)"/>
+  <text x="410" y="370" text-anchor="middle" font-size="20">a,b</text>
+</svg>
+
+État initial :
+
+```text
+1
+```
+
+État final :
+
+```text
+3
+```
+
+Justification :
+
+```text
+L’état P est un état puits.
+Une fois arrivé dans P, on y reste pour toutes les lettres.
+Cet automate est complet et reconnaît le même langage que l’automate initial.
+```
+
+---
+
+# TD5 — Exercice 4
+
+## Énoncé
+
+On considère l’automate `A` sur l’alphabet :
+
+```text
+A = {a, b, c}
+```
+
+États :
+
+```text
+0, 1, 2, 3
+```
+
+État initial :
+
+```text
+0
+```
+
+État terminal :
+
+```text
+3
+```
+
+Transitions :
+
+```text
+(0, a, 0)
+(0, a, 1)
+(0, b, 0)
+(0, c, 0)
+
+(1, a, 2)
+(1, b, 2)
+(1, c, 2)
+
+(2, a, 3)
+(2, b, 3)
+(2, c, 3)
+```
+
+<svg width="920" height="260" viewBox="0 0 920 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_td5ex4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  <line x1="50" y1="130" x2="115" y2="130" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex4)"/>
+  <circle cx="160" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="160" y="137" text-anchor="middle" font-size="22">0</text>
+  <circle cx="390" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="390" y="137" text-anchor="middle" font-size="22">1</text>
+  <circle cx="620" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="620" y="137" text-anchor="middle" font-size="22">2</text>
+  <circle cx="820" cy="130" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="820" cy="130" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="820" y="137" text-anchor="middle" font-size="22">3</text>
+  <path d="M135 95 C75 35, 245 35, 185 95" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex4)"/>
+  <text x="160" y="48" text-anchor="middle" font-size="20">a,b,c</text>
+  <path d="M198 130 L352 130" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex4)"/>
+  <text x="275" y="110" text-anchor="middle" font-size="20">a</text>
+  <path d="M428 130 L582 130" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex4)"/>
+  <text x="505" y="110" text-anchor="middle" font-size="20">a,b,c</text>
+  <path d="M658 130 L782 130" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_td5ex4)"/>
+  <text x="720" y="110" text-anchor="middle" font-size="20">a,b,c</text>
+</svg>
+
+Questions :
+
+```text
+1) Cet automate est-il complet ? déterministe ? Justifier.
+2) Les mots baba et cabcb sont-ils reconnus par A ?
+3) Décrire L(A) en langage ordinaire.
+```
+
+---
+
+## Réponse complète
+
+### 1) L’automate est-il complet ?
+
+```text
+L’automate n’est pas complet car, depuis l’état 3, il n’y a aucune transition avec a, b ou c.
+```
+
+Phrase générale :
+
+```text
+Un automate est complet si, pour chaque état et chaque lettre de l’alphabet, il y a au moins une transition.
+Ici, depuis l’état 3, aucune transition n’est définie.
+Donc l’automate n’est pas complet.
+```
+
+---
+
+### 2) L’automate est-il déterministe ?
+
+```text
+L’automate n’est pas déterministe car, depuis l’état 0 avec la lettre a, il y a deux transitions possibles : vers 0 et vers 1.
+```
+
+Phrase générale :
+
+```text
+Un automate est déterministe s’il a un seul état initial et si, pour chaque état et chaque lettre, il y a au plus une transition.
+Ici, depuis l’état 0 avec la lettre a, il y a deux choix possibles.
+Donc l’automate n’est pas déterministe.
+```
+
+---
+
+### 3) Le mot `baba` est-il reconnu ?
+
+Parcours acceptant :
+
+```text
+baba : 0 --b--> 0 --a--> 1 --b--> 2 --a--> 3.
+```
+
+Réponse :
+
+```text
+L’état 3 est final, donc baba est reconnu par A.
+```
+
+Important :
+
+```text
+Comme l’automate est non déterministe, il suffit qu’il existe un parcours acceptant pour que le mot soit accepté.
+```
+
+---
+
+### 4) Le mot `cabcb` est-il reconnu ?
+
+On essaie le parcours qui utilise la transition vers `1` au moment du `a` :
+
+```text
+cabcb : 0 --c--> 0 --a--> 1 --b--> 2 --c--> 3.
+```
+
+Mais il reste encore la lettre `b` à lire.
+
+Depuis l’état `3`, il n’y a aucune transition.
+
+Donc :
+
+```text
+cabcb est refusé.
+```
+
+Réponse complète :
+
+```text
+Le mot cabcb n’est pas reconnu par A, car le seul parcours qui peut arriver à l’état final 3 y arrive avant la fin du mot, et il reste une lettre à lire.
+```
+
+---
+
+### 5) Description de `L(A)`
+
+Pour arriver à l’état final `3`, il faut faire :
+
+```text
+0 --a--> 1 --A--> 2 --A--> 3
+```
+
+Avant ce `a`, on peut lire n’importe quel mot et rester dans l’état `0`.
+
+Donc :
+
+```text
+L(A) = A* a A A
+```
+
+Phrase en langage ordinaire :
+
+```text
+L’automate reconnaît les mots dont la troisième lettre en partant de la fin est a.
+```
+
+Autre phrase correcte :
+
+```text
+L’automate reconnaît les mots qui contiennent un a suivi exactement de deux lettres à la fin du mot.
+```
+
+Exemples acceptés :
+
+```text
+aba
+baba
+caab
+cbacc
+```
+
+Exemples refusés :
+
+```text
+ε
+a
+ab
+cabcb
+```
+
+---
+
+## Réponse modèle complète pour TD5 Exercice 4
+
+```text
+L’automate n’est pas complet car, depuis l’état 3, il n’y a aucune transition avec a, b ou c.
+
+L’automate n’est pas déterministe car, depuis l’état 0 avec la lettre a, il y a deux transitions possibles : vers 0 et vers 1.
+
+baba : 0 --b--> 0 --a--> 1 --b--> 2 --a--> 3.
+L’état 3 est final, donc baba est reconnu par A.
+
+cabcb : 0 --c--> 0 --a--> 1 --b--> 2 --c--> 3.
+Mais il reste encore la lettre b à lire, et depuis l’état 3 il n’y a aucune transition.
+Donc cabcb n’est pas reconnu par A.
+
+L(A) = A* a A A.
+L’automate reconnaît les mots dont la troisième lettre en partant de la fin est a.
+```
+
+---
+
+# Ce qu’il faut retenir
+
+```text
+1) Pour vérifier si un automate est complet, on cherche les transitions manquantes.
+2) Pour vérifier si un automate est déterministe, on cherche les doubles transitions avec la même lettre depuis le même état.
+3) Pour savoir si un mot est reconnu, il faut lire tout le mot et finir dans un état final.
+4) Dans un automate non déterministe, un mot est accepté s’il existe au moins un parcours acceptant.
+5) Pour décrire L(A), il faut écrire une règle générale en langage ordinaire.
+```
