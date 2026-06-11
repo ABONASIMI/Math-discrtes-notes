@@ -2163,3 +2163,368 @@ L’automate reconnaît les mots dont la troisième lettre en partant de la fin 
 4) Dans un automate non déterministe, un mot est accepté s’il existe au moins un parcours acceptant.
 5) Pour décrire L(A), il faut écrire une règle générale en langage ordinaire.
 ```
+
+
+
+
+## Dessin — Longueur paire
+
+À mettre après la table de la section **3) Automate pour les mots de longueur paire**.
+
+<svg width="720" height="270" viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_len_pair" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="80" y1="135" x2="145" y2="135" stroke="black" stroke-width="2" marker-end="url(#arrow_len_pair)"/>
+
+  <circle cx="190" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="190" cy="135" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="190" y="142" text-anchor="middle" font-size="22">0</text>
+
+  <circle cx="500" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="500" y="142" text-anchor="middle" font-size="22">1</text>
+
+  <path d="M225 120 C315 45, 375 45, 465 120" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_len_pair)"/>
+  <text x="345" y="55" text-anchor="middle" font-size="20">a,b</text>
+
+  <path d="M465 150 C375 225, 315 225, 225 150" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_len_pair)"/>
+  <text x="345" y="220" text-anchor="middle" font-size="20">a,b</text>
+</svg>
+
+---
+
+## Dessin — Nombre de `b` multiple de 3
+
+À mettre après la table de la section **4) Automate pour les mots dont le nombre de b est multiple de 3**.
+
+<svg width="860" height="330" viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_b_mod3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="50" y1="160" x2="115" y2="160" stroke="black" stroke-width="2" marker-end="url(#arrow_b_mod3)"/>
+
+  <circle cx="160" cy="160" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="160" cy="160" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="160" y="167" text-anchor="middle" font-size="22">0</text>
+
+  <circle cx="430" cy="160" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="430" y="167" text-anchor="middle" font-size="22">1</text>
+
+  <circle cx="700" cy="160" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="700" y="167" text-anchor="middle" font-size="22">2</text>
+
+  <path d="M135 125 C75 65, 245 65, 185 125" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_b_mod3)"/>
+  <text x="160" y="78" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M405 125 C345 65, 515 65, 455 125" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_b_mod3)"/>
+  <text x="430" y="78" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M675 125 C615 65, 785 65, 725 125" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_b_mod3)"/>
+  <text x="700" y="78" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M198 160 L392 160" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_b_mod3)"/>
+  <text x="295" y="138" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M468 160 L662 160" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_b_mod3)"/>
+  <text x="565" y="138" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M675 195 C535 295, 325 295, 185 195" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_b_mod3)"/>
+  <text x="430" y="300" text-anchor="middle" font-size="20">b</text>
+</svg>
+
+---
+
+## Dessin — Mots qui se terminent par `b`
+
+À mettre après la table de la section **5) Automate pour les mots qui se terminent par b**.
+
+<svg width="720" height="270" viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_end_b" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="80" y1="135" x2="145" y2="135" stroke="black" stroke-width="2" marker-end="url(#arrow_end_b)"/>
+
+  <circle cx="190" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="190" y="142" text-anchor="middle" font-size="22">0</text>
+
+  <circle cx="500" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="500" cy="135" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="500" y="142" text-anchor="middle" font-size="22">1</text>
+
+  <path d="M165 100 C105 40, 275 40, 215 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_end_b)"/>
+  <text x="190" y="55" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M475 100 C415 40, 585 40, 525 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_end_b)"/>
+  <text x="500" y="55" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M228 135 L462 135" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_end_b)"/>
+  <text x="345" y="113" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M462 165 C375 230, 315 230, 228 165" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_end_b)"/>
+  <text x="345" y="230" text-anchor="middle" font-size="20">a</text>
+</svg>
+
+---
+
+## Dessin — Mots non vides qui ne se terminent pas par `b`
+
+À mettre après la table de la section **6) Automate pour les mots non vides qui ne se terminent pas par b**.
+
+<svg width="860" height="340" viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_non_empty_not_b" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="50" y1="170" x2="115" y2="170" stroke="black" stroke-width="2" marker-end="url(#arrow_non_empty_not_b)"/>
+
+  <circle cx="160" cy="170" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="160" y="177" text-anchor="middle" font-size="22">0</text>
+
+  <circle cx="430" cy="95" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="430" cy="95" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="430" y="102" text-anchor="middle" font-size="22">1</text>
+
+  <circle cx="430" cy="245" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="430" y="252" text-anchor="middle" font-size="22">2</text>
+
+  <path d="M195 155 C265 110, 335 95, 392 95" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_non_empty_not_b)"/>
+  <text x="285" y="105" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M195 185 C265 230, 335 245, 392 245" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_non_empty_not_b)"/>
+  <text x="285" y="240" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M405 60 C345 0, 515 0, 455 60" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_non_empty_not_b)"/>
+  <text x="430" y="18" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M405 280 C345 335, 515 335, 455 280" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_non_empty_not_b)"/>
+  <text x="430" y="323" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M455 125 C555 165, 555 175, 455 215" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_non_empty_not_b)"/>
+  <text x="555" y="172" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M405 215 C305 175, 305 165, 405 125" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_non_empty_not_b)"/>
+  <text x="305" y="172" text-anchor="middle" font-size="20">a</text>
+</svg>
+
+
+
+
+
+## Dessin — Mots contenant au moins un `b`
+
+À mettre après la table de la section **7) Automate pour les mots contenant au moins un b**.
+
+<svg width="720" height="230" viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_atleast_b" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="80" y1="115" x2="145" y2="115" stroke="black" stroke-width="2" marker-end="url(#arrow_atleast_b)"/>
+
+  <circle cx="190" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="190" y="122" text-anchor="middle" font-size="22">0</text>
+
+  <circle cx="500" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="500" cy="115" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="500" y="122" text-anchor="middle" font-size="22">1</text>
+
+  <path d="M165 80 C105 20, 275 20, 215 80" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_atleast_b)"/>
+  <text x="190" y="35" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M228 115 L462 115" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_atleast_b)"/>
+  <text x="345" y="93" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M475 80 C415 20, 585 20, 525 80" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_atleast_b)"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20">a,b</text>
+</svg>
+
+---
+
+## Dessin — Mots contenant exactement un `b`
+
+À mettre après la table de la section **8) Automate pour les mots contenant exactement un b**.
+
+<svg width="860" height="270" viewBox="0 0 860 270" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_exactly_one_b" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="50" y1="135" x2="115" y2="135" stroke="black" stroke-width="2" marker-end="url(#arrow_exactly_one_b)"/>
+
+  <circle cx="160" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="160" y="142" text-anchor="middle" font-size="22">0</text>
+
+  <circle cx="430" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="430" cy="135" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="430" y="142" text-anchor="middle" font-size="22">1</text>
+
+  <circle cx="700" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="700" y="142" text-anchor="middle" font-size="22">2</text>
+
+  <path d="M135 100 C75 40, 245 40, 185 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_exactly_one_b)"/>
+  <text x="160" y="55" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M405 100 C345 40, 515 40, 455 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_exactly_one_b)"/>
+  <text x="430" y="55" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M675 100 C615 40, 785 40, 725 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_exactly_one_b)"/>
+  <text x="700" y="55" text-anchor="middle" font-size="20">a,b</text>
+
+  <path d="M198 135 L392 135" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_exactly_one_b)"/>
+  <text x="295" y="113" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M468 135 L662 135" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_exactly_one_b)"/>
+  <text x="565" y="113" text-anchor="middle" font-size="20">b</text>
+</svg>
+
+---
+
+## Dessin — Mots contenant au plus un `b`
+
+À mettre après la table de la section **9) Automate pour les mots contenant au plus un b**.
+
+<svg width="860" height="270" viewBox="0 0 860 270" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_atmost_one_b" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="50" y1="135" x2="115" y2="135" stroke="black" stroke-width="2" marker-end="url(#arrow_atmost_one_b)"/>
+
+  <circle cx="160" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="160" cy="135" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="160" y="142" text-anchor="middle" font-size="22">0</text>
+
+  <circle cx="430" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="430" cy="135" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="430" y="142" text-anchor="middle" font-size="22">1</text>
+
+  <circle cx="700" cy="135" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="700" y="142" text-anchor="middle" font-size="22">2</text>
+
+  <path d="M135 100 C75 40, 245 40, 185 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_atmost_one_b)"/>
+  <text x="160" y="55" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M405 100 C345 40, 515 40, 455 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_atmost_one_b)"/>
+  <text x="430" y="55" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M675 100 C615 40, 785 40, 725 100" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_atmost_one_b)"/>
+  <text x="700" y="55" text-anchor="middle" font-size="20">a,b</text>
+
+  <path d="M198 135 L392 135" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_atmost_one_b)"/>
+  <text x="295" y="113" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M468 135 L662 135" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_atmost_one_b)"/>
+  <text x="565" y="113" text-anchor="middle" font-size="20">b</text>
+</svg>
+
+---
+
+## Dessin — Mots ne contenant aucun `b`
+
+À mettre après la table de la section **10) Automate pour les mots ne contenant aucun b**.
+
+<svg width="720" height="230" viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_no_b" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="80" y1="115" x2="145" y2="115" stroke="black" stroke-width="2" marker-end="url(#arrow_no_b)"/>
+
+  <circle cx="190" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="190" cy="115" r="30" fill="none" stroke="black" stroke-width="2"/>
+  <text x="190" y="122" text-anchor="middle" font-size="22">0</text>
+
+  <circle cx="500" cy="115" r="38" fill="white" stroke="black" stroke-width="2"/>
+  <text x="500" y="122" text-anchor="middle" font-size="22">1</text>
+
+  <path d="M165 80 C105 20, 275 20, 215 80" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_no_b)"/>
+  <text x="190" y="35" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M228 115 L462 115" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_no_b)"/>
+  <text x="345" y="93" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M475 80 C415 20, 585 20, 525 80" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_no_b)"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20">a,b</text>
+</svg>
+
+---
+
+## Dessin — Langage fini `L = {ab, ba}`
+
+À mettre après la table de la section **11) Automate pour un langage fini**.
+
+<svg width="980" height="420" viewBox="0 0 980 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow_finite_ab_ba" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <line x1="40" y1="200" x2="105" y2="200" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+
+  <circle cx="150" cy="200" r="35" fill="white" stroke="black" stroke-width="2"/>
+  <text x="150" y="207" text-anchor="middle" font-size="20">0</text>
+
+  <circle cx="350" cy="115" r="35" fill="white" stroke="black" stroke-width="2"/>
+  <text x="350" y="122" text-anchor="middle" font-size="20">1</text>
+
+  <circle cx="350" cy="285" r="35" fill="white" stroke="black" stroke-width="2"/>
+  <text x="350" y="292" text-anchor="middle" font-size="20">2</text>
+
+  <circle cx="570" cy="115" r="35" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="570" cy="115" r="27" fill="none" stroke="black" stroke-width="2"/>
+  <text x="570" y="122" text-anchor="middle" font-size="20">3</text>
+
+  <circle cx="570" cy="285" r="35" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="570" cy="285" r="27" fill="none" stroke="black" stroke-width="2"/>
+  <text x="570" y="292" text-anchor="middle" font-size="20">4</text>
+
+  <circle cx="820" cy="200" r="35" fill="white" stroke="black" stroke-width="2"/>
+  <text x="820" y="207" text-anchor="middle" font-size="20">P</text>
+
+  <path d="M183 185 L317 130" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="250" y="135" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M183 215 L317 270" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="250" y="270" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M385 115 L535 115" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="460" y="95" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M385 285 L535 285" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="460" y="265" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M376 140 C480 220, 620 220, 785 200" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="575" y="215" text-anchor="middle" font-size="20">a</text>
+
+  <path d="M376 260 C480 180, 620 180, 785 200" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="575" y="175" text-anchor="middle" font-size="20">b</text>
+
+  <path d="M605 115 C700 120, 760 150, 795 175" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="710" y="120" text-anchor="middle" font-size="20">a,b</text>
+
+  <path d="M605 285 C700 280, 760 250, 795 225" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="710" y="285" text-anchor="middle" font-size="20">a,b</text>
+
+  <path d="M795 165 C735 105, 905 105, 845 165" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow_finite_ab_ba)"/>
+  <text x="820" y="120" text-anchor="middle" font-size="20">a,b</text>
+</svg>
