@@ -1,0 +1,2636 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cours 5 / TD5 - Automates finis - Annales 2021-2026</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #475467;
+      --blue: #155eef;
+      --blue-dark: #1849a9;
+      --line: #d0d5dd;
+      --soft: #f8fafc;
+      --ref: #f2f4f7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+    }
+
+    header {
+      border-bottom: 4px solid #e4e7ec;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      color: #0b2447;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    h2 {
+      color: #0b2447;
+      font-size: 24px;
+      margin: 38px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e4e7ec;
+    }
+
+    h3 {
+      color: var(--blue-dark);
+      font-size: 21px;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    p { margin: 10px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 34px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 9px 10px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      color: #0b2447;
+      text-align: left;
+    }
+
+    .intro {
+      background: #f0f5ff;
+      border: 1px solid #b2ccff;
+      border-radius: 8px;
+      padding: 14px 16px;
+      color: #1d2939;
+    }
+
+    .question {
+      border-top: 3px solid #dbeafe;
+      margin: 34px 0 46px;
+      padding-top: 22px;
+      break-inside: avoid;
+    }
+
+    .question-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      flex: 0 0 auto;
+      background: #dbeafe;
+      color: #1849a9;
+      border: 1px solid #84adff;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 10px;
+    }
+
+    .reference {
+      background: var(--ref);
+      border-left: 5px solid #84adff;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin: 12px 0 18px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .reference dl {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 4px 12px;
+      margin: 0;
+    }
+
+    .reference dt { font-weight: 700; }
+    .reference dd { margin: 0; }
+
+    .math, .formula {
+      font-family: "Times New Roman", Times, serif;
+      font-style: italic;
+    }
+
+    .overline {
+      text-decoration: overline;
+      text-decoration-thickness: 1px;
+    }
+
+    .definition {
+      background: var(--soft);
+      border: 1px solid #e4e7ec;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 12px 0;
+    }
+
+    .definition ul { margin: 6px 0 4px 20px; }
+
+    .subquestion {
+      margin: 18px 0 24px;
+    }
+
+    .subquestion > p:first-child {
+      margin-top: 0;
+    }
+
+    .answer-box {
+      min-height: 120px;
+      border: 1.5px solid #b8c0cc;
+      border-radius: 8px;
+      background: #ffffff;
+      margin: 10px 0 0;
+      padding: 12px 14px;
+      color: #667085;
+      font-weight: 700;
+      outline: none;
+      white-space: pre-wrap;
+    }
+
+    .answer-box.medium { min-height: 220px; }
+    .answer-box.large { min-height: 350px; }
+    .answer-box.xlarge { min-height: 430px; }
+
+    .answer-box[contenteditable="true"]:focus {
+      border-color: #155eef;
+      box-shadow: 0 0 0 3px rgba(21, 94, 239, 0.14);
+      color: #344054;
+    }
+
+    .diagram {
+      margin: 16px auto 20px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    .diagram svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .caption {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .automaton text {
+      font-family: Arial, Helvetica, sans-serif;
+      fill: #111827;
+    }
+
+    .state {
+      fill: #ffffff;
+      stroke: #111827;
+      stroke-width: 2.8;
+    }
+
+    .final {
+      fill: none;
+      stroke: #111827;
+      stroke-width: 2.8;
+    }
+
+    .edge {
+      fill: none;
+      stroke: #111827;
+      stroke-width: 2.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .label {
+      font-size: 21px;
+      font-style: italic;
+      font-weight: 700;
+      paint-order: stroke;
+      stroke: #ffffff;
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+
+    @media print {
+      main { max-width: none; padding: 16mm; }
+      header { break-after: avoid; }
+      .question { break-inside: avoid; page-break-inside: avoid; }
+      .question.page-start { break-before: page; page-break-before: always; }
+      .answer-box { min-height: 34mm; }
+      .answer-box.medium { min-height: 56mm; }
+      .answer-box.large { min-height: 88mm; }
+      .answer-box.xlarge { min-height: 108mm; }
+      .diagram { break-inside: avoid; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Cours 5 / TD5 - Automates finis</h1>
+    <div class="intro">
+      Annales vérifiées de 2021 à 2026. Les questions ci-dessous couvrent uniquement les mots, langages, opérations sur les langages, automates finis, déterminisme, complétude, déterminisation, concaténation, complémentaire, intersection, expressions rationnelles, lemme d'Arden et langages reconnaissables ou non reconnaissables. Les années suivent l'année de fichier/session; les dates exactes sont indiquées dans chaque référence.
+    </div>
+  </header>
+
+  <h2>Table de synthèse</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Question number</th>
+        <th>Year</th>
+        <th>File</th>
+        <th>Exercise</th>
+        <th>Page</th>
+        <th>Topic</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>2021</td><td>partiel_2021.pdf</td><td>Exercice 3(1)</td><td>2</td><td>Mots, langage inductif, préfixes</td></tr>
+      <tr><td>2</td><td>2021</td><td>partiel_2021.pdf / partiel_2021 COR.pdf</td><td>Exercice 3(2)</td><td>2</td><td>Alphabet de symboles, formules définies par induction, comptage de parenthèses</td></tr>
+      <tr><td>3</td><td>2021</td><td>partiel_2021.pdf</td><td>Exercice 4</td><td>2</td><td>Automate fini, mots acceptés, L(A)</td></tr>
+      <tr><td>4</td><td>2021</td><td>Examen 2021 Sujet.pdf</td><td>Exercice 2</td><td>2-5</td><td>Construction, déterminisation, concaténation, expressions rationnelles, non-reconnaissabilité</td></tr>
+      <tr><td>5</td><td>2022</td><td>partiel_2022.pdf</td><td>Exercice 4</td><td>2</td><td>Automate fini, déterminisme, complétude, mots acceptés</td></tr>
+      <tr><td>6</td><td>2023</td><td>Examen 2023 Sujet.pdf / Examen 2023 Corrige.pdf</td><td>Exercice 1(2)</td><td>1-2</td><td>ABS, mots sur {x, x̄}, longueur, comptage de symboles, préfixes</td></tr>
+      <tr><td>7</td><td>2023</td><td>Examen 2023 Sujet.pdf</td><td>Exercice 3</td><td>2</td><td>Parité, complémentaire, expression régulière, non-reconnaissabilité</td></tr>
+      <tr><td>8</td><td>2024</td><td>partiel24-impression.pdf</td><td>Exercice 4(2)</td><td>2</td><td>A*, concaténation, langage inductif</td></tr>
+      <tr><td>9</td><td>2024</td><td>exam24-corrige.pdf</td><td>Exercice 2</td><td>1-2</td><td>Langage inductif sur A*</td></tr>
+      <tr><td>10</td><td>2024</td><td>exam24-corrige.pdf</td><td>Exercice 3</td><td>2-3</td><td>L(A), automate, Arden, complémentaire, intersection</td></tr>
+      <tr><td>11</td><td>2025</td><td>partiel25-impression.pdf</td><td>Exercice 5</td><td>2</td><td>Automate fini, déterminisme, complétude, mots acceptés</td></tr>
+      <tr><td>12</td><td>2025</td><td>exam25-corrige.pdf</td><td>Exercice 2</td><td>2</td><td>Miroir, palindrome, langage inductif</td></tr>
+      <tr><td>13</td><td>2025</td><td>exam25-corrige.pdf</td><td>Exercice 3</td><td>2-4</td><td>Concaténation, déterminisation, expression régulière, non-reconnaissabilité</td></tr>
+      <tr><td>14</td><td>2026</td><td>partiel26-corrige.pdf</td><td>Exercice 2</td><td>1</td><td>Automate fini, mots acceptés/refusés</td></tr>
+      <tr><td>15</td><td>2026</td><td>exam26-corrige.pdf</td><td>Exercice 3</td><td>2</td><td>Langage unaire, expression rationnelle, automate, non-reconnaissabilité</td></tr>
+      <tr><td>16</td><td>2026</td><td>exam26-corrige.pdf</td><td>Exercice 4</td><td>3-4</td><td>Automates, complétion, déterminisation, concaténation, Arden</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Questions</h2>
+
+  <section class="question" id="question-1">
+    <div class="question-title">
+      <h3>Question 1 - Mots, comptage de lettres et préfixes</h3>
+      <span class="badge">2021</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2021</dd>
+        <dt>File:</dt><dd>partiel_2021.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 9 novembre 2021</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Question (1), sous-questions a et b</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Mots, alphabet, A*, langage défini par induction, préfixes</dd>
+      </dl>
+    </div>
+    <p>Soit un alphabet <span class="math">A = {a, b}</span>. On rappelle que pour tout mot <span class="math">w &isin; A<sup>*</sup></span>, on note respectivement <span class="math">|w|<sub>a</sub></span> et <span class="math">|w|<sub>b</sub></span> le nombre de <span class="math">a</span> et de <span class="math">b</span> dans <span class="math">w</span>. On définit par induction structurelle l'ensemble <span class="math">L &sube; A<sup>*</sup></span> suivant :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">b &isin; L</span></li>
+        <li>pour tous mots <span class="math">u</span> et <span class="math">v</span> dans <span class="math">L</span>, <span class="math">a.u.v &isin; L</span>.</li>
+      </ul>
+    </div>
+    <div class="subquestion">
+      <p><strong>a. (1,5 points)</strong> Montrer que pour tout mot <span class="math">w &isin; L</span>, <span class="math">|w|<sub>b</sub> = |w|<sub>a</sub> + 1</span>.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (3 points)</strong> On rappelle que, pour tout mot <span class="math">u, v &isin; A<sup>*</sup></span>, <span class="math">u</span> est un préfixe de <span class="math">v</span> si il existe un mot <span class="math">w &isin; A<sup>*</sup></span> tel que <span class="math">u.w = v</span>. Le mot vide <span class="math">&epsilon;</span> est préfixe de tous les mots. Le mot <span class="math">u</span> est un préfixe propre de <span class="math">v</span> si <span class="math">u</span> est un préfixe de <span class="math">v</span> et <span class="math">u &ne; v</span>. Montrer que pour tout mot <span class="math">w &isin; L</span>, pour tout préfixe propre <span class="math">w'</span> de <span class="math">w</span>, <span class="math">|w'|<sub>a</sub> &ge; |w'|<sub>b</sub></span>. On pourra utiliser le résultat de la question (a).</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-2">
+    <div class="question-title">
+      <h3>Question 2 - Alphabet de symboles, formules et comptage des parenthèses</h3>
+      <span class="badge">2021</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2021</dd>
+        <dt>File:</dt><dd>partiel_2021.pdf / partiel_2021 COR.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 9 novembre 2021</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Question (2), sous-questions a et b</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Alphabet, symboles, formules définies par induction structurelle, comptage de parenthèses</dd>
+      </dl>
+    </div>
+    <p><strong>(2)</strong> On considère un alphabet de symboles <span class="math">E = {⊙, ⊕, ¯, (, )}</span> et un ensemble infini de symboles de variables <span class="math">X</span>. On définit par induction structurelle l'ensemble <span class="math">F</span> de la façon suivante :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">x &isin; F</span>, pour tout <span class="math">x &isin; X</span>,</li>
+        <li>si <span class="math">f &isin; F</span> alors <span class="math"><span class="overline">f</span> &isin; F</span>,</li>
+        <li>si <span class="math">f<sub>1</sub>, f<sub>2</sub> &isin; F</span> alors <span class="math">(f<sub>1</sub> ⊙ f<sub>2</sub>) &isin; F</span> et <span class="math">(f<sub>1</sub> ⊕ f<sub>2</sub>) &isin; F</span></li>
+      </ul>
+    </div>
+    <div class="subquestion">
+      <p><strong>a. (1 point)</strong> Définir une fonction <span class="math">nbparo : F &rarr; N</span> et une fonction <span class="math">nbparf : F &rarr; N</span> qui associent respectivement à chaque élément <span class="math">f</span> de <span class="math">F</span> le nombre de parenthèses ouvrantes et le nombre de parenthèses fermantes apparaissant dans <span class="math">f</span>.</p>
+      <p><strong>Définition de <span class="math">nbparo</span> :</strong></p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+      <p><strong>Définition de <span class="math">nbparf</span> :</strong></p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1,5 points)</strong> Montrer par induction structurelle que pour tout <span class="math">f &isin; F</span>, <span class="math">nbparo(f) = nbparf(f)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-3">
+    <div class="question-title">
+      <h3>Question 3 - Automate, mots acceptés, complétude et L(A)</h3>
+      <span class="badge">2021</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2021</dd>
+        <dt>File:</dt><dd>partiel_2021.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 9 novembre 2021</dd>
+        <dt>Exercise:</dt><dd>Exercice 4</dd>
+        <dt>Question:</dt><dd>Questions (1), (2), (3)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Automate fini, mots acceptés/refusés, complet, déterministe, langage reconnu</dd>
+      </dl>
+    </div>
+    <p>Soit l'automate <span class="math">A</span> sur l'alphabet <span class="math">A = {a, b}</span> représenté ci-dessous.</p>
+    <div class="diagram">
+      <svg class="automaton" width="780" height="260" viewBox="0 0 780 260" role="img" aria-label="Automate 2021 partiel">
+        <defs>
+          <marker id="arrow-q2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <line class="edge" x1="60" y1="130" x2="116" y2="130" marker-end="url(#arrow-q2)"></line>
+        <circle class="state" cx="150" cy="130" r="30"></circle>
+        <text x="150" y="137" text-anchor="middle" font-size="20">s0</text>
+        <circle class="state" cx="390" cy="130" r="30"></circle>
+        <text x="390" y="137" text-anchor="middle" font-size="20">s1</text>
+        <circle class="state" cx="630" cy="130" r="30"></circle>
+        <circle class="final" cx="630" cy="130" r="23"></circle>
+        <text x="630" y="137" text-anchor="middle" font-size="20">s2</text>
+        <path class="edge" d="M132,105 C96,52 204,52 168,105" marker-end="url(#arrow-q2)"></path>
+        <text class="label" x="150" y="67" text-anchor="middle">a, b</text>
+        <line class="edge" x1="180" y1="130" x2="356" y2="130" marker-end="url(#arrow-q2)"></line>
+        <text class="label" x="270" y="108" text-anchor="middle">a</text>
+        <line class="edge" x1="420" y1="130" x2="596" y2="130" marker-end="url(#arrow-q2)"></line>
+        <text class="label" x="510" y="108" text-anchor="middle">b</text>
+        <path class="edge" d="M612,105 C576,52 684,52 648,105" marker-end="url(#arrow-q2)"></path>
+        <text class="label" x="630" y="67" text-anchor="middle">a, b</text>
+      </svg>
+      <div class="caption">Automate donné dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (0,5 point)</strong> Le mot <span class="math">aaba</span> est-il accepté par <span class="math">A</span> ? Le mot <span class="math">bbba</span> ? Justifier.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (0,5 point)</strong> L'automate <span class="math">A</span> est-il complet ? déterministe ? Justifier.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(3) (1 point)</strong> Décrire informellement <span class="math">L(A)</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-4">
+    <div class="question-title">
+      <h3>Question 4 - Construction, déterminisation, concaténation et langages reconnaissables</h3>
+      <span class="badge">2021</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2021</dd>
+        <dt>File:</dt><dd>Examen 2021 Sujet.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 19 janvier 2021</dd>
+        <dt>Exercise:</dt><dd>Exercice 2</dd>
+        <dt>Question:</dt><dd>Questions (1), (2a-d), (3), (4), (5)</dd>
+        <dt>Page:</dt><dd>2-5</dd>
+        <dt>Topic:</dt><dd>Automates finis, déterminisation, concaténation, expression rationnelle, langage non reconnaissable</dd>
+      </dl>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (2 points)</strong> Construire un automate fini sur l'alphabet <span class="math">A = {a, b, c}</span> reconnaissant le langage <span class="math">L = {w &isin; A<sup>*</sup> | le nombre de b séparant deux a est pair}</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>On considère les deux automates <span class="math">A</span> et <span class="math">B</span> ci-dessous :</p>
+    <div class="diagram">
+      <svg class="automaton" width="980" height="450" viewBox="0 0 980 450" role="img" aria-label="Automates A et B examen 2021">
+        <defs>
+          <marker id="arrow-q3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="45" y="220" font-size="24" font-style="italic">A :</text>
+        <line class="edge" x1="90" y1="190" x2="126" y2="190" marker-end="url(#arrow-q3)"></line>
+        <circle class="state" cx="160" cy="190" r="30"></circle>
+        <text x="160" y="197" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="340" cy="120" r="30"></circle>
+        <circle class="final" cx="340" cy="120" r="23"></circle>
+        <text x="340" y="127" text-anchor="middle" font-size="20">1</text>
+        <circle class="state" cx="160" cy="330" r="30"></circle>
+        <text x="160" y="337" text-anchor="middle" font-size="20">2</text>
+        <circle class="state" cx="340" cy="330" r="30"></circle>
+        <text x="340" y="337" text-anchor="middle" font-size="20">3</text>
+        <line class="edge" x1="188" y1="179" x2="308" y2="132" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="250" y="135" text-anchor="middle">a</text>
+        <line class="edge" x1="160" y1="220" x2="160" y2="296" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="138" y="263" text-anchor="middle">b</text>
+        <line class="edge" x1="190" y1="330" x2="306" y2="330" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="250" y="308" text-anchor="middle">a</text>
+        <path class="edge" d="M322,95 C286,42 394,42 358,95" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="340" y="58" text-anchor="middle">a</text>
+        <line class="edge" x1="340" y1="150" x2="340" y2="296" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="363" y="226" text-anchor="middle">b</text>
+        <path class="edge" d="M318,310 C260,254 220,224 184,202" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="244" y="270" text-anchor="middle">a, b</text>
+
+        <text x="515" y="220" font-size="24" font-style="italic">B :</text>
+        <line class="edge" x1="555" y1="190" x2="591" y2="190" marker-end="url(#arrow-q3)"></line>
+        <circle class="state" cx="625" cy="190" r="30"></circle>
+        <text x="625" y="197" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="760" cy="190" r="30"></circle>
+        <text x="760" y="197" text-anchor="middle" font-size="20">1</text>
+        <circle class="state" cx="895" cy="190" r="30"></circle>
+        <circle class="final" cx="895" cy="190" r="23"></circle>
+        <text x="895" y="197" text-anchor="middle" font-size="20">2</text>
+        <circle class="state" cx="625" cy="325" r="30"></circle>
+        <text x="625" y="332" text-anchor="middle" font-size="20">3</text>
+        <circle class="state" cx="625" cy="405" r="30"></circle>
+        <circle class="final" cx="625" cy="405" r="23"></circle>
+        <text x="625" y="412" text-anchor="middle" font-size="20">4</text>
+        <line class="edge" x1="655" y1="190" x2="726" y2="190" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="691" y="168" text-anchor="middle">a</text>
+        <line class="edge" x1="625" y1="220" x2="625" y2="291" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="603" y="259" text-anchor="middle">b</text>
+        <line class="edge" x1="790" y1="190" x2="861" y2="190" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="826" y="168" text-anchor="middle">a</text>
+        <path class="edge" d="M742,165 C706,112 814,112 778,165" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="760" y="128" text-anchor="middle">a, b</text>
+        <path class="edge" d="M740,212 C705,260 670,292 648,309" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="705" y="278" text-anchor="middle">b</text>
+        <path class="edge" d="M605,349 C565,394 685,394 645,349" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="625" y="382" text-anchor="middle">b</text>
+        <line class="edge" x1="625" y1="355" x2="625" y2="371" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="604" y="367" text-anchor="middle">b</text>
+      </svg>
+      <div class="caption">Automates A et B donnés dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.a. (0,5 point)</strong> L'automate <span class="math">A</span> est-il déterministe ? complet ? L'automate <span class="math">B</span> est-il déterministe ? complet ? Justifier.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.b. (3 points)</strong> Si l'un ou les deux automates ci-dessus sont non-déterministes, le ou les déterminiser, en explicitant clairement votre construction.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.c. (1,5 points)</strong> Construire un automate reconnaissant le langage <span class="math">L(A).L(B)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.d. (3 points)</strong> En utilisant la méthode du cours, donner une expression rationnelle équivalente au langage <span class="math">L(A)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>On rappelle que pour un mot <span class="math">u</span> sur un alphabet <span class="math">A</span>, <span class="math">|u|</span> désigne la taille du <span class="math">u</span>. On se place sur l'alphabet <span class="math">A = {a, b}</span>. On définit le langage <span class="math">L<sub>1</sub> = {u.a<sup>n</sup> | u &isin; A<sup>*</sup>, |u| = n}</span>.</p>
+    <div class="subquestion">
+      <p><strong>(3) (0,5 point)</strong> Donner trois mots de <span class="math">L<sub>1</sub></span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(4) (2 points)</strong> Le langage <span class="math">L<sub>1</sub></span> est-il reconnaissable ? Démontrer précisément votre réponse.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(5) (0,5 point)</strong> Donner un langage <span class="math">L</span> reconnaissable tel que <span class="math">L<sub>1</sub> &sube; L</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-5">
+    <div class="question-title">
+      <h3>Question 5 - Automate, déterminisme, complétude et mots acceptés</h3>
+      <span class="badge">2022</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2022</dd>
+        <dt>File:</dt><dd>partiel_2022.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 7 novembre 2022</dd>
+        <dt>Exercise:</dt><dd>Exercice 4</dd>
+        <dt>Question:</dt><dd>Questions (1), (2)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Automate fini, déterministe/non-déterministe, complet/non-complet, mots acceptés</dd>
+      </dl>
+    </div>
+    <p>On considère l'alphabet <span class="math">A = {a, b}</span>. On note <span class="math">L = L(A)</span> le langage accepté par l'automate <span class="math">A</span> suivant :</p>
+    <div class="diagram">
+      <svg class="automaton" width="620" height="260" viewBox="0 0 620 260" role="img" aria-label="Automate partiel 2022">
+        <defs>
+          <marker id="arrow-q4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <line class="edge" x1="75" y1="140" x2="136" y2="140" marker-end="url(#arrow-q4)"></line>
+        <circle class="state" cx="170" cy="140" r="32"></circle>
+        <text x="170" y="147" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="430" cy="140" r="32"></circle>
+        <circle class="final" cx="430" cy="140" r="24"></circle>
+        <text x="430" y="147" text-anchor="middle" font-size="20">1</text>
+        <path class="edge" d="M151,113 C112,56 228,56 189,113" marker-end="url(#arrow-q4)"></path>
+        <text class="label" x="170" y="73" text-anchor="middle">b</text>
+        <path class="edge" d="M411,113 C372,56 488,56 449,113" marker-end="url(#arrow-q4)"></path>
+        <text class="label" x="430" y="73" text-anchor="middle">b</text>
+        <path class="edge" d="M202,130 C272,92 332,92 398,130" marker-end="url(#arrow-q4)"></path>
+        <text class="label" x="300" y="92" text-anchor="middle">b</text>
+        <path class="edge" d="M398,154 C328,198 272,198 202,154" marker-end="url(#arrow-q4)"></path>
+        <text class="label" x="300" y="211" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automate donné dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (1 point)</strong> Cet automate est-il déterministe ? complet ? Justifier.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (2 points)</strong> Le mot <span class="math">baab</span> est-il accepté par l'automate ? Le mot <span class="math">babb</span> ? Justifier vos réponses.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-6">
+    <div class="question-title">
+      <h3>Question 6 - ABS, mots sur {x, x̄}, comptage et préfixes</h3>
+      <span class="badge">2023</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2023</dd>
+        <dt>File:</dt><dd>Examen 2023 Sujet.pdf / Examen 2023 Corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 9 janvier 2023</dd>
+        <dt>Exercise:</dt><dd>Exercice 1</dd>
+        <dt>Question:</dt><dd>Question (2), sous-questions a, b et c bonus</dd>
+        <dt>Page:</dt><dd>1-2</dd>
+        <dt>Topic:</dt><dd>Mots, alphabet, fonction f : ABS → {x, x̄}<sup>*</sup>, longueur, comptage de symboles, préfixes</dd>
+      </dl>
+    </div>
+    <p>On définit l'ensemble <span class="math">ABS</span> des arbres binaires stricts étiquetés sur un alphabet <span class="math">A</span> :</p>
+    <div class="definition">
+      <ul>
+        <li>pour tout <span class="math">a &isin; A</span>, <span class="math">(a, ∅, ∅) &isin; ABS</span> (cet arbre est appelé une feuille, et <span class="math">a</span> est son étiquette).</li>
+        <li>pour tout arbre <span class="math">g &isin; ABS</span> et <span class="math">d &isin; ABS</span>, pour toute lettre <span class="math">a &isin; A</span>, <span class="math">(a, g, d) &isin; ABS</span>.</li>
+      </ul>
+    </div>
+    <p>On rappelle également que la fonction <span class="math">pref : ABS &rarr; A<sup>*</sup></span> qui associe à un arbre <span class="math">t &isin; ABS</span> la séquence de ses étiquettes lues par un parcours en profondeur préfixe est définie par induction structurelle par :</p>
+    <div class="definition">
+      <ul>
+        <li>pour tout <span class="math">a &isin; A</span>, <span class="math">pref(a, ∅, ∅) = a</span></li>
+        <li>pour tout <span class="math">a &isin; A</span>, pour tout <span class="math">g, d &isin; ABS</span>, <span class="math">pref(a, g, d) = a · pref(g) · pref(d)</span></li>
+      </ul>
+    </div>
+    <p>Soit <span class="math">t</span> l'arbre binaire strict représenté par :</p>
+    <div class="diagram">
+      <svg width="460" height="310" viewBox="0 0 460 310" role="img" aria-label="Arbre binaire strict t de l'examen 2023">
+        <g fill="none" stroke="#111827" stroke-width="2.4" stroke-linecap="round">
+          <line x1="230" y1="55" x2="140" y2="120"></line>
+          <line x1="230" y1="55" x2="320" y2="120"></line>
+          <line x1="140" y1="120" x2="88" y2="195"></line>
+          <line x1="140" y1="120" x2="192" y2="195"></line>
+          <line x1="320" y1="120" x2="278" y2="195"></line>
+          <line x1="320" y1="120" x2="362" y2="195"></line>
+          <line x1="88" y1="195" x2="58" y2="260"></line>
+          <line x1="88" y1="195" x2="118" y2="260"></line>
+          <line x1="192" y1="195" x2="162" y2="260"></line>
+          <line x1="192" y1="195" x2="222" y2="260"></line>
+        </g>
+        <g font-family="Times New Roman, Times, serif" font-size="31" fill="#111827" text-anchor="middle">
+          <text x="230" y="45">4</text>
+          <text x="140" y="113">2</text>
+          <text x="320" y="113">6</text>
+          <text x="88" y="188">1</text>
+          <text x="192" y="188">3</text>
+          <text x="278" y="195">∅</text>
+          <text x="362" y="195">∅</text>
+          <text x="58" y="285">∅</text>
+          <text x="118" y="285">∅</text>
+          <text x="162" y="285">∅</text>
+          <text x="222" y="285">∅</text>
+        </g>
+      </svg>
+      <div class="caption">Arbre t dessiné dans le sujet.</div>
+    </div>
+    <p><strong>(2)</strong> On définit une fonction <span class="math">f : ABS &rarr; {x, <span class="overline">x</span>}<sup>*</sup></span> de la façon suivante : pour <span class="math">t &isin; ABS</span> tel que <span class="math">pref(t) = w<sub>1</sub> ... w<sub>2n+1</sub></span>, <span class="math">f(t) = x<sub>1</sub> ... x<sub>2n</sub></span> avec <span class="math">x<sub>i</sub> = <span class="overline">x</span></span> si <span class="math">w<sub>i</sub></span> est l'étiquette d'une feuille de <span class="math">t</span>, et <span class="math">x<sub>i</sub> = x</span> sinon.</p>
+    <div class="subquestion">
+      <p><strong>a. (1/2 point)</strong> Donner <span class="math">f(t)</span> pour l'arbre <span class="math">t</span> dessiné plus haut, et vérifier que <span class="math">f(t)</span> est de longueur paire.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (2 points)</strong> Montrer que pour tout <span class="math">t &isin; ABS</span>, le nombre de <span class="math">x</span> apparaissant dans <span class="math">f(t)</span> est égal au nombre de <span class="math"><span class="overline">x</span></span>, c'est-à-dire que <span class="math">|f(t)|<sub>x</sub> = |f(t)|<sub><span class="overline">x</span></sub></span>. Vous pourrez vous appuyer sur les questions précédentes.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>c. (2 points (bonus))</strong> Montrer que pour tout <span class="math">t &isin; ABS</span>, pour tout préfixe <span class="math">w</span> de <span class="math">f(t)</span>, <span class="math">|w|<sub>x</sub> &ge; |w|<sub><span class="overline">x</span></sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-7">
+    <div class="question-title">
+      <h3>Question 7 - Parités, complémentaire, expression régulière et non-reconnaissabilité</h3>
+      <span class="badge">2023</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2023</dd>
+        <dt>File:</dt><dd>Examen 2023 Sujet.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 9 janvier 2023</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Questions (1a-b), (2), (3a-b)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Automates de parité, produit/intersection, complémentaire, expression régulière, langage non reconnaissable</dd>
+      </dl>
+    </div>
+    <p>On se place sur l'alphabet <span class="math">A = {a, b}</span>.</p>
+    <div class="subquestion">
+      <p><strong>(1) a. (0,5 point)</strong> Donner un automate acceptant les mots contenant un nombre pair de <span class="math">a</span> et un automate acceptant les mots contenant un nombre impair de <span class="math">b</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1 point)</strong> En déduire un automate acceptant <span class="math">L<sub>1</sub></span>, le langage des mots contenant un nombre pair de <span class="math">a</span> et un nombre impair de <span class="math">b</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (2 points)</strong> Le langage <span class="math">L<sub>2</sub> = {a<sup>2n</sup>b<sup>2n+1</sup> | n &isin; N}</span> est-il reconnaissable ? Démontrer.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>On considère les deux automates <span class="math">A</span> et <span class="math">B</span> suivants :</p>
+    <div class="diagram">
+      <svg class="automaton" width="980" height="360" viewBox="0 0 980 360" role="img" aria-label="Automates A et B examen 2023">
+        <defs>
+          <marker id="arrow-q5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="30" y="210" font-size="24" font-style="italic">A</text>
+        <line class="edge" x1="70" y1="220" x2="112" y2="220" marker-end="url(#arrow-q5)"></line>
+        <circle class="state" cx="145" cy="220" r="30"></circle>
+        <text x="145" y="227" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="300" cy="220" r="30"></circle>
+        <text x="300" y="227" text-anchor="middle" font-size="20">1</text>
+        <circle class="state" cx="455" cy="220" r="30"></circle>
+        <text x="455" y="227" text-anchor="middle" font-size="20">2</text>
+        <circle class="state" cx="610" cy="220" r="30"></circle>
+        <circle class="final" cx="610" cy="220" r="23"></circle>
+        <text x="610" y="227" text-anchor="middle" font-size="20">3</text>
+        <path class="edge" d="M127,195 C91,142 199,142 163,195" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="145" y="157" text-anchor="middle">a, b</text>
+        <line class="edge" x1="175" y1="220" x2="266" y2="220" marker-end="url(#arrow-q5)"></line>
+        <text class="label" x="222" y="198" text-anchor="middle">a</text>
+        <line class="edge" x1="330" y1="220" x2="421" y2="220" marker-end="url(#arrow-q5)"></line>
+        <text class="label" x="377" y="198" text-anchor="middle">b</text>
+        <line class="edge" x1="485" y1="220" x2="576" y2="220" marker-end="url(#arrow-q5)"></line>
+        <text class="label" x="532" y="198" text-anchor="middle">a</text>
+        <path class="edge" d="M592,195 C556,142 664,142 628,195" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="610" y="157" text-anchor="middle">a, b</text>
+
+        <text x="735" y="90" font-size="24" font-style="italic">B</text>
+        <line class="edge" x1="690" y1="115" x2="732" y2="115" marker-end="url(#arrow-q5)"></line>
+        <circle class="state" cx="765" cy="115" r="30"></circle>
+        <circle class="final" cx="765" cy="115" r="23"></circle>
+        <text x="765" y="122" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="905" cy="115" r="30"></circle>
+        <text x="905" y="122" text-anchor="middle" font-size="20">1</text>
+        <circle class="state" cx="765" cy="280" r="30"></circle>
+        <text x="765" y="287" text-anchor="middle" font-size="20">2</text>
+        <circle class="state" cx="905" cy="280" r="30"></circle>
+        <text x="905" y="287" text-anchor="middle" font-size="20">3</text>
+        <path class="edge" d="M795,107 C838,78 875,78 895,102" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="835" y="77" text-anchor="middle">a</text>
+        <path class="edge" d="M875,127 C832,158 795,158 775,132" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="835" y="160" text-anchor="middle">a</text>
+        <path class="edge" d="M755,145 C725,192 725,233 755,250" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="725" y="204" text-anchor="middle">b</text>
+        <path class="edge" d="M775,250 C805,204 805,164 775,145" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="805" y="204" text-anchor="middle">b</text>
+        <path class="edge" d="M895,145 C865,192 865,233 895,250" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="865" y="204" text-anchor="middle">b</text>
+        <path class="edge" d="M915,250 C945,204 945,164 915,145" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="945" y="204" text-anchor="middle">b</text>
+        <path class="edge" d="M795,272 C838,242 875,242 895,266" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="835" y="242" text-anchor="middle">a</text>
+        <path class="edge" d="M875,292 C832,322 795,322 775,296" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="835" y="326" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automates A et B donnés dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(3) a. (1,5 points)</strong> Donner un automate reconnaissant le complémentaire de <span class="math">L(A)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1,5 points)</strong> Donner une expression régulière pour l'automate <span class="math">B</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-8">
+    <div class="question-title">
+      <h3>Question 8 - A*, concaténation et langage inductif</h3>
+      <span class="badge">2024</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2024</dd>
+        <dt>File:</dt><dd>partiel24-impression.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 8 novembre 2023, année 2023-2024</dd>
+        <dt>Exercise:</dt><dd>Exercice 4</dd>
+        <dt>Question:</dt><dd>Question (2), sous-questions a et b</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>A*, epsilon, concaténation, comptage de lettres, langage inductif</dd>
+      </dl>
+    </div>
+    <p>Soit <span class="math">A = {a, b}</span> un alphabet fini. On peut définir <span class="math">A<sup>*</sup></span> par induction structurelle de la façon suivante :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">&epsilon; &isin; A<sup>*</sup></span></li>
+        <li>Pour tout mot <span class="math">u &isin; A<sup>*</sup></span>, <span class="math">au &isin; A<sup>*</sup></span>, et <span class="math">bu &isin; A<sup>*</sup></span>.</li>
+      </ul>
+    </div>
+    <p>On définit également par induction structurelle les fonctions <span class="math">nb<sub>a</sub> : A<sup>*</sup> &rarr; N</span> et <span class="math">nb<sub>b</sub> : A<sup>*</sup> &rarr; N</span> qui donnent respectivement le nombre de <span class="math">a</span> et le nombre de <span class="math">b</span> d'un mot de <span class="math">A<sup>*</sup></span>.</p>
+    <div class="definition">
+      <p><span class="math">nb<sub>a</sub>(&epsilon;) = 0</span> et <span class="math">nb<sub>b</sub>(&epsilon;) = 0</span></p>
+      <p>Soit <span class="math">u &isin; A<sup>*</sup></span>, <span class="math">nb<sub>a</sub>(au) = 1 + nb<sub>a</sub>(u)</span> et <span class="math">nb<sub>b</sub>(au) = nb<sub>b</sub>(u)</span>.</p>
+      <p>Soit <span class="math">u &isin; A<sup>*</sup></span>, <span class="math">nb<sub>a</sub>(bu) = nb<sub>a</sub>(u)</span> et <span class="math">nb<sub>b</sub>(bu) = 1 + nb<sub>b</sub>(u)</span>.</p>
+    </div>
+    <div class="subquestion">
+      <p><strong>a. (2 points)</strong> On définit l'opération de concaténation par induction structurelle. Pour tout <span class="math">v &isin; A<sup>*</sup></span> :</p>
+      <div class="definition">
+        <ul>
+          <li><span class="math">&epsilon;.v = v</span></li>
+          <li><span class="math">(au).v = a(u.v)</span> et <span class="math">(bu).v = b(u.v)</span>.</li>
+        </ul>
+      </div>
+      <p>Soit <span class="math">v &isin; A<sup>*</sup></span>. Montrer par induction structurelle que, pour tout mot <span class="math">u &isin; A<sup>*</sup></span>, <span class="math">nb<sub>a</sub>(u.v) = nb<sub>a</sub>(u) + nb<sub>a</sub>(v)</span>. Pour la suite, on admettra également que <span class="math">nb<sub>b</sub>(uv) = nb<sub>b</sub>(u) + nb<sub>b</sub>(v)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (2 points)</strong> On définit par induction structurelle le langage <span class="math">L &sube; A<sup>*</sup></span> par :</p>
+      <div class="definition">
+        <ul>
+          <li><span class="math">b &isin; L</span></li>
+          <li>pour tous <span class="math">u, v &isin; L</span>, <span class="math">a(u.v) &isin; L</span>.</li>
+        </ul>
+      </div>
+      <p>Montrer par induction structurelle que, pour tout mot <span class="math">u &isin; L</span>, <span class="math">nb<sub>b</sub>(u) = nb<sub>a</sub>(u) + 1</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-9">
+    <div class="question-title">
+      <h3>Question 9 - Langage inductif et longueur impaire</h3>
+      <span class="badge">2024</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2024</dd>
+        <dt>File:</dt><dd>exam24-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 22 décembre 2023, année 2023-2024</dd>
+        <dt>Exercise:</dt><dd>Exercice 2</dd>
+        <dt>Question:</dt><dd>Question unique</dd>
+        <dt>Page:</dt><dd>1-2</dd>
+        <dt>Topic:</dt><dd>Langage sur A*, induction structurelle, concaténation</dd>
+      </dl>
+    </div>
+    <p>Soit <span class="math">A = {a, b}</span> un alphabet. On définit le langage <span class="math">L &sube; A<sup>*</sup></span> par induction structurelle de la façon suivante :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">a &isin; L</span></li>
+        <li>pour tous <span class="math">u, v &isin; L</span>, <span class="math">u.v.b &isin; L</span></li>
+      </ul>
+    </div>
+    <div class="subquestion">
+      <p>Montrer par induction structurelle que, pour tout <span class="math">u &isin; L</span>, <span class="math">|u|</span> est impaire.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-10">
+    <div class="question-title">
+      <h3>Question 10 - L(A), Arden, complémentaire et intersection</h3>
+      <span class="badge">2024</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2024</dd>
+        <dt>File:</dt><dd>exam24-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 22 décembre 2023, année 2023-2024</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Questions (1), (2), (3), (4), (5)</dd>
+        <dt>Page:</dt><dd>2-3</dd>
+        <dt>Topic:</dt><dd>Automates, L(A), construction, déterminisme, complétude, expression rationnelle, complémentaire, intersection</dd>
+      </dl>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (0,5 point)</strong> On considère l'automate <span class="math">A</span> suivant. Donner informellement les mots de <span class="math">L(A)</span>.</p>
+      <div class="diagram">
+        <svg class="automaton" width="620" height="260" viewBox="0 0 620 260" role="img" aria-label="Automate A examen 2024">
+          <defs>
+            <marker id="arrow-q8a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+            </marker>
+          </defs>
+          <line class="edge" x1="75" y1="140" x2="136" y2="140" marker-end="url(#arrow-q8a)"></line>
+          <circle class="state" cx="170" cy="140" r="32"></circle>
+          <circle class="final" cx="170" cy="140" r="24"></circle>
+          <text x="170" y="147" text-anchor="middle" font-size="20">0</text>
+          <circle class="state" cx="430" cy="140" r="32"></circle>
+          <text x="430" y="147" text-anchor="middle" font-size="20">1</text>
+          <path class="edge" d="M151,113 C112,56 228,56 189,113" marker-end="url(#arrow-q8a)"></path>
+          <text class="label" x="170" y="73" text-anchor="middle">b</text>
+          <path class="edge" d="M411,113 C372,56 488,56 449,113" marker-end="url(#arrow-q8a)"></path>
+          <text class="label" x="430" y="73" text-anchor="middle">b</text>
+          <path class="edge" d="M202,130 C272,92 332,92 398,130" marker-end="url(#arrow-q8a)"></path>
+          <text class="label" x="300" y="92" text-anchor="middle">a</text>
+          <path class="edge" d="M398,154 C328,198 272,198 202,154" marker-end="url(#arrow-q8a)"></path>
+          <text class="label" x="300" y="211" text-anchor="middle">a</text>
+        </svg>
+        <div class="caption">Automate A donné dans le sujet.</div>
+      </div>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (1 point)</strong> Sur l'alphabet <span class="math">{a, b, c}</span>, on définit le langage <span class="math">L<sub>B</sub></span> comme le langage de tous les mots non vides comportant un nombre de lettres <span class="math">a</span> multiple de 3. Construire un automate, noté <span class="math">B</span> par la suite, reconnaissant <span class="math">L<sub>B</sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(3) (0,5 point)</strong> L'automate <span class="math">B</span> est-il déterministe ? complet ? Justifier les réponses.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(4) (2 points)</strong> Soit l'automate <span class="math">C</span> sur l'alphabet <span class="math">{a, b, c}</span> suivant. On remarquera qu'il a deux états entrants. Calculer une expression rationnelle pour le langage <span class="math">L(C)</span>. Justifier les étapes.</p>
+      <div class="diagram">
+        <svg class="automaton" width="760" height="300" viewBox="0 0 760 300" role="img" aria-label="Automate C examen 2024">
+          <defs>
+            <marker id="arrow-q8c" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+            </marker>
+          </defs>
+          <line class="edge" x1="92" y1="145" x2="136" y2="145" marker-end="url(#arrow-q8c)"></line>
+          <line class="edge" x1="340" y1="260" x2="340" y2="183" marker-end="url(#arrow-q8c)"></line>
+          <circle class="state" cx="170" cy="145" r="32"></circle>
+          <circle class="final" cx="170" cy="145" r="24"></circle>
+          <text x="170" y="152" text-anchor="middle" font-size="20">0</text>
+          <circle class="state" cx="340" cy="145" r="32"></circle>
+          <text x="340" y="152" text-anchor="middle" font-size="20">1</text>
+          <circle class="state" cx="540" cy="145" r="32"></circle>
+          <text x="540" y="152" text-anchor="middle" font-size="20">2</text>
+          <path class="edge" d="M151,118 C112,61 228,61 189,118" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="170" y="78" text-anchor="middle">a</text>
+          <path class="edge" d="M521,118 C482,61 598,61 559,118" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="540" y="78" text-anchor="middle">c</text>
+          <path class="edge" d="M202,135 C255,94 289,94 313,127" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="254" y="92" text-anchor="middle">a</text>
+          <path class="edge" d="M312,159 C263,199 224,199 198,164" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="254" y="213" text-anchor="middle">a</text>
+          <path class="edge" d="M372,135 C424,96 488,96 509,130" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="438" y="95" text-anchor="middle">c</text>
+          <path class="edge" d="M509,160 C458,203 398,202 370,164" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="438" y="215" text-anchor="middle">b</text>
+        </svg>
+        <div class="caption">Automate C donné dans le sujet, avec deux états entrants : 0 et 1.</div>
+      </div>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(5) (4 points)</strong> On s'intéresse au langage <span class="math">N = L(C) &cap; compl(L(A))</span>, où <span class="math">compl(L(A)) = {a, b, c}<sup>*</sup> \ L(A)</span> est le langage complémentaire de <span class="math">L(A)</span>. Construire un automate reconnaissant <span class="math">N</span>.</p>
+      <div class="answer-box xlarge" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-11">
+    <div class="question-title">
+      <h3>Question 11 - Automate, déterminisme, complétude et mots acceptés</h3>
+      <span class="badge">2025</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2025</dd>
+        <dt>File:</dt><dd>partiel25-impression.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 6 novembre 2024, année 2024-2025</dd>
+        <dt>Exercise:</dt><dd>Exercice 5</dd>
+        <dt>Question:</dt><dd>Questions (1), (2)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Automate fini, déterministe/non-déterministe, complet/non-complet, mots acceptés</dd>
+      </dl>
+    </div>
+    <p>On considère l'alphabet <span class="math">A = {a, b}</span>. On note <span class="math">L = L(A)</span> le langage accepté par l'automate <span class="math">A</span> suivant :</p>
+    <div class="diagram">
+      <svg class="automaton" width="620" height="260" viewBox="0 0 620 260" role="img" aria-label="Automate partiel 2025">
+        <defs>
+          <marker id="arrow-q9" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <line class="edge" x1="75" y1="140" x2="136" y2="140" marker-end="url(#arrow-q9)"></line>
+        <circle class="state" cx="170" cy="140" r="32"></circle>
+        <text x="170" y="147" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="430" cy="140" r="32"></circle>
+        <circle class="final" cx="430" cy="140" r="24"></circle>
+        <text x="430" y="147" text-anchor="middle" font-size="20">1</text>
+        <path class="edge" d="M151,113 C112,56 228,56 189,113" marker-end="url(#arrow-q9)"></path>
+        <text class="label" x="170" y="73" text-anchor="middle">a</text>
+        <path class="edge" d="M411,113 C372,56 488,56 449,113" marker-end="url(#arrow-q9)"></path>
+        <text class="label" x="430" y="73" text-anchor="middle">a</text>
+        <path class="edge" d="M202,130 C272,92 332,92 398,130" marker-end="url(#arrow-q9)"></path>
+        <text class="label" x="300" y="92" text-anchor="middle">b</text>
+        <path class="edge" d="M398,154 C328,198 272,198 202,154" marker-end="url(#arrow-q9)"></path>
+        <text class="label" x="300" y="211" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automate donné dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (1 point)</strong> Cet automate est-il déterministe ? complet ? Justifier.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (2 points)</strong> Le mot <span class="math">baab</span> est-il accepté par l'automate ? Le mot <span class="math">babb</span> ? Justifier vos réponses.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-12">
+    <div class="question-title">
+      <h3>Question 12 - Miroir, palindrome et langage inductif</h3>
+      <span class="badge">2025</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2025</dd>
+        <dt>File:</dt><dd>exam25-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 16 décembre 2024, année 2024-2025</dd>
+        <dt>Exercise:</dt><dd>Exercice 2</dd>
+        <dt>Question:</dt><dd>Question unique</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Mots, miroir, epsilon, langage inductif</dd>
+      </dl>
+    </div>
+    <p>Soit <span class="math">A = {a, b}</span> un alphabet. Pour tout mot <span class="math">v &isin; A<sup>*</sup></span>, on définit son miroir <span class="math">v&#771;</span> de la façon suivante : si <span class="math">v = &epsilon;</span>, alors <span class="math">v&#771; = &epsilon;</span>. Si <span class="math">v = v<sub>1</sub> ... v<sub>n</sub></span>, avec <span class="math">v<sub>1</sub>, ..., v<sub>n</sub> &isin; A</span>, alors <span class="math">v&#771; = v<sub>n</sub> ... v<sub>1</sub></span>.</p>
+    <p>On définit le langage <span class="math">L &sube; A<sup>*</sup></span> par induction structurelle de la façon suivante :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">&epsilon;, a, b</span> sont dans <span class="math">L</span>.</li>
+        <li>pour tout <span class="math">u &isin; L</span>, <span class="math">a.u.a</span> et <span class="math">b.u.b</span> sont dans <span class="math">L</span>.</li>
+      </ul>
+    </div>
+    <div class="subquestion">
+      <p>Montrer par induction structurelle, que tout mot <span class="math">u &isin; L</span> est tel que <span class="math">u = u&#771;</span>.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-13">
+    <div class="question-title">
+      <h3>Question 13 - Concaténation, déterminisation, expression régulière et palindromes</h3>
+      <span class="badge">2025</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2025</dd>
+        <dt>File:</dt><dd>exam25-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 16 décembre 2024, année 2024-2025</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Questions (1), (2a-d), (3a-b)</dd>
+        <dt>Page:</dt><dd>2-4</dd>
+        <dt>Topic:</dt><dd>Opération sur les langages, concaténation, automates, déterminisation, expression régulière, langage non reconnaissable</dd>
+      </dl>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (1 point)</strong> Pour tout langage <span class="math">L</span>, décrire le langage <span class="math">L.&empty;</span>, en justifiant.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <p>Sur l'alphabet <span class="math">A = {a, b}</span>, on considère les automates <span class="math">A<sub>1</sub></span> et <span class="math">A<sub>2</sub></span> ci-dessous, tels que <span class="math">L<sub>1</sub> = L(A<sub>1</sub>)</span> et <span class="math">L<sub>2</sub> = L(A<sub>2</sub>)</span>.</p>
+    <div class="diagram">
+      <svg class="automaton" width="980" height="340" viewBox="0 0 980 340" role="img" aria-label="Automates A1 et A2 examen 2025">
+        <defs>
+          <marker id="arrow-q11" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="35" y="188" font-size="24" font-style="italic">A1 :</text>
+        <line class="edge" x1="95" y1="185" x2="136" y2="185" marker-end="url(#arrow-q11)"></line>
+        <circle class="state" cx="170" cy="185" r="32"></circle>
+        <text x="170" y="192" text-anchor="middle" font-size="20">q0</text>
+        <circle class="state" cx="320" cy="185" r="32"></circle>
+        <text x="320" y="192" text-anchor="middle" font-size="20">q1</text>
+        <circle class="state" cx="470" cy="185" r="32"></circle>
+        <circle class="final" cx="470" cy="185" r="24"></circle>
+        <text x="470" y="192" text-anchor="middle" font-size="20">q2</text>
+        <path class="edge" d="M151,158 C112,101 228,101 189,158" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="170" y="118" text-anchor="middle">a, b</text>
+        <line class="edge" x1="202" y1="185" x2="286" y2="185" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="245" y="163" text-anchor="middle">a</text>
+        <line class="edge" x1="352" y1="185" x2="436" y2="185" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="395" y="163" text-anchor="middle">a</text>
+        <path class="edge" d="M451,158 C412,101 528,101 489,158" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="470" y="118" text-anchor="middle">a, b</text>
+
+        <text x="570" y="188" font-size="24" font-style="italic">A2 :</text>
+        <line class="edge" x1="620" y1="245" x2="661" y2="245" marker-end="url(#arrow-q11)"></line>
+        <circle class="state" cx="695" cy="245" r="32"></circle>
+        <text x="695" y="252" text-anchor="middle" font-size="20">q0</text>
+        <circle class="state" cx="695" cy="78" r="32"></circle>
+        <text x="695" y="85" text-anchor="middle" font-size="20">q1</text>
+        <circle class="state" cx="835" cy="150" r="32"></circle>
+        <circle class="final" cx="835" cy="150" r="24"></circle>
+        <text x="835" y="157" text-anchor="middle" font-size="20">q2</text>
+        <circle class="state" cx="940" cy="150" r="32"></circle>
+        <text x="940" y="157" text-anchor="middle" font-size="20">q3</text>
+        <line class="edge" x1="695" y1="213" x2="695" y2="114" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="674" y="166" text-anchor="middle">a</text>
+        <line class="edge" x1="724" y1="232" x2="804" y2="167" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="760" y="185" text-anchor="middle">b</text>
+        <path class="edge" d="M676,51 C637,-6 753,-6 714,51" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="695" y="13" text-anchor="middle">a</text>
+        <line class="edge" x1="723" y1="94" x2="803" y2="134" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="764" y="101" text-anchor="middle">b</text>
+        <path class="edge" d="M813,174 C760,232 725,248 695,245" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="760" y="254" text-anchor="middle">a</text>
+        <line class="edge" x1="867" y1="150" x2="904" y2="150" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="885" y="128" text-anchor="middle">b</text>
+        <path class="edge" d="M959,177 C998,234 882,234 921,177" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="940" y="231" text-anchor="middle">a, b</text>
+      </svg>
+      <div class="caption">Automates A1 et A2 donnés dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.a. (0,5 point)</strong> Donner la description intuitive du langage accepté par <span class="math">A<sub>1</sub></span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (2 points)</strong> Donner un automate pour <span class="math">L<sub>1</sub>.L<sub>2</sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>c. (2,5 points)</strong> Déterminiser <span class="math">A<sub>1</sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>d. (2,5 points)</strong> En utilisant la méthode vue en cours, donner une expression régulière pour <span class="math">L<sub>2</sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>Soit <span class="math">A = {a, b}</span> et soit <span class="math">L = {u &isin; A<sup>*</sup> | u = u&#771;}</span> l'ensemble des palindromes sur l'alphabet <span class="math">A</span>. On rappelle que l'opération miroir a été définie à l'exercice 2.</p>
+    <div class="subquestion">
+      <p><strong>3.a. (0,5 point)</strong> Le mot <span class="math">aabaa</span> appartient-il à <span class="math">L</span> ? Et le mot <span class="math">aaabaa</span> ?</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (2,5 points)</strong> Le langage <span class="math">L</span> est-il reconnaissable ? Justifier.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-14">
+    <div class="question-title">
+      <h3>Question 14 - Automate et mots acceptés</h3>
+      <span class="badge">2026</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2026</dd>
+        <dt>File:</dt><dd>partiel26-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 4 novembre 2025, année 2025-2026</dd>
+        <dt>Exercise:</dt><dd>Exercice 2</dd>
+        <dt>Question:</dt><dd>Question (1)</dd>
+        <dt>Page:</dt><dd>1</dd>
+        <dt>Topic:</dt><dd>Automate fini, mots acceptés/refusés, exécutions</dd>
+      </dl>
+    </div>
+    <p>On considère l'alphabet <span class="math">A = {a, b, c}</span>. Soit <span class="math">A</span> l'automate suivant :</p>
+    <div class="diagram">
+      <svg class="automaton" width="720" height="280" viewBox="0 0 720 280" role="img" aria-label="Automate partiel 2026">
+        <defs>
+          <marker id="arrow-q12" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="92" y="150" font-size="24" font-style="italic">A :</text>
+        <line class="edge" x1="155" y1="145" x2="212" y2="145" marker-end="url(#arrow-q12)"></line>
+        <circle class="state" cx="250" cy="145" r="34"></circle>
+        <text x="250" y="153" text-anchor="middle" font-size="22">0</text>
+        <circle class="state" cx="500" cy="145" r="34"></circle>
+        <circle class="final" cx="500" cy="145" r="26"></circle>
+        <text x="500" y="153" text-anchor="middle" font-size="22">1</text>
+        <path class="edge" d="M230,116 C190,56 310,56 270,116" marker-end="url(#arrow-q12)"></path>
+        <text class="label" x="250" y="74" text-anchor="middle">a, c</text>
+        <path class="edge" d="M480,116 C440,56 560,56 520,116" marker-end="url(#arrow-q12)"></path>
+        <text class="label" x="500" y="74" text-anchor="middle">b</text>
+        <path class="edge" d="M284,133 C350,92 405,92 468,133" marker-end="url(#arrow-q12)"></path>
+        <text class="label" x="375" y="94" text-anchor="middle">b</text>
+        <path class="edge" d="M468,159 C405,203 350,203 284,159" marker-end="url(#arrow-q12)"></path>
+        <text class="label" x="375" y="219" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automate donné dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (2 points)</strong> Le mot <span class="math">bacab</span> est-il accepté par l'automate ? et le mot <span class="math">baac</span> ? Justifier vos réponses.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-15">
+    <div class="question-title">
+      <h3>Question 15 - Langages unaires, expression rationnelle et non-reconnaissabilité</h3>
+      <span class="badge">2026</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2026</dd>
+        <dt>File:</dt><dd>exam26-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 12 janvier 2026</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Questions (1a-b), (2a-c)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Langage sur alphabet unaire, expression rationnelle, automate, mots, langage non reconnaissable</dd>
+      </dl>
+    </div>
+    <p>On se place sur l'alphabet réduit à une seule lettre <span class="math">A = {a}</span>.</p>
+    <div class="subquestion">
+      <p><strong>(1)</strong> Soit <span class="math">L</span> le langage sur <span class="math">A</span> contenant les mots de longueur <span class="math">n</span>, pout tout <span class="math">n</span> vérifiant <span class="math">n = 2 + 3 &times; k</span>, pour <span class="math">k &isin; N</span>.</p>
+      <p><strong>a. (1 point)</strong> Donner une expression rationnelle associée à <span class="math">L</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1 point)</strong> Dessiner un automate reconnaissant <span class="math">L</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>Soit <span class="math">L'</span> le langage sur <span class="math">A</span> tel que <span class="math">L' = {a<sup>p</sup> | p est un nombre premier}</span>.</p>
+    <div class="subquestion">
+      <p><strong>2.a. (1 point)</strong> Donner quatre mots de <span class="math">L'</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1 point)</strong> Donner quatre mots sur <span class="math">A</span> n'appartenant pas à <span class="math">L'</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>c. (3 points)</strong> Montrer que <span class="math">L'</span> n'est pas un langage reconnaissable.</p>
+      <p><strong>Remarque :</strong> On pourra utiliser le résultat suivant : soit <span class="math">r, k &isin; N</span> vérifiant <span class="math">r &ge; 1</span> et <span class="math">k &ge; 1</span>, alors il existe un entier <span class="math">s &ge; 1</span> tel que <span class="math">r + s &times; k</span> ne soit pas un entier premier.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-16">
+    <div class="question-title">
+      <h3>Question 16 - Automates, complétion, déterminisation, concaténation et Arden</h3>
+      <span class="badge">2026</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2026</dd>
+        <dt>File:</dt><dd>exam26-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 12 janvier 2026</dd>
+        <dt>Exercise:</dt><dd>Exercice 4</dd>
+        <dt>Question:</dt><dd>Questions (1) à (8)</dd>
+        <dt>Page:</dt><dd>3-4</dd>
+        <dt>Topic:</dt><dd>Automates finis, L(A), déterminisme, complétude, déterminisation, concaténation d'automates, lemme d'Arden, expression rationnelle</dd>
+      </dl>
+    </div>
+    <p>On considère l'alphabet <span class="math">A = {a, b}</span>. On note <span class="math">M = L(A)</span> et <span class="math">N = L(B)</span> pour les langages acceptés par les deux automates suivants :</p>
+    <div class="diagram">
+      <svg class="automaton" width="1050" height="360" viewBox="0 0 1050 360" role="img" aria-label="Automates A et B examen 2026">
+        <defs>
+          <marker id="arrow-q14" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="42" y="185" font-size="25" font-style="italic">A :</text>
+        <line class="edge" x1="95" y1="180" x2="145" y2="180" marker-end="url(#arrow-q14)"></line>
+        <circle class="state" cx="185" cy="180" r="36"></circle>
+        <text x="185" y="188" text-anchor="middle" font-size="23">1</text>
+        <circle class="state" cx="385" cy="180" r="36"></circle>
+        <text x="385" y="188" text-anchor="middle" font-size="23">2</text>
+        <circle class="state" cx="585" cy="180" r="36"></circle>
+        <circle class="final" cx="585" cy="180" r="28"></circle>
+        <text x="585" y="188" text-anchor="middle" font-size="23">3</text>
+        <line class="edge" x1="221" y1="180" x2="345" y2="180" marker-end="url(#arrow-q14)"></line>
+        <text class="label" x="284" y="155" text-anchor="middle">b</text>
+        <path class="edge" d="M365,150 C320,82 450,82 405,150" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="385" y="100" text-anchor="middle">a</text>
+        <path class="edge" d="M420,168 C480,120 535,120 556,158" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="490" y="117" text-anchor="middle">a</text>
+        <path class="edge" d="M556,202 C494,252 435,252 414,205" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="490" y="267" text-anchor="middle">b</text>
+
+        <text x="664" y="185" font-size="25" font-style="italic">B :</text>
+        <line class="edge" x1="705" y1="180" x2="755" y2="180" marker-end="url(#arrow-q14)"></line>
+        <line class="edge" x1="880" y1="296" x2="880" y2="223" marker-end="url(#arrow-q14)"></line>
+        <circle class="state" cx="795" cy="180" r="36"></circle>
+        <text x="795" y="188" text-anchor="middle" font-size="23">0</text>
+        <circle class="state" cx="880" cy="180" r="36"></circle>
+        <text x="880" y="188" text-anchor="middle" font-size="23">1</text>
+        <circle class="state" cx="995" cy="180" r="36"></circle>
+        <circle class="final" cx="995" cy="180" r="28"></circle>
+        <text x="995" y="188" text-anchor="middle" font-size="23">2</text>
+        <path class="edge" d="M775,150 C730,82 860,82 815,150" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="795" y="100" text-anchor="middle">b</text>
+        <path class="edge" d="M860,150 C815,82 945,82 900,150" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="880" y="100" text-anchor="middle">b</text>
+        <path class="edge" d="M828,166 C845,155 860,155 872,164" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="848" y="140" text-anchor="middle">a</text>
+        <line class="edge" x1="916" y1="180" x2="955" y2="180" marker-end="url(#arrow-q14)"></line>
+        <text class="label" x="935" y="155" text-anchor="middle">a</text>
+        <path class="edge" d="M970,205 C910,260 835,258 810,206" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="890" y="270" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automates A et B donnés dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (1 point)</strong> Décrire informellement le langage <span class="math">M</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (1 point)</strong> L'automate <span class="math">A</span> est-il déterministe ? Justifier votre réponse.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(3) (1,5 points)</strong> Compléter l'automate <span class="math">A</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(4) (1 point)</strong> L'automate <span class="math">B</span> est-il complet ? Justifier votre réponse.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(5) (2 points)</strong> Déterminiser l'automate <span class="math">B</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(6) (2 points)</strong> Construire un automate acceptant le langage <span class="math">M.N</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(7) (1 point)</strong> Énoncer le Lemme d'Arden.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(8) (3 points)</strong> Calculer une expression rationnelle pour <span class="math">N</span>. Expliciter les calculs.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cours 5 / TD5 - Automates finis - Annales 2021-2026</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #475467;
+      --blue: #155eef;
+      --blue-dark: #1849a9;
+      --line: #d0d5dd;
+      --soft: #f8fafc;
+      --ref: #f2f4f7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+    }
+
+    header {
+      border-bottom: 4px solid #e4e7ec;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      color: #0b2447;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    h2 {
+      color: #0b2447;
+      font-size: 24px;
+      margin: 38px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e4e7ec;
+    }
+
+    h3 {
+      color: var(--blue-dark);
+      font-size: 21px;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    p { margin: 10px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 34px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 9px 10px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      color: #0b2447;
+      text-align: left;
+    }
+
+    .intro {
+      background: #f0f5ff;
+      border: 1px solid #b2ccff;
+      border-radius: 8px;
+      padding: 14px 16px;
+      color: #1d2939;
+    }
+
+    .question {
+      border-top: 3px solid #dbeafe;
+      margin: 34px 0 46px;
+      padding-top: 22px;
+      break-inside: avoid;
+    }
+
+    .question-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      flex: 0 0 auto;
+      background: #dbeafe;
+      color: #1849a9;
+      border: 1px solid #84adff;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 10px;
+    }
+
+    .reference {
+      background: var(--ref);
+      border-left: 5px solid #84adff;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin: 12px 0 18px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .reference dl {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 4px 12px;
+      margin: 0;
+    }
+
+    .reference dt { font-weight: 700; }
+    .reference dd { margin: 0; }
+
+    .math, .formula {
+      font-family: "Times New Roman", Times, serif;
+      font-style: italic;
+    }
+
+    .overline {
+      text-decoration: overline;
+      text-decoration-thickness: 1px;
+    }
+
+    .definition {
+      background: var(--soft);
+      border: 1px solid #e4e7ec;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 12px 0;
+    }
+
+    .definition ul { margin: 6px 0 4px 20px; }
+
+    .subquestion {
+      margin: 18px 0 24px;
+    }
+
+    .subquestion > p:first-child {
+      margin-top: 0;
+    }
+
+    .answer-box {
+      min-height: 120px;
+      border: 1.5px solid #b8c0cc;
+      border-radius: 8px;
+      background: #ffffff;
+      margin: 10px 0 0;
+      padding: 12px 14px;
+      color: #667085;
+      font-weight: 700;
+      outline: none;
+      white-space: pre-wrap;
+    }
+
+    .answer-box.medium { min-height: 220px; }
+    .answer-box.large { min-height: 350px; }
+    .answer-box.xlarge { min-height: 430px; }
+
+    .answer-box[contenteditable="true"]:focus {
+      border-color: #155eef;
+      box-shadow: 0 0 0 3px rgba(21, 94, 239, 0.14);
+      color: #344054;
+    }
+
+    .diagram {
+      margin: 16px auto 20px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    .diagram svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .caption {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .automaton text {
+      font-family: Arial, Helvetica, sans-serif;
+      fill: #111827;
+    }
+
+    .state {
+      fill: #ffffff;
+      stroke: #111827;
+      stroke-width: 2.8;
+    }
+
+    .final {
+      fill: none;
+      stroke: #111827;
+      stroke-width: 2.8;
+    }
+
+    .edge {
+      fill: none;
+      stroke: #111827;
+      stroke-width: 2.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .label {
+      font-size: 21px;
+      font-style: italic;
+      font-weight: 700;
+      paint-order: stroke;
+      stroke: #ffffff;
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+
+    @media print {
+      main { max-width: none; padding: 16mm; }
+      header { break-after: avoid; }
+      .question { break-inside: avoid; page-break-inside: avoid; }
+      .question.page-start { break-before: page; page-break-before: always; }
+      .answer-box { min-height: 34mm; }
+      .answer-box.medium { min-height: 56mm; }
+      .answer-box.large { min-height: 88mm; }
+      .answer-box.xlarge { min-height: 108mm; }
+      .diagram { break-inside: avoid; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Cours 5 / TD5 - Automates finis</h1>
+    <div class="intro">
+      Annales vérifiées de 2021 à 2026. Les questions ci-dessous couvrent uniquement les mots, langages, opérations sur les langages, automates finis, déterminisme, complétude, déterminisation, concaténation, complémentaire, intersection, expressions rationnelles, lemme d'Arden et langages reconnaissables ou non reconnaissables. Les années suivent l'année de fichier/session; les dates exactes sont indiquées dans chaque référence.
+    </div>
+  </header>
+
+  <h2>Table de synthèse</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Question number</th>
+        <th>Year</th>
+        <th>File</th>
+        <th>Exercise</th>
+        <th>Page</th>
+        <th>Topic</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>2021</td><td>partiel_2021.pdf</td><td>Exercice 3(1)</td><td>2</td><td>Mots, langage inductif, préfixes</td></tr>
+      <tr><td>2</td><td>2021</td><td>partiel_2021.pdf / partiel_2021 COR.pdf</td><td>Exercice 3(2)</td><td>2</td><td>Alphabet de symboles, formules définies par induction, comptage de parenthèses</td></tr>
+      <tr><td>3</td><td>2021</td><td>partiel_2021.pdf</td><td>Exercice 4</td><td>2</td><td>Automate fini, mots acceptés, L(A)</td></tr>
+      <tr><td>4</td><td>2021</td><td>Examen 2021 Sujet.pdf</td><td>Exercice 2</td><td>2-5</td><td>Construction, déterminisation, concaténation, expressions rationnelles, non-reconnaissabilité</td></tr>
+      <tr><td>5</td><td>2022</td><td>partiel_2022.pdf</td><td>Exercice 4</td><td>2</td><td>Automate fini, déterminisme, complétude, mots acceptés</td></tr>
+      <tr><td>6</td><td>2023</td><td>Examen 2023 Sujet.pdf / Examen 2023 Corrige.pdf</td><td>Exercice 1(2)</td><td>1-2</td><td>ABS, mots sur {x, x̄}, longueur, comptage de symboles, préfixes</td></tr>
+      <tr><td>7</td><td>2023</td><td>Examen 2023 Sujet.pdf</td><td>Exercice 3</td><td>2</td><td>Parité, complémentaire, expression régulière, non-reconnaissabilité</td></tr>
+      <tr><td>8</td><td>2024</td><td>partiel24-impression.pdf</td><td>Exercice 4(2)</td><td>2</td><td>A*, concaténation, langage inductif</td></tr>
+      <tr><td>9</td><td>2024</td><td>exam24-corrige.pdf</td><td>Exercice 2</td><td>1-2</td><td>Langage inductif sur A*</td></tr>
+      <tr><td>10</td><td>2024</td><td>exam24-corrige.pdf</td><td>Exercice 3</td><td>2-3</td><td>L(A), automate, Arden, complémentaire, intersection</td></tr>
+      <tr><td>11</td><td>2025</td><td>partiel25-impression.pdf</td><td>Exercice 5</td><td>2</td><td>Automate fini, déterminisme, complétude, mots acceptés</td></tr>
+      <tr><td>12</td><td>2025</td><td>exam25-corrige.pdf</td><td>Exercice 2</td><td>2</td><td>Miroir, palindrome, langage inductif</td></tr>
+      <tr><td>13</td><td>2025</td><td>exam25-corrige.pdf</td><td>Exercice 3</td><td>2-4</td><td>Concaténation, déterminisation, expression régulière, non-reconnaissabilité</td></tr>
+      <tr><td>14</td><td>2026</td><td>partiel26-corrige.pdf</td><td>Exercice 2</td><td>1</td><td>Automate fini, mots acceptés/refusés</td></tr>
+      <tr><td>15</td><td>2026</td><td>exam26-corrige.pdf</td><td>Exercice 3</td><td>2</td><td>Langage unaire, expression rationnelle, automate, non-reconnaissabilité</td></tr>
+      <tr><td>16</td><td>2026</td><td>exam26-corrige.pdf</td><td>Exercice 4</td><td>3-4</td><td>Automates, complétion, déterminisation, concaténation, Arden</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Questions</h2>
+
+  <section class="question" id="question-1">
+    <div class="question-title">
+      <h3>Question 1 - Mots, comptage de lettres et préfixes</h3>
+      <span class="badge">2021</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2021</dd>
+        <dt>File:</dt><dd>partiel_2021.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 9 novembre 2021</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Question (1), sous-questions a et b</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Mots, alphabet, A*, langage défini par induction, préfixes</dd>
+      </dl>
+    </div>
+    <p>Soit un alphabet <span class="math">A = {a, b}</span>. On rappelle que pour tout mot <span class="math">w &isin; A<sup>*</sup></span>, on note respectivement <span class="math">|w|<sub>a</sub></span> et <span class="math">|w|<sub>b</sub></span> le nombre de <span class="math">a</span> et de <span class="math">b</span> dans <span class="math">w</span>. On définit par induction structurelle l'ensemble <span class="math">L &sube; A<sup>*</sup></span> suivant :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">b &isin; L</span></li>
+        <li>pour tous mots <span class="math">u</span> et <span class="math">v</span> dans <span class="math">L</span>, <span class="math">a.u.v &isin; L</span>.</li>
+      </ul>
+    </div>
+    <div class="subquestion">
+      <p><strong>a. (1,5 points)</strong> Montrer que pour tout mot <span class="math">w &isin; L</span>, <span class="math">|w|<sub>b</sub> = |w|<sub>a</sub> + 1</span>.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (3 points)</strong> On rappelle que, pour tout mot <span class="math">u, v &isin; A<sup>*</sup></span>, <span class="math">u</span> est un préfixe de <span class="math">v</span> si il existe un mot <span class="math">w &isin; A<sup>*</sup></span> tel que <span class="math">u.w = v</span>. Le mot vide <span class="math">&epsilon;</span> est préfixe de tous les mots. Le mot <span class="math">u</span> est un préfixe propre de <span class="math">v</span> si <span class="math">u</span> est un préfixe de <span class="math">v</span> et <span class="math">u &ne; v</span>. Montrer que pour tout mot <span class="math">w &isin; L</span>, pour tout préfixe propre <span class="math">w'</span> de <span class="math">w</span>, <span class="math">|w'|<sub>a</sub> &ge; |w'|<sub>b</sub></span>. On pourra utiliser le résultat de la question (a).</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-2">
+    <div class="question-title">
+      <h3>Question 2 - Alphabet de symboles, formules et comptage des parenthèses</h3>
+      <span class="badge">2021</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2021</dd>
+        <dt>File:</dt><dd>partiel_2021.pdf / partiel_2021 COR.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 9 novembre 2021</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Question (2), sous-questions a et b</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Alphabet, symboles, formules définies par induction structurelle, comptage de parenthèses</dd>
+      </dl>
+    </div>
+    <p><strong>(2)</strong> On considère un alphabet de symboles <span class="math">E = {⊙, ⊕, ¯, (, )}</span> et un ensemble infini de symboles de variables <span class="math">X</span>. On définit par induction structurelle l'ensemble <span class="math">F</span> de la façon suivante :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">x &isin; F</span>, pour tout <span class="math">x &isin; X</span>,</li>
+        <li>si <span class="math">f &isin; F</span> alors <span class="math"><span class="overline">f</span> &isin; F</span>,</li>
+        <li>si <span class="math">f<sub>1</sub>, f<sub>2</sub> &isin; F</span> alors <span class="math">(f<sub>1</sub> ⊙ f<sub>2</sub>) &isin; F</span> et <span class="math">(f<sub>1</sub> ⊕ f<sub>2</sub>) &isin; F</span></li>
+      </ul>
+    </div>
+    <div class="subquestion">
+      <p><strong>a. (1 point)</strong> Définir une fonction <span class="math">nbparo : F &rarr; N</span> et une fonction <span class="math">nbparf : F &rarr; N</span> qui associent respectivement à chaque élément <span class="math">f</span> de <span class="math">F</span> le nombre de parenthèses ouvrantes et le nombre de parenthèses fermantes apparaissant dans <span class="math">f</span>.</p>
+      <p><strong>Définition de <span class="math">nbparo</span> :</strong></p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+      <p><strong>Définition de <span class="math">nbparf</span> :</strong></p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1,5 points)</strong> Montrer par induction structurelle que pour tout <span class="math">f &isin; F</span>, <span class="math">nbparo(f) = nbparf(f)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-3">
+    <div class="question-title">
+      <h3>Question 3 - Automate, mots acceptés, complétude et L(A)</h3>
+      <span class="badge">2021</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2021</dd>
+        <dt>File:</dt><dd>partiel_2021.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 9 novembre 2021</dd>
+        <dt>Exercise:</dt><dd>Exercice 4</dd>
+        <dt>Question:</dt><dd>Questions (1), (2), (3)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Automate fini, mots acceptés/refusés, complet, déterministe, langage reconnu</dd>
+      </dl>
+    </div>
+    <p>Soit l'automate <span class="math">A</span> sur l'alphabet <span class="math">A = {a, b}</span> représenté ci-dessous.</p>
+    <div class="diagram">
+      <svg class="automaton" width="780" height="260" viewBox="0 0 780 260" role="img" aria-label="Automate 2021 partiel">
+        <defs>
+          <marker id="arrow-q2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <line class="edge" x1="60" y1="130" x2="116" y2="130" marker-end="url(#arrow-q2)"></line>
+        <circle class="state" cx="150" cy="130" r="30"></circle>
+        <text x="150" y="137" text-anchor="middle" font-size="20">s0</text>
+        <circle class="state" cx="390" cy="130" r="30"></circle>
+        <text x="390" y="137" text-anchor="middle" font-size="20">s1</text>
+        <circle class="state" cx="630" cy="130" r="30"></circle>
+        <circle class="final" cx="630" cy="130" r="23"></circle>
+        <text x="630" y="137" text-anchor="middle" font-size="20">s2</text>
+        <path class="edge" d="M132,105 C96,52 204,52 168,105" marker-end="url(#arrow-q2)"></path>
+        <text class="label" x="150" y="67" text-anchor="middle">a, b</text>
+        <line class="edge" x1="180" y1="130" x2="356" y2="130" marker-end="url(#arrow-q2)"></line>
+        <text class="label" x="270" y="108" text-anchor="middle">a</text>
+        <line class="edge" x1="420" y1="130" x2="596" y2="130" marker-end="url(#arrow-q2)"></line>
+        <text class="label" x="510" y="108" text-anchor="middle">b</text>
+        <path class="edge" d="M612,105 C576,52 684,52 648,105" marker-end="url(#arrow-q2)"></path>
+        <text class="label" x="630" y="67" text-anchor="middle">a, b</text>
+      </svg>
+      <div class="caption">Automate donné dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (0,5 point)</strong> Le mot <span class="math">aaba</span> est-il accepté par <span class="math">A</span> ? Le mot <span class="math">bbba</span> ? Justifier.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (0,5 point)</strong> L'automate <span class="math">A</span> est-il complet ? déterministe ? Justifier.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(3) (1 point)</strong> Décrire informellement <span class="math">L(A)</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-4">
+    <div class="question-title">
+      <h3>Question 4 - Construction, déterminisation, concaténation et langages reconnaissables</h3>
+      <span class="badge">2021</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2021</dd>
+        <dt>File:</dt><dd>Examen 2021 Sujet.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 19 janvier 2021</dd>
+        <dt>Exercise:</dt><dd>Exercice 2</dd>
+        <dt>Question:</dt><dd>Questions (1), (2a-d), (3), (4), (5)</dd>
+        <dt>Page:</dt><dd>2-5</dd>
+        <dt>Topic:</dt><dd>Automates finis, déterminisation, concaténation, expression rationnelle, langage non reconnaissable</dd>
+      </dl>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (2 points)</strong> Construire un automate fini sur l'alphabet <span class="math">A = {a, b, c}</span> reconnaissant le langage <span class="math">L = {w &isin; A<sup>*</sup> | le nombre de b séparant deux a est pair}</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>On considère les deux automates <span class="math">A</span> et <span class="math">B</span> ci-dessous :</p>
+    <div class="diagram">
+      <svg class="automaton" width="980" height="450" viewBox="0 0 980 450" role="img" aria-label="Automates A et B examen 2021">
+        <defs>
+          <marker id="arrow-q3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="45" y="220" font-size="24" font-style="italic">A :</text>
+        <line class="edge" x1="90" y1="190" x2="126" y2="190" marker-end="url(#arrow-q3)"></line>
+        <circle class="state" cx="160" cy="190" r="30"></circle>
+        <text x="160" y="197" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="340" cy="120" r="30"></circle>
+        <circle class="final" cx="340" cy="120" r="23"></circle>
+        <text x="340" y="127" text-anchor="middle" font-size="20">1</text>
+        <circle class="state" cx="160" cy="330" r="30"></circle>
+        <text x="160" y="337" text-anchor="middle" font-size="20">2</text>
+        <circle class="state" cx="340" cy="330" r="30"></circle>
+        <text x="340" y="337" text-anchor="middle" font-size="20">3</text>
+        <line class="edge" x1="188" y1="179" x2="308" y2="132" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="250" y="135" text-anchor="middle">a</text>
+        <line class="edge" x1="160" y1="220" x2="160" y2="296" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="138" y="263" text-anchor="middle">b</text>
+        <line class="edge" x1="190" y1="330" x2="306" y2="330" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="250" y="308" text-anchor="middle">a</text>
+        <path class="edge" d="M322,95 C286,42 394,42 358,95" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="340" y="58" text-anchor="middle">a</text>
+        <line class="edge" x1="340" y1="150" x2="340" y2="296" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="363" y="226" text-anchor="middle">b</text>
+        <path class="edge" d="M318,310 C260,254 220,224 184,202" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="244" y="270" text-anchor="middle">a, b</text>
+
+        <text x="515" y="220" font-size="24" font-style="italic">B :</text>
+        <line class="edge" x1="555" y1="190" x2="591" y2="190" marker-end="url(#arrow-q3)"></line>
+        <circle class="state" cx="625" cy="190" r="30"></circle>
+        <text x="625" y="197" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="760" cy="190" r="30"></circle>
+        <text x="760" y="197" text-anchor="middle" font-size="20">1</text>
+        <circle class="state" cx="895" cy="190" r="30"></circle>
+        <circle class="final" cx="895" cy="190" r="23"></circle>
+        <text x="895" y="197" text-anchor="middle" font-size="20">2</text>
+        <circle class="state" cx="625" cy="325" r="30"></circle>
+        <text x="625" y="332" text-anchor="middle" font-size="20">3</text>
+        <circle class="state" cx="625" cy="405" r="30"></circle>
+        <circle class="final" cx="625" cy="405" r="23"></circle>
+        <text x="625" y="412" text-anchor="middle" font-size="20">4</text>
+        <line class="edge" x1="655" y1="190" x2="726" y2="190" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="691" y="168" text-anchor="middle">a</text>
+        <line class="edge" x1="625" y1="220" x2="625" y2="291" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="603" y="259" text-anchor="middle">b</text>
+        <line class="edge" x1="790" y1="190" x2="861" y2="190" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="826" y="168" text-anchor="middle">a</text>
+        <path class="edge" d="M742,165 C706,112 814,112 778,165" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="760" y="128" text-anchor="middle">a, b</text>
+        <path class="edge" d="M740,212 C705,260 670,292 648,309" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="705" y="278" text-anchor="middle">b</text>
+        <path class="edge" d="M605,349 C565,394 685,394 645,349" marker-end="url(#arrow-q3)"></path>
+        <text class="label" x="625" y="382" text-anchor="middle">b</text>
+        <line class="edge" x1="625" y1="355" x2="625" y2="371" marker-end="url(#arrow-q3)"></line>
+        <text class="label" x="604" y="367" text-anchor="middle">b</text>
+      </svg>
+      <div class="caption">Automates A et B donnés dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.a. (0,5 point)</strong> L'automate <span class="math">A</span> est-il déterministe ? complet ? L'automate <span class="math">B</span> est-il déterministe ? complet ? Justifier.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.b. (3 points)</strong> Si l'un ou les deux automates ci-dessus sont non-déterministes, le ou les déterminiser, en explicitant clairement votre construction.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.c. (1,5 points)</strong> Construire un automate reconnaissant le langage <span class="math">L(A).L(B)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.d. (3 points)</strong> En utilisant la méthode du cours, donner une expression rationnelle équivalente au langage <span class="math">L(A)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>On rappelle que pour un mot <span class="math">u</span> sur un alphabet <span class="math">A</span>, <span class="math">|u|</span> désigne la taille du <span class="math">u</span>. On se place sur l'alphabet <span class="math">A = {a, b}</span>. On définit le langage <span class="math">L<sub>1</sub> = {u.a<sup>n</sup> | u &isin; A<sup>*</sup>, |u| = n}</span>.</p>
+    <div class="subquestion">
+      <p><strong>(3) (0,5 point)</strong> Donner trois mots de <span class="math">L<sub>1</sub></span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(4) (2 points)</strong> Le langage <span class="math">L<sub>1</sub></span> est-il reconnaissable ? Démontrer précisément votre réponse.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(5) (0,5 point)</strong> Donner un langage <span class="math">L</span> reconnaissable tel que <span class="math">L<sub>1</sub> &sube; L</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-5">
+    <div class="question-title">
+      <h3>Question 5 - Automate, déterminisme, complétude et mots acceptés</h3>
+      <span class="badge">2022</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2022</dd>
+        <dt>File:</dt><dd>partiel_2022.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 7 novembre 2022</dd>
+        <dt>Exercise:</dt><dd>Exercice 4</dd>
+        <dt>Question:</dt><dd>Questions (1), (2)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Automate fini, déterministe/non-déterministe, complet/non-complet, mots acceptés</dd>
+      </dl>
+    </div>
+    <p>On considère l'alphabet <span class="math">A = {a, b}</span>. On note <span class="math">L = L(A)</span> le langage accepté par l'automate <span class="math">A</span> suivant :</p>
+    <div class="diagram">
+      <svg class="automaton" width="620" height="260" viewBox="0 0 620 260" role="img" aria-label="Automate partiel 2022">
+        <defs>
+          <marker id="arrow-q4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <line class="edge" x1="75" y1="140" x2="136" y2="140" marker-end="url(#arrow-q4)"></line>
+        <circle class="state" cx="170" cy="140" r="32"></circle>
+        <text x="170" y="147" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="430" cy="140" r="32"></circle>
+        <circle class="final" cx="430" cy="140" r="24"></circle>
+        <text x="430" y="147" text-anchor="middle" font-size="20">1</text>
+        <path class="edge" d="M151,113 C112,56 228,56 189,113" marker-end="url(#arrow-q4)"></path>
+        <text class="label" x="170" y="73" text-anchor="middle">b</text>
+        <path class="edge" d="M411,113 C372,56 488,56 449,113" marker-end="url(#arrow-q4)"></path>
+        <text class="label" x="430" y="73" text-anchor="middle">b</text>
+        <path class="edge" d="M202,130 C272,92 332,92 398,130" marker-end="url(#arrow-q4)"></path>
+        <text class="label" x="300" y="92" text-anchor="middle">b</text>
+        <path class="edge" d="M398,154 C328,198 272,198 202,154" marker-end="url(#arrow-q4)"></path>
+        <text class="label" x="300" y="211" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automate donné dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (1 point)</strong> Cet automate est-il déterministe ? complet ? Justifier.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (2 points)</strong> Le mot <span class="math">baab</span> est-il accepté par l'automate ? Le mot <span class="math">babb</span> ? Justifier vos réponses.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-6">
+    <div class="question-title">
+      <h3>Question 6 - ABS, mots sur {x, x̄}, comptage et préfixes</h3>
+      <span class="badge">2023</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2023</dd>
+        <dt>File:</dt><dd>Examen 2023 Sujet.pdf / Examen 2023 Corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 9 janvier 2023</dd>
+        <dt>Exercise:</dt><dd>Exercice 1</dd>
+        <dt>Question:</dt><dd>Question (2), sous-questions a, b et c bonus</dd>
+        <dt>Page:</dt><dd>1-2</dd>
+        <dt>Topic:</dt><dd>Mots, alphabet, fonction f : ABS → {x, x̄}<sup>*</sup>, longueur, comptage de symboles, préfixes</dd>
+      </dl>
+    </div>
+    <p>On définit l'ensemble <span class="math">ABS</span> des arbres binaires stricts étiquetés sur un alphabet <span class="math">A</span> :</p>
+    <div class="definition">
+      <ul>
+        <li>pour tout <span class="math">a &isin; A</span>, <span class="math">(a, ∅, ∅) &isin; ABS</span> (cet arbre est appelé une feuille, et <span class="math">a</span> est son étiquette).</li>
+        <li>pour tout arbre <span class="math">g &isin; ABS</span> et <span class="math">d &isin; ABS</span>, pour toute lettre <span class="math">a &isin; A</span>, <span class="math">(a, g, d) &isin; ABS</span>.</li>
+      </ul>
+    </div>
+    <p>On rappelle également que la fonction <span class="math">pref : ABS &rarr; A<sup>*</sup></span> qui associe à un arbre <span class="math">t &isin; ABS</span> la séquence de ses étiquettes lues par un parcours en profondeur préfixe est définie par induction structurelle par :</p>
+    <div class="definition">
+      <ul>
+        <li>pour tout <span class="math">a &isin; A</span>, <span class="math">pref(a, ∅, ∅) = a</span></li>
+        <li>pour tout <span class="math">a &isin; A</span>, pour tout <span class="math">g, d &isin; ABS</span>, <span class="math">pref(a, g, d) = a · pref(g) · pref(d)</span></li>
+      </ul>
+    </div>
+    <p>Soit <span class="math">t</span> l'arbre binaire strict représenté par :</p>
+    <div class="diagram">
+      <svg width="460" height="310" viewBox="0 0 460 310" role="img" aria-label="Arbre binaire strict t de l'examen 2023">
+        <g fill="none" stroke="#111827" stroke-width="2.4" stroke-linecap="round">
+          <line x1="230" y1="55" x2="140" y2="120"></line>
+          <line x1="230" y1="55" x2="320" y2="120"></line>
+          <line x1="140" y1="120" x2="88" y2="195"></line>
+          <line x1="140" y1="120" x2="192" y2="195"></line>
+          <line x1="320" y1="120" x2="278" y2="195"></line>
+          <line x1="320" y1="120" x2="362" y2="195"></line>
+          <line x1="88" y1="195" x2="58" y2="260"></line>
+          <line x1="88" y1="195" x2="118" y2="260"></line>
+          <line x1="192" y1="195" x2="162" y2="260"></line>
+          <line x1="192" y1="195" x2="222" y2="260"></line>
+        </g>
+        <g font-family="Times New Roman, Times, serif" font-size="31" fill="#111827" text-anchor="middle">
+          <text x="230" y="45">4</text>
+          <text x="140" y="113">2</text>
+          <text x="320" y="113">6</text>
+          <text x="88" y="188">1</text>
+          <text x="192" y="188">3</text>
+          <text x="278" y="195">∅</text>
+          <text x="362" y="195">∅</text>
+          <text x="58" y="285">∅</text>
+          <text x="118" y="285">∅</text>
+          <text x="162" y="285">∅</text>
+          <text x="222" y="285">∅</text>
+        </g>
+      </svg>
+      <div class="caption">Arbre t dessiné dans le sujet.</div>
+    </div>
+    <p><strong>(2)</strong> On définit une fonction <span class="math">f : ABS &rarr; {x, <span class="overline">x</span>}<sup>*</sup></span> de la façon suivante : pour <span class="math">t &isin; ABS</span> tel que <span class="math">pref(t) = w<sub>1</sub> ... w<sub>2n+1</sub></span>, <span class="math">f(t) = x<sub>1</sub> ... x<sub>2n</sub></span> avec <span class="math">x<sub>i</sub> = <span class="overline">x</span></span> si <span class="math">w<sub>i</sub></span> est l'étiquette d'une feuille de <span class="math">t</span>, et <span class="math">x<sub>i</sub> = x</span> sinon.</p>
+    <div class="subquestion">
+      <p><strong>a. (1/2 point)</strong> Donner <span class="math">f(t)</span> pour l'arbre <span class="math">t</span> dessiné plus haut, et vérifier que <span class="math">f(t)</span> est de longueur paire.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (2 points)</strong> Montrer que pour tout <span class="math">t &isin; ABS</span>, le nombre de <span class="math">x</span> apparaissant dans <span class="math">f(t)</span> est égal au nombre de <span class="math"><span class="overline">x</span></span>, c'est-à-dire que <span class="math">|f(t)|<sub>x</sub> = |f(t)|<sub><span class="overline">x</span></sub></span>. Vous pourrez vous appuyer sur les questions précédentes.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>c. (2 points (bonus))</strong> Montrer que pour tout <span class="math">t &isin; ABS</span>, pour tout préfixe <span class="math">w</span> de <span class="math">f(t)</span>, <span class="math">|w|<sub>x</sub> &ge; |w|<sub><span class="overline">x</span></sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-7">
+    <div class="question-title">
+      <h3>Question 7 - Parités, complémentaire, expression régulière et non-reconnaissabilité</h3>
+      <span class="badge">2023</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2023</dd>
+        <dt>File:</dt><dd>Examen 2023 Sujet.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 9 janvier 2023</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Questions (1a-b), (2), (3a-b)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Automates de parité, produit/intersection, complémentaire, expression régulière, langage non reconnaissable</dd>
+      </dl>
+    </div>
+    <p>On se place sur l'alphabet <span class="math">A = {a, b}</span>.</p>
+    <div class="subquestion">
+      <p><strong>(1) a. (0,5 point)</strong> Donner un automate acceptant les mots contenant un nombre pair de <span class="math">a</span> et un automate acceptant les mots contenant un nombre impair de <span class="math">b</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1 point)</strong> En déduire un automate acceptant <span class="math">L<sub>1</sub></span>, le langage des mots contenant un nombre pair de <span class="math">a</span> et un nombre impair de <span class="math">b</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (2 points)</strong> Le langage <span class="math">L<sub>2</sub> = {a<sup>2n</sup>b<sup>2n+1</sup> | n &isin; N}</span> est-il reconnaissable ? Démontrer.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>On considère les deux automates <span class="math">A</span> et <span class="math">B</span> suivants :</p>
+    <div class="diagram">
+      <svg class="automaton" width="980" height="360" viewBox="0 0 980 360" role="img" aria-label="Automates A et B examen 2023">
+        <defs>
+          <marker id="arrow-q5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="30" y="210" font-size="24" font-style="italic">A</text>
+        <line class="edge" x1="70" y1="220" x2="112" y2="220" marker-end="url(#arrow-q5)"></line>
+        <circle class="state" cx="145" cy="220" r="30"></circle>
+        <text x="145" y="227" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="300" cy="220" r="30"></circle>
+        <text x="300" y="227" text-anchor="middle" font-size="20">1</text>
+        <circle class="state" cx="455" cy="220" r="30"></circle>
+        <text x="455" y="227" text-anchor="middle" font-size="20">2</text>
+        <circle class="state" cx="610" cy="220" r="30"></circle>
+        <circle class="final" cx="610" cy="220" r="23"></circle>
+        <text x="610" y="227" text-anchor="middle" font-size="20">3</text>
+        <path class="edge" d="M127,195 C91,142 199,142 163,195" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="145" y="157" text-anchor="middle">a, b</text>
+        <line class="edge" x1="175" y1="220" x2="266" y2="220" marker-end="url(#arrow-q5)"></line>
+        <text class="label" x="222" y="198" text-anchor="middle">a</text>
+        <line class="edge" x1="330" y1="220" x2="421" y2="220" marker-end="url(#arrow-q5)"></line>
+        <text class="label" x="377" y="198" text-anchor="middle">b</text>
+        <line class="edge" x1="485" y1="220" x2="576" y2="220" marker-end="url(#arrow-q5)"></line>
+        <text class="label" x="532" y="198" text-anchor="middle">a</text>
+        <path class="edge" d="M592,195 C556,142 664,142 628,195" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="610" y="157" text-anchor="middle">a, b</text>
+
+        <text x="735" y="90" font-size="24" font-style="italic">B</text>
+        <line class="edge" x1="690" y1="115" x2="732" y2="115" marker-end="url(#arrow-q5)"></line>
+        <circle class="state" cx="765" cy="115" r="30"></circle>
+        <circle class="final" cx="765" cy="115" r="23"></circle>
+        <text x="765" y="122" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="905" cy="115" r="30"></circle>
+        <text x="905" y="122" text-anchor="middle" font-size="20">1</text>
+        <circle class="state" cx="765" cy="280" r="30"></circle>
+        <text x="765" y="287" text-anchor="middle" font-size="20">2</text>
+        <circle class="state" cx="905" cy="280" r="30"></circle>
+        <text x="905" y="287" text-anchor="middle" font-size="20">3</text>
+        <path class="edge" d="M795,107 C838,78 875,78 895,102" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="835" y="77" text-anchor="middle">a</text>
+        <path class="edge" d="M875,127 C832,158 795,158 775,132" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="835" y="160" text-anchor="middle">a</text>
+        <path class="edge" d="M755,145 C725,192 725,233 755,250" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="725" y="204" text-anchor="middle">b</text>
+        <path class="edge" d="M775,250 C805,204 805,164 775,145" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="805" y="204" text-anchor="middle">b</text>
+        <path class="edge" d="M895,145 C865,192 865,233 895,250" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="865" y="204" text-anchor="middle">b</text>
+        <path class="edge" d="M915,250 C945,204 945,164 915,145" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="945" y="204" text-anchor="middle">b</text>
+        <path class="edge" d="M795,272 C838,242 875,242 895,266" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="835" y="242" text-anchor="middle">a</text>
+        <path class="edge" d="M875,292 C832,322 795,322 775,296" marker-end="url(#arrow-q5)"></path>
+        <text class="label" x="835" y="326" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automates A et B donnés dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(3) a. (1,5 points)</strong> Donner un automate reconnaissant le complémentaire de <span class="math">L(A)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1,5 points)</strong> Donner une expression régulière pour l'automate <span class="math">B</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-8">
+    <div class="question-title">
+      <h3>Question 8 - A*, concaténation et langage inductif</h3>
+      <span class="badge">2024</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2024</dd>
+        <dt>File:</dt><dd>partiel24-impression.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 8 novembre 2023, année 2023-2024</dd>
+        <dt>Exercise:</dt><dd>Exercice 4</dd>
+        <dt>Question:</dt><dd>Question (2), sous-questions a et b</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>A*, epsilon, concaténation, comptage de lettres, langage inductif</dd>
+      </dl>
+    </div>
+    <p>Soit <span class="math">A = {a, b}</span> un alphabet fini. On peut définir <span class="math">A<sup>*</sup></span> par induction structurelle de la façon suivante :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">&epsilon; &isin; A<sup>*</sup></span></li>
+        <li>Pour tout mot <span class="math">u &isin; A<sup>*</sup></span>, <span class="math">au &isin; A<sup>*</sup></span>, et <span class="math">bu &isin; A<sup>*</sup></span>.</li>
+      </ul>
+    </div>
+    <p>On définit également par induction structurelle les fonctions <span class="math">nb<sub>a</sub> : A<sup>*</sup> &rarr; N</span> et <span class="math">nb<sub>b</sub> : A<sup>*</sup> &rarr; N</span> qui donnent respectivement le nombre de <span class="math">a</span> et le nombre de <span class="math">b</span> d'un mot de <span class="math">A<sup>*</sup></span>.</p>
+    <div class="definition">
+      <p><span class="math">nb<sub>a</sub>(&epsilon;) = 0</span> et <span class="math">nb<sub>b</sub>(&epsilon;) = 0</span></p>
+      <p>Soit <span class="math">u &isin; A<sup>*</sup></span>, <span class="math">nb<sub>a</sub>(au) = 1 + nb<sub>a</sub>(u)</span> et <span class="math">nb<sub>b</sub>(au) = nb<sub>b</sub>(u)</span>.</p>
+      <p>Soit <span class="math">u &isin; A<sup>*</sup></span>, <span class="math">nb<sub>a</sub>(bu) = nb<sub>a</sub>(u)</span> et <span class="math">nb<sub>b</sub>(bu) = 1 + nb<sub>b</sub>(u)</span>.</p>
+    </div>
+    <div class="subquestion">
+      <p><strong>a. (2 points)</strong> On définit l'opération de concaténation par induction structurelle. Pour tout <span class="math">v &isin; A<sup>*</sup></span> :</p>
+      <div class="definition">
+        <ul>
+          <li><span class="math">&epsilon;.v = v</span></li>
+          <li><span class="math">(au).v = a(u.v)</span> et <span class="math">(bu).v = b(u.v)</span>.</li>
+        </ul>
+      </div>
+      <p>Soit <span class="math">v &isin; A<sup>*</sup></span>. Montrer par induction structurelle que, pour tout mot <span class="math">u &isin; A<sup>*</sup></span>, <span class="math">nb<sub>a</sub>(u.v) = nb<sub>a</sub>(u) + nb<sub>a</sub>(v)</span>. Pour la suite, on admettra également que <span class="math">nb<sub>b</sub>(uv) = nb<sub>b</sub>(u) + nb<sub>b</sub>(v)</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (2 points)</strong> On définit par induction structurelle le langage <span class="math">L &sube; A<sup>*</sup></span> par :</p>
+      <div class="definition">
+        <ul>
+          <li><span class="math">b &isin; L</span></li>
+          <li>pour tous <span class="math">u, v &isin; L</span>, <span class="math">a(u.v) &isin; L</span>.</li>
+        </ul>
+      </div>
+      <p>Montrer par induction structurelle que, pour tout mot <span class="math">u &isin; L</span>, <span class="math">nb<sub>b</sub>(u) = nb<sub>a</sub>(u) + 1</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-9">
+    <div class="question-title">
+      <h3>Question 9 - Langage inductif et longueur impaire</h3>
+      <span class="badge">2024</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2024</dd>
+        <dt>File:</dt><dd>exam24-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 22 décembre 2023, année 2023-2024</dd>
+        <dt>Exercise:</dt><dd>Exercice 2</dd>
+        <dt>Question:</dt><dd>Question unique</dd>
+        <dt>Page:</dt><dd>1-2</dd>
+        <dt>Topic:</dt><dd>Langage sur A*, induction structurelle, concaténation</dd>
+      </dl>
+    </div>
+    <p>Soit <span class="math">A = {a, b}</span> un alphabet. On définit le langage <span class="math">L &sube; A<sup>*</sup></span> par induction structurelle de la façon suivante :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">a &isin; L</span></li>
+        <li>pour tous <span class="math">u, v &isin; L</span>, <span class="math">u.v.b &isin; L</span></li>
+      </ul>
+    </div>
+    <div class="subquestion">
+      <p>Montrer par induction structurelle que, pour tout <span class="math">u &isin; L</span>, <span class="math">|u|</span> est impaire.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-10">
+    <div class="question-title">
+      <h3>Question 10 - L(A), Arden, complémentaire et intersection</h3>
+      <span class="badge">2024</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2024</dd>
+        <dt>File:</dt><dd>exam24-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 22 décembre 2023, année 2023-2024</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Questions (1), (2), (3), (4), (5)</dd>
+        <dt>Page:</dt><dd>2-3</dd>
+        <dt>Topic:</dt><dd>Automates, L(A), construction, déterminisme, complétude, expression rationnelle, complémentaire, intersection</dd>
+      </dl>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (0,5 point)</strong> On considère l'automate <span class="math">A</span> suivant. Donner informellement les mots de <span class="math">L(A)</span>.</p>
+      <div class="diagram">
+        <svg class="automaton" width="620" height="260" viewBox="0 0 620 260" role="img" aria-label="Automate A examen 2024">
+          <defs>
+            <marker id="arrow-q8a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+            </marker>
+          </defs>
+          <line class="edge" x1="75" y1="140" x2="136" y2="140" marker-end="url(#arrow-q8a)"></line>
+          <circle class="state" cx="170" cy="140" r="32"></circle>
+          <circle class="final" cx="170" cy="140" r="24"></circle>
+          <text x="170" y="147" text-anchor="middle" font-size="20">0</text>
+          <circle class="state" cx="430" cy="140" r="32"></circle>
+          <text x="430" y="147" text-anchor="middle" font-size="20">1</text>
+          <path class="edge" d="M151,113 C112,56 228,56 189,113" marker-end="url(#arrow-q8a)"></path>
+          <text class="label" x="170" y="73" text-anchor="middle">b</text>
+          <path class="edge" d="M411,113 C372,56 488,56 449,113" marker-end="url(#arrow-q8a)"></path>
+          <text class="label" x="430" y="73" text-anchor="middle">b</text>
+          <path class="edge" d="M202,130 C272,92 332,92 398,130" marker-end="url(#arrow-q8a)"></path>
+          <text class="label" x="300" y="92" text-anchor="middle">a</text>
+          <path class="edge" d="M398,154 C328,198 272,198 202,154" marker-end="url(#arrow-q8a)"></path>
+          <text class="label" x="300" y="211" text-anchor="middle">a</text>
+        </svg>
+        <div class="caption">Automate A donné dans le sujet.</div>
+      </div>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (1 point)</strong> Sur l'alphabet <span class="math">{a, b, c}</span>, on définit le langage <span class="math">L<sub>B</sub></span> comme le langage de tous les mots non vides comportant un nombre de lettres <span class="math">a</span> multiple de 3. Construire un automate, noté <span class="math">B</span> par la suite, reconnaissant <span class="math">L<sub>B</sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(3) (0,5 point)</strong> L'automate <span class="math">B</span> est-il déterministe ? complet ? Justifier les réponses.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(4) (2 points)</strong> Soit l'automate <span class="math">C</span> sur l'alphabet <span class="math">{a, b, c}</span> suivant. On remarquera qu'il a deux états entrants. Calculer une expression rationnelle pour le langage <span class="math">L(C)</span>. Justifier les étapes.</p>
+      <div class="diagram">
+        <svg class="automaton" width="760" height="300" viewBox="0 0 760 300" role="img" aria-label="Automate C examen 2024">
+          <defs>
+            <marker id="arrow-q8c" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+            </marker>
+          </defs>
+          <line class="edge" x1="92" y1="145" x2="136" y2="145" marker-end="url(#arrow-q8c)"></line>
+          <line class="edge" x1="340" y1="260" x2="340" y2="183" marker-end="url(#arrow-q8c)"></line>
+          <circle class="state" cx="170" cy="145" r="32"></circle>
+          <circle class="final" cx="170" cy="145" r="24"></circle>
+          <text x="170" y="152" text-anchor="middle" font-size="20">0</text>
+          <circle class="state" cx="340" cy="145" r="32"></circle>
+          <text x="340" y="152" text-anchor="middle" font-size="20">1</text>
+          <circle class="state" cx="540" cy="145" r="32"></circle>
+          <text x="540" y="152" text-anchor="middle" font-size="20">2</text>
+          <path class="edge" d="M151,118 C112,61 228,61 189,118" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="170" y="78" text-anchor="middle">a</text>
+          <path class="edge" d="M521,118 C482,61 598,61 559,118" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="540" y="78" text-anchor="middle">c</text>
+          <path class="edge" d="M202,135 C255,94 289,94 313,127" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="254" y="92" text-anchor="middle">a</text>
+          <path class="edge" d="M312,159 C263,199 224,199 198,164" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="254" y="213" text-anchor="middle">a</text>
+          <path class="edge" d="M372,135 C424,96 488,96 509,130" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="438" y="95" text-anchor="middle">c</text>
+          <path class="edge" d="M509,160 C458,203 398,202 370,164" marker-end="url(#arrow-q8c)"></path>
+          <text class="label" x="438" y="215" text-anchor="middle">b</text>
+        </svg>
+        <div class="caption">Automate C donné dans le sujet, avec deux états entrants : 0 et 1.</div>
+      </div>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(5) (4 points)</strong> On s'intéresse au langage <span class="math">N = L(C) &cap; compl(L(A))</span>, où <span class="math">compl(L(A)) = {a, b, c}<sup>*</sup> \ L(A)</span> est le langage complémentaire de <span class="math">L(A)</span>. Construire un automate reconnaissant <span class="math">N</span>.</p>
+      <div class="answer-box xlarge" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-11">
+    <div class="question-title">
+      <h3>Question 11 - Automate, déterminisme, complétude et mots acceptés</h3>
+      <span class="badge">2025</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2025</dd>
+        <dt>File:</dt><dd>partiel25-impression.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 6 novembre 2024, année 2024-2025</dd>
+        <dt>Exercise:</dt><dd>Exercice 5</dd>
+        <dt>Question:</dt><dd>Questions (1), (2)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Automate fini, déterministe/non-déterministe, complet/non-complet, mots acceptés</dd>
+      </dl>
+    </div>
+    <p>On considère l'alphabet <span class="math">A = {a, b}</span>. On note <span class="math">L = L(A)</span> le langage accepté par l'automate <span class="math">A</span> suivant :</p>
+    <div class="diagram">
+      <svg class="automaton" width="620" height="260" viewBox="0 0 620 260" role="img" aria-label="Automate partiel 2025">
+        <defs>
+          <marker id="arrow-q9" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <line class="edge" x1="75" y1="140" x2="136" y2="140" marker-end="url(#arrow-q9)"></line>
+        <circle class="state" cx="170" cy="140" r="32"></circle>
+        <text x="170" y="147" text-anchor="middle" font-size="20">0</text>
+        <circle class="state" cx="430" cy="140" r="32"></circle>
+        <circle class="final" cx="430" cy="140" r="24"></circle>
+        <text x="430" y="147" text-anchor="middle" font-size="20">1</text>
+        <path class="edge" d="M151,113 C112,56 228,56 189,113" marker-end="url(#arrow-q9)"></path>
+        <text class="label" x="170" y="73" text-anchor="middle">a</text>
+        <path class="edge" d="M411,113 C372,56 488,56 449,113" marker-end="url(#arrow-q9)"></path>
+        <text class="label" x="430" y="73" text-anchor="middle">a</text>
+        <path class="edge" d="M202,130 C272,92 332,92 398,130" marker-end="url(#arrow-q9)"></path>
+        <text class="label" x="300" y="92" text-anchor="middle">b</text>
+        <path class="edge" d="M398,154 C328,198 272,198 202,154" marker-end="url(#arrow-q9)"></path>
+        <text class="label" x="300" y="211" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automate donné dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (1 point)</strong> Cet automate est-il déterministe ? complet ? Justifier.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (2 points)</strong> Le mot <span class="math">baab</span> est-il accepté par l'automate ? Le mot <span class="math">babb</span> ? Justifier vos réponses.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-12">
+    <div class="question-title">
+      <h3>Question 12 - Miroir, palindrome et langage inductif</h3>
+      <span class="badge">2025</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2025</dd>
+        <dt>File:</dt><dd>exam25-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 16 décembre 2024, année 2024-2025</dd>
+        <dt>Exercise:</dt><dd>Exercice 2</dd>
+        <dt>Question:</dt><dd>Question unique</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Mots, miroir, epsilon, langage inductif</dd>
+      </dl>
+    </div>
+    <p>Soit <span class="math">A = {a, b}</span> un alphabet. Pour tout mot <span class="math">v &isin; A<sup>*</sup></span>, on définit son miroir <span class="math">v&#771;</span> de la façon suivante : si <span class="math">v = &epsilon;</span>, alors <span class="math">v&#771; = &epsilon;</span>. Si <span class="math">v = v<sub>1</sub> ... v<sub>n</sub></span>, avec <span class="math">v<sub>1</sub>, ..., v<sub>n</sub> &isin; A</span>, alors <span class="math">v&#771; = v<sub>n</sub> ... v<sub>1</sub></span>.</p>
+    <p>On définit le langage <span class="math">L &sube; A<sup>*</sup></span> par induction structurelle de la façon suivante :</p>
+    <div class="definition">
+      <ul>
+        <li><span class="math">&epsilon;, a, b</span> sont dans <span class="math">L</span>.</li>
+        <li>pour tout <span class="math">u &isin; L</span>, <span class="math">a.u.a</span> et <span class="math">b.u.b</span> sont dans <span class="math">L</span>.</li>
+      </ul>
+    </div>
+    <div class="subquestion">
+      <p>Montrer par induction structurelle, que tout mot <span class="math">u &isin; L</span> est tel que <span class="math">u = u&#771;</span>.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-13">
+    <div class="question-title">
+      <h3>Question 13 - Concaténation, déterminisation, expression régulière et palindromes</h3>
+      <span class="badge">2025</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2025</dd>
+        <dt>File:</dt><dd>exam25-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 16 décembre 2024, année 2024-2025</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Questions (1), (2a-d), (3a-b)</dd>
+        <dt>Page:</dt><dd>2-4</dd>
+        <dt>Topic:</dt><dd>Opération sur les langages, concaténation, automates, déterminisation, expression régulière, langage non reconnaissable</dd>
+      </dl>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (1 point)</strong> Pour tout langage <span class="math">L</span>, décrire le langage <span class="math">L.&empty;</span>, en justifiant.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <p>Sur l'alphabet <span class="math">A = {a, b}</span>, on considère les automates <span class="math">A<sub>1</sub></span> et <span class="math">A<sub>2</sub></span> ci-dessous, tels que <span class="math">L<sub>1</sub> = L(A<sub>1</sub>)</span> et <span class="math">L<sub>2</sub> = L(A<sub>2</sub>)</span>.</p>
+    <div class="diagram">
+      <svg class="automaton" width="980" height="340" viewBox="0 0 980 340" role="img" aria-label="Automates A1 et A2 examen 2025">
+        <defs>
+          <marker id="arrow-q11" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="35" y="188" font-size="24" font-style="italic">A1 :</text>
+        <line class="edge" x1="95" y1="185" x2="136" y2="185" marker-end="url(#arrow-q11)"></line>
+        <circle class="state" cx="170" cy="185" r="32"></circle>
+        <text x="170" y="192" text-anchor="middle" font-size="20">q0</text>
+        <circle class="state" cx="320" cy="185" r="32"></circle>
+        <text x="320" y="192" text-anchor="middle" font-size="20">q1</text>
+        <circle class="state" cx="470" cy="185" r="32"></circle>
+        <circle class="final" cx="470" cy="185" r="24"></circle>
+        <text x="470" y="192" text-anchor="middle" font-size="20">q2</text>
+        <path class="edge" d="M151,158 C112,101 228,101 189,158" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="170" y="118" text-anchor="middle">a, b</text>
+        <line class="edge" x1="202" y1="185" x2="286" y2="185" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="245" y="163" text-anchor="middle">a</text>
+        <line class="edge" x1="352" y1="185" x2="436" y2="185" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="395" y="163" text-anchor="middle">a</text>
+        <path class="edge" d="M451,158 C412,101 528,101 489,158" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="470" y="118" text-anchor="middle">a, b</text>
+
+        <text x="570" y="188" font-size="24" font-style="italic">A2 :</text>
+        <line class="edge" x1="620" y1="245" x2="661" y2="245" marker-end="url(#arrow-q11)"></line>
+        <circle class="state" cx="695" cy="245" r="32"></circle>
+        <text x="695" y="252" text-anchor="middle" font-size="20">q0</text>
+        <circle class="state" cx="695" cy="78" r="32"></circle>
+        <text x="695" y="85" text-anchor="middle" font-size="20">q1</text>
+        <circle class="state" cx="835" cy="150" r="32"></circle>
+        <circle class="final" cx="835" cy="150" r="24"></circle>
+        <text x="835" y="157" text-anchor="middle" font-size="20">q2</text>
+        <circle class="state" cx="940" cy="150" r="32"></circle>
+        <text x="940" y="157" text-anchor="middle" font-size="20">q3</text>
+        <line class="edge" x1="695" y1="213" x2="695" y2="114" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="674" y="166" text-anchor="middle">a</text>
+        <line class="edge" x1="724" y1="232" x2="804" y2="167" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="760" y="185" text-anchor="middle">b</text>
+        <path class="edge" d="M676,51 C637,-6 753,-6 714,51" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="695" y="13" text-anchor="middle">a</text>
+        <line class="edge" x1="723" y1="94" x2="803" y2="134" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="764" y="101" text-anchor="middle">b</text>
+        <path class="edge" d="M813,174 C760,232 725,248 695,245" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="760" y="254" text-anchor="middle">a</text>
+        <line class="edge" x1="867" y1="150" x2="904" y2="150" marker-end="url(#arrow-q11)"></line>
+        <text class="label" x="885" y="128" text-anchor="middle">b</text>
+        <path class="edge" d="M959,177 C998,234 882,234 921,177" marker-end="url(#arrow-q11)"></path>
+        <text class="label" x="940" y="231" text-anchor="middle">a, b</text>
+      </svg>
+      <div class="caption">Automates A1 et A2 donnés dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>2.a. (0,5 point)</strong> Donner la description intuitive du langage accepté par <span class="math">A<sub>1</sub></span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (2 points)</strong> Donner un automate pour <span class="math">L<sub>1</sub>.L<sub>2</sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>c. (2,5 points)</strong> Déterminiser <span class="math">A<sub>1</sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>d. (2,5 points)</strong> En utilisant la méthode vue en cours, donner une expression régulière pour <span class="math">L<sub>2</sub></span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>Soit <span class="math">A = {a, b}</span> et soit <span class="math">L = {u &isin; A<sup>*</sup> | u = u&#771;}</span> l'ensemble des palindromes sur l'alphabet <span class="math">A</span>. On rappelle que l'opération miroir a été définie à l'exercice 2.</p>
+    <div class="subquestion">
+      <p><strong>3.a. (0,5 point)</strong> Le mot <span class="math">aabaa</span> appartient-il à <span class="math">L</span> ? Et le mot <span class="math">aaabaa</span> ?</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (2,5 points)</strong> Le langage <span class="math">L</span> est-il reconnaissable ? Justifier.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question" id="question-14">
+    <div class="question-title">
+      <h3>Question 14 - Automate et mots acceptés</h3>
+      <span class="badge">2026</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2026</dd>
+        <dt>File:</dt><dd>partiel26-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Partiel du 4 novembre 2025, année 2025-2026</dd>
+        <dt>Exercise:</dt><dd>Exercice 2</dd>
+        <dt>Question:</dt><dd>Question (1)</dd>
+        <dt>Page:</dt><dd>1</dd>
+        <dt>Topic:</dt><dd>Automate fini, mots acceptés/refusés, exécutions</dd>
+      </dl>
+    </div>
+    <p>On considère l'alphabet <span class="math">A = {a, b, c}</span>. Soit <span class="math">A</span> l'automate suivant :</p>
+    <div class="diagram">
+      <svg class="automaton" width="720" height="280" viewBox="0 0 720 280" role="img" aria-label="Automate partiel 2026">
+        <defs>
+          <marker id="arrow-q12" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="92" y="150" font-size="24" font-style="italic">A :</text>
+        <line class="edge" x1="155" y1="145" x2="212" y2="145" marker-end="url(#arrow-q12)"></line>
+        <circle class="state" cx="250" cy="145" r="34"></circle>
+        <text x="250" y="153" text-anchor="middle" font-size="22">0</text>
+        <circle class="state" cx="500" cy="145" r="34"></circle>
+        <circle class="final" cx="500" cy="145" r="26"></circle>
+        <text x="500" y="153" text-anchor="middle" font-size="22">1</text>
+        <path class="edge" d="M230,116 C190,56 310,56 270,116" marker-end="url(#arrow-q12)"></path>
+        <text class="label" x="250" y="74" text-anchor="middle">a, c</text>
+        <path class="edge" d="M480,116 C440,56 560,56 520,116" marker-end="url(#arrow-q12)"></path>
+        <text class="label" x="500" y="74" text-anchor="middle">b</text>
+        <path class="edge" d="M284,133 C350,92 405,92 468,133" marker-end="url(#arrow-q12)"></path>
+        <text class="label" x="375" y="94" text-anchor="middle">b</text>
+        <path class="edge" d="M468,159 C405,203 350,203 284,159" marker-end="url(#arrow-q12)"></path>
+        <text class="label" x="375" y="219" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automate donné dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (2 points)</strong> Le mot <span class="math">bacab</span> est-il accepté par l'automate ? et le mot <span class="math">baac</span> ? Justifier vos réponses.</p>
+      <div class="answer-box medium" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-15">
+    <div class="question-title">
+      <h3>Question 15 - Langages unaires, expression rationnelle et non-reconnaissabilité</h3>
+      <span class="badge">2026</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2026</dd>
+        <dt>File:</dt><dd>exam26-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 12 janvier 2026</dd>
+        <dt>Exercise:</dt><dd>Exercice 3</dd>
+        <dt>Question:</dt><dd>Questions (1a-b), (2a-c)</dd>
+        <dt>Page:</dt><dd>2</dd>
+        <dt>Topic:</dt><dd>Langage sur alphabet unaire, expression rationnelle, automate, mots, langage non reconnaissable</dd>
+      </dl>
+    </div>
+    <p>On se place sur l'alphabet réduit à une seule lettre <span class="math">A = {a}</span>.</p>
+    <div class="subquestion">
+      <p><strong>(1)</strong> Soit <span class="math">L</span> le langage sur <span class="math">A</span> contenant les mots de longueur <span class="math">n</span>, pout tout <span class="math">n</span> vérifiant <span class="math">n = 2 + 3 &times; k</span>, pour <span class="math">k &isin; N</span>.</p>
+      <p><strong>a. (1 point)</strong> Donner une expression rationnelle associée à <span class="math">L</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1 point)</strong> Dessiner un automate reconnaissant <span class="math">L</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <p>Soit <span class="math">L'</span> le langage sur <span class="math">A</span> tel que <span class="math">L' = {a<sup>p</sup> | p est un nombre premier}</span>.</p>
+    <div class="subquestion">
+      <p><strong>2.a. (1 point)</strong> Donner quatre mots de <span class="math">L'</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>b. (1 point)</strong> Donner quatre mots sur <span class="math">A</span> n'appartenant pas à <span class="math">L'</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>c. (3 points)</strong> Montrer que <span class="math">L'</span> n'est pas un langage reconnaissable.</p>
+      <p><strong>Remarque :</strong> On pourra utiliser le résultat suivant : soit <span class="math">r, k &isin; N</span> vérifiant <span class="math">r &ge; 1</span> et <span class="math">k &ge; 1</span>, alors il existe un entier <span class="math">s &ge; 1</span> tel que <span class="math">r + s &times; k</span> ne soit pas un entier premier.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+
+  <section class="question page-start" id="question-16">
+    <div class="question-title">
+      <h3>Question 16 - Automates, complétion, déterminisation, concaténation et Arden</h3>
+      <span class="badge">2026</span>
+    </div>
+    <div class="reference">
+      <dl>
+        <dt>Year:</dt><dd>2026</dd>
+        <dt>File:</dt><dd>exam26-corrige.pdf</dd>
+        <dt>Exam type:</dt><dd>Examen du 12 janvier 2026</dd>
+        <dt>Exercise:</dt><dd>Exercice 4</dd>
+        <dt>Question:</dt><dd>Questions (1) à (8)</dd>
+        <dt>Page:</dt><dd>3-4</dd>
+        <dt>Topic:</dt><dd>Automates finis, L(A), déterminisme, complétude, déterminisation, concaténation d'automates, lemme d'Arden, expression rationnelle</dd>
+      </dl>
+    </div>
+    <p>On considère l'alphabet <span class="math">A = {a, b}</span>. On note <span class="math">M = L(A)</span> et <span class="math">N = L(B)</span> pour les langages acceptés par les deux automates suivants :</p>
+    <div class="diagram">
+      <svg class="automaton" width="1050" height="360" viewBox="0 0 1050 360" role="img" aria-label="Automates A et B examen 2026">
+        <defs>
+          <marker id="arrow-q14" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <text x="42" y="185" font-size="25" font-style="italic">A :</text>
+        <line class="edge" x1="95" y1="180" x2="145" y2="180" marker-end="url(#arrow-q14)"></line>
+        <circle class="state" cx="185" cy="180" r="36"></circle>
+        <text x="185" y="188" text-anchor="middle" font-size="23">1</text>
+        <circle class="state" cx="385" cy="180" r="36"></circle>
+        <text x="385" y="188" text-anchor="middle" font-size="23">2</text>
+        <circle class="state" cx="585" cy="180" r="36"></circle>
+        <circle class="final" cx="585" cy="180" r="28"></circle>
+        <text x="585" y="188" text-anchor="middle" font-size="23">3</text>
+        <line class="edge" x1="221" y1="180" x2="345" y2="180" marker-end="url(#arrow-q14)"></line>
+        <text class="label" x="284" y="155" text-anchor="middle">b</text>
+        <path class="edge" d="M365,150 C320,82 450,82 405,150" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="385" y="100" text-anchor="middle">a</text>
+        <path class="edge" d="M420,168 C480,120 535,120 556,158" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="490" y="117" text-anchor="middle">a</text>
+        <path class="edge" d="M556,202 C494,252 435,252 414,205" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="490" y="267" text-anchor="middle">b</text>
+
+        <text x="664" y="185" font-size="25" font-style="italic">B :</text>
+        <line class="edge" x1="705" y1="180" x2="755" y2="180" marker-end="url(#arrow-q14)"></line>
+        <line class="edge" x1="880" y1="296" x2="880" y2="223" marker-end="url(#arrow-q14)"></line>
+        <circle class="state" cx="795" cy="180" r="36"></circle>
+        <text x="795" y="188" text-anchor="middle" font-size="23">0</text>
+        <circle class="state" cx="880" cy="180" r="36"></circle>
+        <text x="880" y="188" text-anchor="middle" font-size="23">1</text>
+        <circle class="state" cx="995" cy="180" r="36"></circle>
+        <circle class="final" cx="995" cy="180" r="28"></circle>
+        <text x="995" y="188" text-anchor="middle" font-size="23">2</text>
+        <path class="edge" d="M775,150 C730,82 860,82 815,150" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="795" y="100" text-anchor="middle">b</text>
+        <path class="edge" d="M860,150 C815,82 945,82 900,150" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="880" y="100" text-anchor="middle">b</text>
+        <path class="edge" d="M828,166 C845,155 860,155 872,164" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="848" y="140" text-anchor="middle">a</text>
+        <line class="edge" x1="916" y1="180" x2="955" y2="180" marker-end="url(#arrow-q14)"></line>
+        <text class="label" x="935" y="155" text-anchor="middle">a</text>
+        <path class="edge" d="M970,205 C910,260 835,258 810,206" marker-end="url(#arrow-q14)"></path>
+        <text class="label" x="890" y="270" text-anchor="middle">a</text>
+      </svg>
+      <div class="caption">Automates A et B donnés dans le sujet.</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(1) (1 point)</strong> Décrire informellement le langage <span class="math">M</span>.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(2) (1 point)</strong> L'automate <span class="math">A</span> est-il déterministe ? Justifier votre réponse.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(3) (1,5 points)</strong> Compléter l'automate <span class="math">A</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(4) (1 point)</strong> L'automate <span class="math">B</span> est-il complet ? Justifier votre réponse.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(5) (2 points)</strong> Déterminiser l'automate <span class="math">B</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(6) (2 points)</strong> Construire un automate acceptant le langage <span class="math">M.N</span>.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(7) (1 point)</strong> Énoncer le Lemme d'Arden.</p>
+      <div class="answer-box" contenteditable="true">Réponse :</div>
+    </div>
+    <div class="subquestion">
+      <p><strong>(8) (3 points)</strong> Calculer une expression rationnelle pour <span class="math">N</span>. Expliciter les calculs.</p>
+      <div class="answer-box large" contenteditable="true">Réponse :</div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
