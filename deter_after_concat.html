@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ε-closure و déterminisation بعد از concaténation</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#111827; --muted:#4b5563; --line:#d1d5db;
+  --blue:#4f46e5; --green:#059669; --amber:#f59e0b; --red:#dc2626;
+  --softBlue:#eef2ff; --softGreen:#ecfdf5; --softAmber:#fffbeb; --softRed:#fef2f2;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:28px;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px;color:#0b2447}
+h3{margin:20px 0 10px 0;color:#1849a9}
+.subtitle{max-width:1120px;margin:0 auto 28px auto;text-align:center;color:var(--muted);font-size:17px}
+.card{max-width:1280px;margin:0 auto 26px auto;background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{background:#fbfdff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+.fr{direction:ltr;text-align:left;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin:12px 0}
+code{direction:ltr;display:inline-block;background:#eef2ff;padding:2px 7px;border-radius:6px;font-family:Consolas,Monaco,monospace}
+table{width:100%;border-collapse:collapse;direction:ltr;text-align:center;margin-top:12px;font-size:15px}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.oldfinal{background:#fff7ed;font-weight:bold}
+.empty{background:#fef2f2;color:#991b1b;font-weight:bold}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.state{fill:#fff;stroke:#111827;stroke-width:3}
+.ring{fill:none;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.edge2{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr2)}
+.rededge{stroke:#dc2626;stroke-width:3;fill:none;stroke-dasharray:8 6;marker-end:url(#redarr)}
+.label{font-size:17px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:15px;font-weight:bold;fill:#111827;direction:ltr}
+.redtxt{font-size:16px;font-weight:bold;fill:#dc2626;direction:ltr}
+.step{border-right:4px solid #c7d2fe;padding:8px 12px;background:#fafafa;border-radius:8px;margin:10px 0}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>حذف <code>ε</code> و déterminisation بعد از concaténation</h1>
+<p class="subtitle">
+این فایل فقط همان بخش سخت را توضیح می‌دهد: وقتی با <code>ε</code> اتومات concaténation ساختیم، اگر استاد بگوید «بدون <code>ε</code>» یا «déterministe» چه کار کنیم؟
+</p>
+
+<section class="card">
+<h2>۱) مشکل دقیق چیست؟</h2>
+
+<div class="note">
+در concaténation، ما معمولاً از finalهای اتومات اول به initialهای اتومات دوم یک transition با <code>ε</code> اضافه می‌کنیم.
+اما <code>ε</code> یعنی حرکت بدون خواندن حرف. این کار معمولاً اتومات را <code>non déterministe</code> می‌کند.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>اتومات با <code>ε</code></h3>
+<p>برای ساخت سریع و درست <code>L1.L2</code> عالی است.</p>
+<p class="ltr center"><code>final A1 --ε--> initial A2</code></p>
+</div>
+
+<div class="box">
+<h3>اتومات déterministe</h3>
+<p>نباید transition با <code>ε</code> داشته باشد و از هر حالت با هر حرف حداکثر یک مقصد داشته باشد.</p>
+<p class="ltr center"><code>state --a--> one state</code></p>
+</div>
+</div>
+
+<div class="ok">
+راه استاندارد: اول <code>ε-NFA</code> بساز، بعد با روش <code>ε-closure</code> آن را déterminiser کن.
+</div>
+</section>
+
+<section class="card">
+<h2>۲) معنی <code>ε-closure</code></h2>
+
+<p>
+<code>ε-closure(q)</code> یعنی:
+</p>
+
+<div class="note">
+از حالت <code>q</code>، بدون خواندن هیچ حرفی، فقط با <code>ε</code>، به کدام حالت‌ها می‌توانم بروم؟ خود <code>q</code> هم همیشه داخل <code>ε-closure(q)</code> است.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>مثال خیلی کوچک</h3>
+<p class="ltr center"><code>q1 --ε--> p0</code></p>
+<p>پس:</p>
+<p class="ltr center" style="font-size:20px;"><code>ε-closure(q1) = {q1, p0}</code></p>
+<p>چون وقتی در <code>q1</code> هستی، بدون خواندن حرف می‌توانی در <code>p0</code> هم باشی.</p>
+</div>
+
+<div class="box">
+<h3>اگر چند <code>ε</code> پشت سر هم باشد</h3>
+<p class="ltr center"><code>q1 --ε--> p0 --ε--> r0</code></p>
+<p>پس:</p>
+<p class="ltr center" style="font-size:20px;"><code>ε-closure(q1) = {q1, p0, r0}</code></p>
+<p>چون می‌توانی چند حرکت <code>ε</code> پشت سر هم انجام بدهی.</p>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>۳) مثال کامل: concaténation با <code>ε</code>، سپس déterminisation</h2>
+
+<p>
+می‌خواهیم زبان زیر را بسازیم:
+</p>
+<p class="ltr center" style="font-size:22px;"><code>a+ . b+ = a+b+</code></p>
+<p>
+یعنی اول یک یا چند <code>a</code>، بعد یک یا چند <code>b</code>.
+</p>
+
+<div class="grid2">
+<div class="box">
+<h3>اتومات <code>A1</code> برای <code>a+</code></h3>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→ q0</td><td>q1</td><td>∅</td></tr>
+<tr><td>* q1</td><td>q1</td><td>∅</td></tr>
+</table>
+
+<svg viewBox="0 0 560 240">
+<defs>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker>
+<marker id="redarr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker>
+</defs>
+<path class="edge" d="M40 120 L105 120"/>
+<circle class="state" cx="150" cy="120" r="40"/><text class="label" x="150" y="120">q0</text>
+<circle class="state" cx="410" cy="120" r="40"/><circle class="ring" cx="410" cy="120" r="31"/><text class="label" x="410" y="120">q1</text>
+<path class="edge" d="M190 120 L365 120"/><text class="txt" x="280" y="100">a</text>
+<path class="edge" d="M392 85 C350 35,470 35,428 85"/><text class="txt" x="410" y="30">a</text>
+</svg>
+</div>
+
+<div class="box">
+<h3>اتومات <code>A2</code> برای <code>b+</code></h3>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→ p0</td><td>∅</td><td>p1</td></tr>
+<tr><td>* p1</td><td>∅</td><td>p1</td></tr>
+</table>
+
+<svg viewBox="0 0 560 240">
+<defs><marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker></defs>
+<path class="edge2" d="M40 120 L105 120"/>
+<circle class="state" cx="150" cy="120" r="40"/><text class="label" x="150" y="120">p0</text>
+<circle class="state" cx="410" cy="120" r="40"/><circle class="ring" cx="410" cy="120" r="31"/><text class="label" x="410" y="120">p1</text>
+<path class="edge2" d="M190 120 L365 120"/><text class="txt" x="280" y="100">b</text>
+<path class="edge2" d="M392 85 C350 35,470 35,428 85"/><text class="txt" x="410" y="30">b</text>
+</svg>
+</div>
+</div>
+
+<h3>۳.۱) اتومات concaténé با <code>ε</code></h3>
+
+<p>
+final اتومات اول <code>q1</code> است. initial اتومات دوم <code>p0</code> است. پس:
+</p>
+<p class="ltr center" style="font-size:20px;"><code>q1 --ε--> p0</code></p>
+
+<svg viewBox="0 0 1050 300">
+<path class="edge" d="M35 150 L85 150"/>
+<circle class="state" cx="130" cy="150" r="38"/><text class="label" x="130" y="150">q0</text>
+<circle class="state oldfinal" cx="330" cy="150" r="38"/><text class="label" x="330" y="150">q1</text>
+<path class="edge" d="M168 150 L292 150"/><text class="txt" x="230" y="130">a</text>
+<path class="edge" d="M312 115 C272 65,390 65,350 115"/><text class="txt" x="330" y="60">a</text>
+
+<path class="rededge" d="M368 150 L515 150"/><text class="redtxt" x="445" y="125">ε</text>
+
+<circle class="state" cx="560" cy="150" r="38"/><text class="label" x="560" y="150">p0</text>
+<circle class="state" cx="760" cy="150" r="38"/><circle class="ring" cx="760" cy="150" r="30"/><text class="label" x="760" y="150">p1</text>
+<path class="edge" d="M598 150 L722 150"/><text class="txt" x="660" y="130">b</text>
+<path class="edge" d="M742 115 C702 65,820 65,780 115"/><text class="txt" x="760" y="60">b</text>
+</svg>
+
+<div class="warn">
+در این اتومات، <code>q1</code> دیگر final نهایی نیست؛ final نهایی فقط <code>p1</code> است. اما <code>q1</code> با <code>ε</code> می‌تواند به <code>p0</code> برود.
+</div>
+</section>
+
+<section class="card">
+<h2>۴) حالا déterminisation با <code>ε-closure</code></h2>
+
+<h3>قانون مهم</h3>
+
+<div class="note">
+برای هر مجموعهٔ حالت <code>S</code> و هر حرف <code>x</code>:
+<p class="ltr center" style="font-size:20px;"><code>δD(S,x) = ε-closure(move(S,x))</code></p>
+یعنی:
+<ol>
+<li>اول با حرف <code>x</code> حرکت کن.</li>
+<li>بعد هرجا رسیدی، تمام <code>ε</code>-ها را هم دنبال کن.</li>
+</ol>
+</div>
+
+<h3>۴.۱) شروع DFA</h3>
+<p>
+initial اتومات NFA برابر <code>q0</code> است.
+</p>
+<p class="ltr center"><code>ε-closure(q0) = {q0}</code></p>
+<p>
+پس initial اتومات déterministe:
+</p>
+<p class="ltr center" style="font-size:22px;"><code>{q0}</code></p>
+
+<h3>۴.۲) محاسبهٔ transitionها</h3>
+
+<table>
+<tr><th>État DFA</th><th>با a چه می‌شود؟</th><th>با b چه می‌شود؟</th><th>Final?</th></tr>
+
+<tr>
+<td>→ <code>{q0}</code></td>
+<td>
+<code>move({q0},a)={q1}</code><br>
+<code>ε-closure({q1})={q1,p0}</code>
+</td>
+<td>
+<code>move({q0},b)=∅</code><br>
+<code>ε-closure(∅)=∅</code>
+</td>
+<td>non</td>
+</tr>
+
+<tr>
+<td><code>{q1,p0}</code></td>
+<td>
+<code>move({q1,p0},a)={q1}</code><br>
+<code>ε-closure({q1})={q1,p0}</code>
+</td>
+<td>
+<code>move({q1,p0},b)={p1}</code><br>
+<code>ε-closure({p1})={p1}</code>
+</td>
+<td>non</td>
+</tr>
+
+<tr>
+<td class="final"><code>{p1}</code></td>
+<td>
+<code>move({p1},a)=∅</code><br>
+<code>ε-closure(∅)=∅</code>
+</td>
+<td>
+<code>move({p1},b)={p1}</code><br>
+<code>ε-closure({p1})={p1}</code>
+</td>
+<td class="final">oui</td>
+</tr>
+
+<tr>
+<td><code>∅</code></td>
+<td><code>∅</code></td>
+<td><code>∅</code></td>
+<td>non</td>
+</tr>
+</table>
+
+<div class="ok">
+چرا <code>{q1,p0}</code> final نیست؟ چون final نهایی اتومات concaténé فقط <code>p1</code> است. مجموعه‌ای final می‌شود که داخلش <code>p1</code> داشته باشد.
+</div>
+</section>
+
+<section class="card">
+<h2>۵) جدول نهایی DFA بدون <code>ε</code></h2>
+
+<table>
+<tr><th>DFA</th><th>a</th><th>b</th><th>Final?</th></tr>
+<tr><td>→ <code>{q0}</code></td><td><code>{q1,p0}</code></td><td><code>∅</code></td><td>non</td></tr>
+<tr><td><code>{q1,p0}</code></td><td><code>{q1,p0}</code></td><td><code>{p1}</code></td><td>non</td></tr>
+<tr><td class="final">* <code>{p1}</code></td><td><code>∅</code></td><td><code>{p1}</code></td><td class="final">oui</td></tr>
+<tr><td><code>∅</code></td><td><code>∅</code></td><td><code>∅</code></td><td>non</td></tr>
+</table>
+
+<h3>۵.۱) اتومات نهایی بدون <code>ε</code></h3>
+
+<svg viewBox="0 0 980 430">
+<path class="edge2" d="M45 215 L100 215"/>
+<circle class="state" cx="160" cy="215" r="50"/><text class="label" x="160" y="215">{q0}</text>
+
+<circle class="state" cx="420" cy="120" r="65"/><text class="label" x="420" y="120">{q1,p0}</text>
+
+<circle class="state" cx="700" cy="215" r="55"/><circle class="ring" cx="700" cy="215" r="44"/><text class="label" x="700" y="215">{p1}</text>
+
+<circle class="state" cx="420" cy="340" r="45"/><text class="label" x="420" y="340">∅</text>
+
+<path class="edge2" d="M205 195 C270 150,335 130,355 125"/><text class="txt" x="285" y="145">a</text>
+<path class="edge2" d="M200 240 C270 305,335 330,375 338"/><text class="txt" x="285" y="315">b</text>
+
+<path class="edge2" d="M485 140 C560 160,620 185,650 200"/><text class="txt" x="565" y="155">b</text>
+<path class="edge2" d="M400 55 C345 0,500 0,445 55"/><text class="txt" x="420" y="20">a</text>
+
+<path class="edge2" d="M685 160 C625 85,775 85,720 160"/><text class="txt" x="700" y="88">b</text>
+<path class="edge2" d="M670 245 C590 310,515 335,465 340"/><text class="txt" x="585" y="320">a</text>
+
+<path class="edge2" d="M405 385 C350 430,500 430,435 385"/><text class="txt" x="420" y="420">a,b</text>
+</svg>
+
+<div class="ok">
+این DFA دقیقاً زبان <code>a+b+</code> را قبول می‌کند: مثل <code>ab</code>, <code>aab</code>, <code>abb</code>, <code>aaabbb</code>.
+</div>
+</section>
+
+<section class="card">
+<h2>۶) تست چند کلمه</h2>
+
+<table>
+<tr><th>Mot</th><th>Parcours dans DFA</th><th>Résultat</th></tr>
+<tr>
+<td><code>ab</code></td>
+<td><code>{q0} --a--> {q1,p0} --b--> {p1}</code></td>
+<td class="final">accepté</td>
+</tr>
+<tr>
+<td><code>aab</code></td>
+<td><code>{q0} --a--> {q1,p0} --a--> {q1,p0} --b--> {p1}</code></td>
+<td class="final">accepté</td>
+</tr>
+<tr>
+<td><code>abb</code></td>
+<td><code>{q0} --a--> {q1,p0} --b--> {p1} --b--> {p1}</code></td>
+<td class="final">accepté</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td><code>{q0} --a--> {q1,p0}</code></td>
+<td class="empty">refusé</td>
+</tr>
+<tr>
+<td><code>ba</code></td>
+<td><code>{q0} --b--> ∅ --a--> ∅</code></td>
+<td class="empty">refusé</td>
+</tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۷) روش حفظی برای امتحان</h2>
+
+<div class="ok">
+<span class="ltr">
+1. Construire d'abord un ε-NFA pour la concaténation.<br>
+2. Calculer l'état initial du DFA : ε-closure({q0}).<br>
+3. Pour chaque état S du DFA et chaque lettre x, calculer : ε-closure(move(S,x)).<br>
+4. Ajouter les nouveaux états obtenus et recommencer.<br>
+5. Un état du DFA est final s'il contient au moins un état final de l'ε-NFA.
+</span>
+</div>
+
+<div class="warn">
+اشتباه رایج: فقط <code>move(S,x)</code> را حساب کنی و <code>ε-closure</code> بعدش را فراموش کنی. در این مثال اگر بعد از <code>{q0} --a</code> فقط <code>{q1}</code> بنویسی، اشتباه است؛ باید <code>{q1,p0}</code> بنویسی، چون از <code>q1</code> با <code>ε</code> به <code>p0</code> می‌رویم.
+</div>
+</section>
+
+</body>
+</html>
