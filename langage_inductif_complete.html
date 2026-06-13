@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Langage inductif — cours complet</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#ffffff; --ink:#111827; --muted:#4b5563; --line:#d1d5db;
+  --blue:#4f46e5; --green:#059669; --amber:#f59e0b; --red:#dc2626; --purple:#7c3aed;
+  --softBlue:#eef2ff; --softGreen:#ecfdf5; --softAmber:#fffbeb; --softRed:#fef2f2; --softPurple:#f5f3ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:28px;
+  font-family:Arial,Tahoma,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.9;
+}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px;color:#0b2447}
+h3{margin:20px 0 10px 0;color:#1849a9}
+.subtitle{
+  max-width:1120px;
+  margin:0 auto 28px auto;
+  text-align:center;
+  color:var(--muted);
+  font-size:17px;
+}
+.card{
+  max-width:1280px;
+  margin:0 auto 26px auto;
+  background:var(--card);
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{
+  background:#fbfdff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:16px;
+}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.purple{background:var(--softPurple);border-right:6px solid var(--purple);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+.fr{direction:ltr;text-align:left;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin:12px 0}
+code{
+  direction:ltr;
+  display:inline-block;
+  background:#eef2ff;
+  padding:2px 7px;
+  border-radius:6px;
+  font-family:Consolas,Monaco,monospace;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  direction:ltr;
+  text-align:center;
+  margin-top:12px;
+  font-size:15px;
+}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.empty{background:#fef2f2;color:#991b1b;font-weight:bold}
+.step{border-right:4px solid #c7d2fe;padding:8px 12px;background:#fafafa;border-radius:8px;margin:10px 0}
+.big{font-size:22px}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.node{fill:#fff;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.label{font-size:15px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:14px;font-weight:bold;fill:#111827;direction:ltr}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>Langage inductif — درس کامل از صفر تا امتحان</h1>
+<p class="subtitle">
+این آخرین موضوع مهم است: زبان‌هایی که با چند قانون ساخته می‌شوند، و بعد باید با <code>induction structurelle</code> یک خاصیت را برای همهٔ کلمات آن زبان ثابت کنیم.
+</p>
+
+<section class="card">
+<h2>۰) دقیقاً قرار است چه چیزی یاد بگیریم؟</h2>
+
+<div class="note">
+در <code>langage inductif</code> استاد یک زبان را با چند قانون تعریف می‌کند، نه با اتومات و نه با expression. بعد می‌پرسد:
+<p class="ltr center big"><code>Montrer que pour tout mot u ∈ L, une propriété P(u) est vraie.</code></p>
+یعنی باید ثابت کنیم هر کلمه‌ای که با این قوانین ساخته شده، آن خاصیت را دارد.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>چیزی که داده می‌شود</h3>
+<p>قانون‌های ساخت زبان، مثل:</p>
+<p class="ltr center"><code>b ∈ L</code></p>
+<p class="ltr center"><code>si u,v ∈ L alors a(uv) ∈ L</code></p>
+</div>
+
+<div class="box">
+<h3>چیزی که باید ثابت کنی</h3>
+<p>یک propriété برای همهٔ کلمات:</p>
+<p class="ltr center"><code>∀u ∈ L, nb_b(u)=nb_a(u)+1</code></p>
+<p>یا:</p>
+<p class="ltr center"><code>∀u ∈ L, |u| est impaire</code></p>
+</div>
+</div>
+
+<div class="ok">
+این سؤال‌ها معمولاً ساختاری هستند؛ اگر قالب را یاد بگیری، اکثرشان با همان روش حل می‌شوند.
+</div>
+</section>
+
+<section class="card">
+<h2>۱) Langage inductif یعنی چه؟</h2>
+
+<div class="note">
+یعنی زبان با قانون‌های پایه و قانون‌های ساخت تعریف می‌شود.
+</div>
+
+<table>
+<tr><th>نوع قانون</th><th>معنی</th><th>مثال</th></tr>
+<tr>
+<td>قانون پایه</td>
+<td>از این کلمه‌ها شروع می‌کنیم.</td>
+<td><code>b ∈ L</code> یا <code>a ∈ L</code></td>
+</tr>
+<tr>
+<td>قانون ساخت</td>
+<td>اگر چند کلمه داخل زبان باشند، یک کلمهٔ جدید می‌سازیم.</td>
+<td><code>si u,v ∈ L alors a(uv) ∈ L</code></td>
+</tr>
+<tr>
+<td>اصل کمینگی</td>
+<td>هیچ کلمهٔ دیگری داخل زبان نیست مگر با همین قوانین ساخته شود.</td>
+<td><code>L est le plus petit langage vérifiant ces règles</code></td>
+</tr>
+</table>
+
+<div class="warn">
+وقتی می‌گوید <code>L est défini inductivement</code>، یعنی فقط کلماتی داخل <code>L</code> هستند که از قوانین داده‌شده ساخته شده باشند.
+</div>
+</section>
+
+<section class="card">
+<h2>۲) مثال خیلی ساده برای فهم</h2>
+
+<div class="fr">
+On définit un langage <code>L</code> par :
+<ul>
+<li><code>a ∈ L</code></li>
+<li>si <code>u ∈ L</code>, alors <code>ub ∈ L</code></li>
+</ul>
+</div>
+
+<h3>این زبان چه کلماتی دارد؟</h3>
+
+<div class="step">
+با قانون پایه:
+<p class="ltr center"><code>a ∈ L</code></p>
+</div>
+
+<div class="step">
+از <code>a</code> می‌سازیم:
+<p class="ltr center"><code>ab ∈ L</code></p>
+</div>
+
+<div class="step">
+دوباره:
+<p class="ltr center"><code>abb ∈ L</code></p>
+</div>
+
+<div class="step">
+دوباره:
+<p class="ltr center"><code>abbb ∈ L</code></p>
+</div>
+
+<div class="ok">
+پس زبان این است:
+<p class="ltr center big"><code>L = {ab^n | n ∈ N}</code></p>
+یعنی یک <code>a</code> و بعد هر تعداد <code>b</code>.
+</div>
+</section>
+
+<section class="card">
+<h2>۳) Induction structurelle یعنی چه؟</h2>
+
+<div class="note">
+وقتی زبان با قوانین ساخته می‌شود، اثبات هم باید با همان قوانین انجام شود.
+</div>
+
+<table>
+<tr><th>اگر زبان این‌طور تعریف شود</th><th>اثبات چطور است؟</th></tr>
+<tr>
+<td><code>b ∈ L</code></td>
+<td>باید propriété را برای <code>b</code> ثابت کنی.</td>
+</tr>
+<tr>
+<td><code>si u,v ∈ L alors a(uv) ∈ L</code></td>
+<td>فرض کن propriété برای <code>u</code> و <code>v</code> درست است، بعد برای <code>a(uv)</code> ثابت کن.</td>
+</tr>
+</table>
+
+<div class="ok">
+قانون طلایی:
+<p class="ltr center big"><code>تعریف زبان = نقشهٔ اثبات</code></p>
+هر قانون ساخت زبان، یک بخش در اثبات induction می‌شود.
+</div>
+</section>
+
+<section class="card">
+<h2>۴) قالب عمومی جواب امتحانی</h2>
+
+<div class="fr">
+Pour montrer que <code>P(w)</code> est vraie pour tout <code>w ∈ L</code>, on raisonne par induction structurelle sur la définition de <code>L</code>.
+</div>
+
+<h3>قالب فارسی ساده</h3>
+
+<div class="step">
+<strong>Base.</strong> قانون پایه را بررسی کن. مثلاً اگر <code>b ∈ L</code>، نشان بده <code>P(b)</code> درست است.
+</div>
+
+<div class="step">
+<strong>Hérédité / étape inductive.</strong> برای قانون ساخت، فرض کن خاصیت برای کلمات قبلی درست است. بعد نشان بده برای کلمهٔ جدید هم درست می‌شود.
+</div>
+
+<div class="step">
+<strong>Conclusion.</strong> چون زبان فقط با این قوانین ساخته شده، پس خاصیت برای همهٔ کلمات <code>L</code> درست است.
+</div>
+
+<div class="ok">
+جملهٔ آماده:
+<p class="ltr">
+On raisonne par induction structurelle sur la définition de <code>L</code>. On vérifie d'abord les cas de base, puis on montre que les règles de construction préservent la propriété.
+</p>
+</div>
+</section>
+
+<section class="card">
+<h2>۵) مثال کامل ۱ — قانون <code>b ∈ L</code> و <code>a(uv) ∈ L</code></h2>
+
+<div class="fr">
+On définit par induction structurelle le langage <code>L ⊆ {a,b}*</code> par :
+<ul>
+<li><code>b ∈ L</code></li>
+<li>pour tous <code>u,v ∈ L</code>, <code>a(uv) ∈ L</code></li>
+</ul>
+Montrer que pour tout mot <code>w ∈ L</code>, <code>nb_b(w)=nb_a(w)+1</code>.
+</div>
+
+<h3>اول بفهمیم زبان چطور ساخته می‌شود</h3>
+
+<div class="step">
+کلمهٔ پایه:
+<p class="ltr center"><code>b</code></p>
+</div>
+
+<div class="step">
+اگر <code>u=b</code> و <code>v=b</code>، پس:
+<p class="ltr center"><code>a(uv)=abb ∈ L</code></p>
+</div>
+
+<div class="step">
+اگر <code>u=b</code> و <code>v=abb</code>، پس:
+<p class="ltr center"><code>a(babb)=ababb ∈ L</code></p>
+</div>
+
+<div class="note">
+هر بار که کلمهٔ جدید می‌سازیم، یک <code>a</code> اضافه می‌شود و دو کلمهٔ قبلی کنار هم می‌آیند. خاصیت می‌گوید همیشه تعداد <code>b</code>ها یکی بیشتر از تعداد <code>a</code>هاست.
+</div>
+
+<h3>اثبات مرحله‌به‌مرحله</h3>
+
+<h3>Base</h3>
+<p>برای کلمهٔ پایه <code>b</code>:</p>
+<p class="ltr center"><code>nb_b(b)=1</code></p>
+<p class="ltr center"><code>nb_a(b)=0</code></p>
+<p>پس:</p>
+<p class="ltr center big"><code>nb_b(b)=nb_a(b)+1</code></p>
+
+<div class="ok">Base درست است.</div>
+
+<h3>Étape inductive</h3>
+<p>فرض کنیم <code>u,v ∈ L</code> و خاصیت برای هر دو درست باشد:</p>
+<p class="ltr center"><code>nb_b(u)=nb_a(u)+1</code></p>
+<p class="ltr center"><code>nb_b(v)=nb_a(v)+1</code></p>
+
+<p>باید ثابت کنیم برای کلمهٔ جدید:</p>
+<p class="ltr center big"><code>w = a(uv)</code></p>
+داریم:
+<p class="ltr center"><code>nb_b(w)=nb_a(w)+1</code></p>
+
+<div class="step">
+تعداد <code>b</code>ها در <code>w=a(uv)</code>:
+<p class="ltr center"><code>nb_b(a(uv)) = nb_b(uv)</code></p>
+چون حرف اول <code>a</code> است و <code>b</code> اضافه نمی‌کند.
+</div>
+
+<div class="step">
+برای concaténation:
+<p class="ltr center"><code>nb_b(uv)=nb_b(u)+nb_b(v)</code></p>
+پس:
+<p class="ltr center"><code>nb_b(w)=nb_b(u)+nb_b(v)</code></p>
+</div>
+
+<div class="step">
+با فرض induction:
+<p class="ltr center"><code>nb_b(w)=(nb_a(u)+1)+(nb_a(v)+1)</code></p>
+<p class="ltr center"><code>nb_b(w)=nb_a(u)+nb_a(v)+2</code></p>
+</div>
+
+<div class="step">
+حالا تعداد <code>a</code>ها در <code>w=a(uv)</code>:
+<p class="ltr center"><code>nb_a(w)=1+nb_a(uv)</code></p>
+<p class="ltr center"><code>nb_a(w)=1+nb_a(u)+nb_a(v)</code></p>
+</div>
+
+<div class="step">
+پس:
+<p class="ltr center"><code>nb_a(w)+1 = [1+nb_a(u)+nb_a(v)] + 1</code></p>
+<p class="ltr center"><code>nb_a(w)+1 = nb_a(u)+nb_a(v)+2</code></p>
+</div>
+
+<div class="ok">
+دیدیم:
+<p class="ltr center"><code>nb_b(w)=nb_a(u)+nb_a(v)+2</code></p>
+و:
+<p class="ltr center"><code>nb_a(w)+1=nb_a(u)+nb_a(v)+2</code></p>
+پس:
+<p class="ltr center big"><code>nb_b(w)=nb_a(w)+1</code></p>
+</div>
+
+<h3>Conclusion</h3>
+<div class="ok">
+پس با induction structurelle، برای هر <code>w ∈ L</code> داریم:
+<p class="ltr center big"><code>nb_b(w)=nb_a(w)+1</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۶) جواب کوتاه exam-ready برای مثال ۱</h2>
+
+<div class="ok">
+<span class="ltr">
+On raisonne par induction structurelle sur la définition de <code>L</code>. Pour le cas de base, <code>b ∈ L</code>, on a <code>nb_b(b)=1</code> et <code>nb_a(b)=0</code>, donc <code>nb_b(b)=nb_a(b)+1</code>. Supposons maintenant que la propriété soit vraie pour <code>u</code> et <code>v</code> dans <code>L</code>. Pour <code>w=a(uv)</code>, on a <code>nb_b(w)=nb_b(u)+nb_b(v)</code>. Par hypothèse d'induction, cela vaut <code>nb_a(u)+1+nb_a(v)+1=nb_a(u)+nb_a(v)+2</code>. De plus, <code>nb_a(w)=1+nb_a(u)+nb_a(v)</code>. Donc <code>nb_b(w)=nb_a(w)+1</code>. Ainsi, la propriété est vraie pour tout mot de <code>L</code>.
+</span>
+</div>
+</section>
+
+<section class="card">
+<h2>۷) مثال کامل ۲ — طول فرد</h2>
+
+<div class="fr">
+On définit le langage <code>L ⊆ {a,b}*</code> par induction structurelle :
+<ul>
+<li><code>a ∈ L</code></li>
+<li>pour tous <code>u,v ∈ L</code>, <code>uvb ∈ L</code></li>
+</ul>
+Montrer que pour tout <code>w ∈ L</code>, <code>|w|</code> est impaire.
+</div>
+
+<h3>Base</h3>
+<p>کلمهٔ پایه <code>a</code> است.</p>
+<p class="ltr center"><code>|a|=1</code></p>
+<p><code>1</code> فرد است. پس base درست است.</p>
+
+<h3>Étape inductive</h3>
+<p>فرض کنیم <code>u</code> و <code>v</code> داخل <code>L</code> هستند و طول هر دو فرد است.</p>
+<p>پس عددهایی <code>p,q ∈ N</code> وجود دارند که:</p>
+<p class="ltr center"><code>|u|=2p+1</code></p>
+<p class="ltr center"><code>|v|=2q+1</code></p>
+
+<p>کلمهٔ جدید:</p>
+<p class="ltr center big"><code>w=uvb</code></p>
+
+<p>طول آن:</p>
+<p class="ltr center"><code>|w|=|u|+|v|+1</code></p>
+<p>جایگذاری:</p>
+<p class="ltr center"><code>|w|=(2p+1)+(2q+1)+1</code></p>
+<p class="ltr center"><code>|w|=2p+2q+3</code></p>
+<p class="ltr center"><code>|w|=2(p+q+1)+1</code></p>
+
+<div class="ok">
+پس <code>|w|</code> فرد است.
+</div>
+
+<h3>Conclusion</h3>
+<p>بنابراین برای همهٔ کلمات <code>w ∈ L</code>، طول <code>w</code> فرد است.</p>
+</section>
+
+<section class="card">
+<h2>۸) چگونه بفهمیم چه چیزی را باید ثابت کنیم؟</h2>
+
+<div class="note">
+در سؤال، معمولاً بعد از تعریف زبان، یک جمله با <code>Montrer que...</code> می‌آید. همان چیزی است که باید ثابت کنی.
+</div>
+
+<table>
+<tr><th>صورت سؤال</th><th>چیزی که باید ثابت کنی</th></tr>
+<tr>
+<td><code>Montrer que pour tout u ∈ L, nb_b(u)=nb_a(u)+1</code></td>
+<td>برای هر کلمهٔ ساخته‌شده، تعداد <code>b</code> یکی بیشتر از تعداد <code>a</code> است.</td>
+</tr>
+<tr>
+<td><code>Montrer que pour tout u ∈ L, |u| est impaire</code></td>
+<td>برای هر کلمهٔ ساخته‌شده، طول فرد است.</td>
+</tr>
+<tr>
+<td><code>Montrer que tout mot de L commence par a</code></td>
+<td>هر کلمهٔ ساخته‌شده با <code>a</code> شروع می‌شود.</td>
+</tr>
+<tr>
+<td><code>Montrer que tout mot de L est un palindrome</code></td>
+<td>هر کلمهٔ ساخته‌شده برابر miroir خودش است.</td>
+</tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۹) مثال ۳ — اثبات شروع با حرف خاص</h2>
+
+<div class="fr">
+On définit <code>L</code> par :
+<ul>
+<li><code>a ∈ L</code></li>
+<li>si <code>u ∈ L</code>, alors <code>aub ∈ L</code></li>
+</ul>
+Montrer que tout mot de <code>L</code> commence par <code>a</code>.
+</div>
+
+<h3>Base</h3>
+<p>کلمهٔ پایه <code>a</code> است و با <code>a</code> شروع می‌شود.</p>
+
+<h3>Étape inductive</h3>
+<p>فرض کنیم <code>u ∈ L</code> و <code>u</code> با <code>a</code> شروع می‌شود.</p>
+<p>کلمهٔ جدید:</p>
+<p class="ltr center"><code>aub</code></p>
+<p>این کلمه با حرف <code>a</code> شروع می‌شود، چون حرف اولش مستقیماً <code>a</code> است.</p>
+
+<div class="ok">
+پس هر کلمهٔ <code>L</code> با <code>a</code> شروع می‌شود.
+</div>
+</section>
+
+<section class="card">
+<h2>۱۰) مثال ۴ — اثبات palindrome بودن</h2>
+
+<div class="fr">
+On définit <code>L</code> par :
+<ul>
+<li><code>ε ∈ L</code></li>
+<li><code>a ∈ L</code> et <code>b ∈ L</code></li>
+<li>si <code>u ∈ L</code>, alors <code>aua ∈ L</code> et <code>bub ∈ L</code></li>
+</ul>
+Montrer que tout mot de <code>L</code> est un palindrome.
+</div>
+
+<h3>Base</h3>
+<p>کلمات پایه:</p>
+<p class="ltr center"><code>ε, a, b</code></p>
+همه palindrome هستند، چون با miroir خودشان برابرند.
+
+<h3>Étape inductive</h3>
+<p>فرض کنیم <code>u</code> palindrome است، یعنی:</p>
+<p class="ltr center"><code>u~ = u</code></p>
+
+<p>باید نشان دهیم <code>aua</code> و <code>bub</code> هم palindrome هستند.</p>
+
+<div class="step">
+برای <code>aua</code>:
+<p class="ltr center"><code>(aua)~ = a u~ a</code></p>
+چون <code>u~=u</code>:
+<p class="ltr center"><code>(aua)~ = aua</code></p>
+پس <code>aua</code> palindrome است.
+</div>
+
+<div class="step">
+برای <code>bub</code>:
+<p class="ltr center"><code>(bub)~ = b u~ b</code></p>
+چون <code>u~=u</code>:
+<p class="ltr center"><code>(bub)~ = bub</code></p>
+پس <code>bub</code> palindrome است.
+</div>
+
+<div class="ok">
+پس همهٔ کلمات <code>L</code> palindrome هستند.
+</div>
+</section>
+
+<section class="card">
+<h2>۱۱) اشتباهات رایج در langage inductif</h2>
+
+<table>
+<tr><th>اشتباه</th><th>چرا غلط است؟</th><th>درست</th></tr>
+<tr>
+<td>فقط چند مثال بسازی و بگویی پس درست است</td>
+<td>چند مثال proof نیست.</td>
+<td>باید با induction structurelle ثابت کنی.</td>
+</tr>
+<tr>
+<td>Base را فراموش کنی</td>
+<td>بدون base induction شروع نمی‌شود.</td>
+<td>همهٔ قوانین پایه را چک کن.</td>
+</tr>
+<tr>
+<td>برای قانون ساخت، فرض induction ننویسی</td>
+<td>باید از درستی خاصیت برای کلمات قبلی استفاده کنی.</td>
+<td>بنویس: Supposons que la propriété est vraie pour u et v.</td>
+</tr>
+<tr>
+<td>اگر قانون دو کلمه دارد، فقط یکی را بررسی کنی</td>
+<td>مثلاً <code>a(uv)</code> به هر دو <code>u</code> و <code>v</code> وابسته است.</td>
+<td>فرض induction را برای هر دو بنویس.</td>
+</tr>
+<tr>
+<td>Conclusion نگذاری</td>
+<td>جواب ناقص به نظر می‌رسد.</td>
+<td>بنویس: Donc par induction structurelle...</td>
+</tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۱۲) روش فوق خلاصه برای امتحان</h2>
+
+<div class="ok">
+<p class="ltr">
+1. Lire les règles qui définissent <code>L</code>.<br>
+2. Vérifier la propriété pour les mots de base.<br>
+3. Pour chaque règle de construction, supposer la propriété vraie pour les mots utilisés.<br>
+4. Montrer que la propriété reste vraie pour le nouveau mot construit.<br>
+5. Conclure par induction structurelle.
+</p>
+</div>
+</section>
+
+<section class="card">
+<h2>۱۳) تمرین‌های تو</h2>
+
+<p>اول تمرین ۱ را حل کن، بعد عکس بفرست.</p>
+
+<div class="fr">
+<strong>Exercice 1.</strong><br>
+On définit <code>L</code> par :
+<ul>
+<li><code>b ∈ L</code></li>
+<li>si <code>u ∈ L</code>, alors <code>aub ∈ L</code></li>
+</ul>
+Montrer que pour tout <code>w ∈ L</code>, <code>nb_a(w)=nb_b(w)-1</code>.
+</div>
+
+<div class="fr">
+<strong>Exercice 2.</strong><br>
+On définit <code>L</code> par :
+<ul>
+<li><code>a ∈ L</code></li>
+<li>si <code>u,v ∈ L</code>, alors <code>uvb ∈ L</code></li>
+</ul>
+Montrer que pour tout <code>w ∈ L</code>, <code>|w|</code> est impaire.
+</div>
+
+<div class="fr">
+<strong>Exercice 3.</strong><br>
+On définit <code>L</code> par :
+<ul>
+<li><code>ε ∈ L</code></li>
+<li>si <code>u ∈ L</code>, alors <code>aua ∈ L</code> et <code>bub ∈ L</code></li>
+</ul>
+Montrer que tout mot de <code>L</code> est un palindrome.
+</div>
+
+<div class="warn">
+برای تمرین ۱، دقیقاً این ساختار را بنویس: Base → Hypothèse d’induction → Étape inductive → Conclusion.
+</div>
+</section>
+
+</body>
+</html>
