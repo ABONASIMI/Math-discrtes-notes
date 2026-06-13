@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concaténation — Questions d'annales résolues</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#111827; --muted:#4b5563; --line:#d1d5db;
+  --blue:#4f46e5; --green:#059669; --amber:#f59e0b; --red:#dc2626;
+  --softBlue:#eef2ff; --softGreen:#ecfdf5; --softAmber:#fffbeb; --softRed:#fef2f2;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:28px;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px;color:#0b2447}
+h3{margin:20px 0 10px 0;color:#1849a9}
+.subtitle{max-width:1120px;margin:0 auto 28px auto;text-align:center;color:var(--muted);font-size:17px}
+.card{max-width:1280px;margin:0 auto 26px auto;background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{background:#fbfdff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+.fr{direction:ltr;text-align:left;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin:12px 0}
+code{direction:ltr;display:inline-block;background:#eef2ff;padding:2px 7px;border-radius:6px;font-family:Consolas,Monaco,monospace}
+table{width:100%;border-collapse:collapse;direction:ltr;text-align:center;margin-top:12px;font-size:15px}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.oldfinal{background:#fff7ed;font-weight:bold}
+.epsilon{color:#dc2626;font-weight:bold}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.state{fill:#fff;stroke:#111827;stroke-width:3}
+.ring{fill:none;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.edge2{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr2)}
+.rededge{stroke:#dc2626;stroke-width:3;fill:none;stroke-dasharray:8 6;marker-end:url(#redarr)}
+.label{font-size:16px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:15px;font-weight:bold;fill:#111827;direction:ltr}
+.redtxt{font-size:16px;font-weight:bold;fill:#dc2626;direction:ltr}
+.small{font-size:14px;color:#6b7280}
+.step{border-right:4px solid #c7d2fe;padding:8px 12px;background:#fafafa;border-radius:8px;margin:10px 0}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>Concaténation — سوال‌های Annales و حل مرحله‌به‌مرحله</h1>
+<p class="subtitle">
+این فایل فقط روی <code>concaténation</code> تمرکز دارد: هم concaténation زبان‌ها، هم concaténation اتومات‌ها. هرجا سؤال اتومات دارد، هر دو اتومات اصلی و اتومات ساخته‌شده را نشان داده‌ام.
+</p>
+
+<section class="card">
+<h2>۰) قانون اصلی concaténation</h2>
+
+<div class="note">
+اگر دو زبان داشته باشیم:
+<p class="ltr center" style="font-size:20px;"><code>L1.L2 = { uv | u ∈ L1 et v ∈ L2 }</code></p>
+یعنی کلمهٔ نهایی باید به دو قسمت تقسیم شود: اولی از <code>L1</code>، دومی از <code>L2</code>.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>برای زبان‌ها</h3>
+<p>اگر <code>u ∈ L1</code> و <code>v ∈ L2</code>، آنگاه <code>uv ∈ L1.L2</code>.</p>
+<p>مثلاً:</p>
+<p class="ltr center"><code>{a,bb}.{b,aa} = {ab, aaa, bbb, bbaa}</code></p>
+</div>
+
+<div class="box">
+<h3>برای اتومات‌ها</h3>
+<p>برای ساخت اتومات <code>L(A).L(B)</code>:</p>
+<ol>
+<li>اتومات <code>A</code> و <code>B</code> را کنار هم می‌گذاریم.</li>
+<li>از هر حالت final اتومات <code>A</code> یک transition با <code>ε</code> به حالت initial اتومات <code>B</code> می‌زنیم.</li>
+<li>حالت‌های final نهایی، حالت‌های final اتومات <code>B</code> هستند.</li>
+</ol>
+</div>
+</div>
+
+<div class="warn">
+اگر اتومات <code>B</code> چند حالت initial داشته باشد، از هر final اتومات <code>A</code> به همهٔ حالت‌های initial اتومات <code>B</code> یک transition با <code>ε</code> اضافه می‌کنیم.
+</div>
+</section>
+
+<section class="card">
+<h2>۱) Annale 2025 — سؤال کوتاه: <code>L.∅</code></h2>
+
+<div class="fr">
+<strong>Question exacte :</strong><br>
+<strong>(1) (1 point)</strong> Pour tout langage <span class="math">L</span>, décrire le langage <span class="math">L.&empty;</span>, en justifiant.
+</div>
+
+<h3>حل مرحله‌به‌مرحله</h3>
+
+<div class="step">
+<strong>Étape 1.</strong> تعریف concaténation:
+<p class="ltr center"><code>L.∅ = { uv | u ∈ L et v ∈ ∅ }</code></p>
+</div>
+
+<div class="step">
+<strong>Étape 2.</strong> اما <code>∅</code> هیچ کلمه‌ای ندارد. یعنی هیچ <code>v</code> وجود ندارد که <code>v ∈ ∅</code>.
+</div>
+
+<div class="step">
+<strong>Étape 3.</strong> پس هیچ کلمه‌ای نمی‌توان ساخت.
+<p class="ltr center" style="font-size:22px;"><code>L.∅ = ∅</code></p>
+</div>
+
+<div class="ok">
+<strong>Réponse examen :</strong><br>
+<span class="ltr">
+Pour tout langage <code>L</code>, on a <code>L.∅ = ∅</code>. En effet, un mot de <code>L.∅</code> serait de la forme <code>uv</code> avec <code>u ∈ L</code> et <code>v ∈ ∅</code>. Or il n'existe aucun mot <code>v ∈ ∅</code>. Donc <code>L.∅</code> est vide.
+</span>
+</div>
+</section>
+
+<section class="card">
+<h2>۲) Annale 2024 — concaténation و شمارش حروف</h2>
+
+<div class="fr">
+<strong>Question exacte :</strong><br>
+<strong>a. (2 points)</strong> On définit l'opération de concaténation par induction structurelle. Pour tout <span class="math">v ∈ A*</span> :
+<ul>
+<li><span class="math">ε.v = v</span></li>
+<li><span class="math">(au).v = a(u.v)</span> et <span class="math">(bu).v = b(u.v)</span>.</li>
+</ul>
+Soit <span class="math">v ∈ A*</span>. Montrer par induction structurelle que, pour tout mot <span class="math">u ∈ A*</span>,
+<span class="math">nb_a(u.v) = nb_a(u) + nb_a(v)</span>.
+</div>
+
+<h3>حل مرحله‌به‌مرحله</h3>
+
+<div class="note">
+اینجا سؤال اتومات ندارد. فقط می‌خواهد ثابت کنیم وقتی دو کلمه را می‌چسبانیم، تعداد <code>a</code>ها جمع می‌شود.
+</div>
+
+<h3>Base: <code>u = ε</code></h3>
+<p>
+باید نشان بدهیم:
+</p>
+<p class="ltr center"><code>nb_a(ε.v) = nb_a(ε) + nb_a(v)</code></p>
+<p>
+از تعریف concaténation داریم <code>ε.v = v</code>. پس:
+</p>
+<p class="ltr center"><code>nb_a(ε.v) = nb_a(v)</code></p>
+<p>
+و چون <code>nb_a(ε)=0</code>:
+</p>
+<p class="ltr center"><code>nb_a(ε)+nb_a(v)=0+nb_a(v)=nb_a(v)</code></p>
+<div class="ok">پس base درست است.</div>
+
+<h3>Cas 1: <code>u = au'</code></h3>
+<p>فرض استقرایی:</p>
+<p class="ltr center"><code>nb_a(u'.v)=nb_a(u')+nb_a(v)</code></p>
+<p>حالا:</p>
+<p class="ltr center"><code>nb_a((au').v)=nb_a(a(u'.v))</code></p>
+<p>چون اول یک <code>a</code> اضافه شده:</p>
+<p class="ltr center"><code>nb_a(a(u'.v)) = 1 + nb_a(u'.v)</code></p>
+<p>با فرض استقرایی:</p>
+<p class="ltr center"><code>1 + nb_a(u'.v) = 1 + nb_a(u') + nb_a(v)</code></p>
+<p>و چون <code>nb_a(au') = 1 + nb_a(u')</code>:</p>
+<p class="ltr center"><code>nb_a((au').v)=nb_a(au')+nb_a(v)</code></p>
+
+<h3>Cas 2: <code>u = bu'</code></h3>
+<p>فرض استقرایی همان است:</p>
+<p class="ltr center"><code>nb_a(u'.v)=nb_a(u')+nb_a(v)</code></p>
+<p>حالا:</p>
+<p class="ltr center"><code>nb_a((bu').v)=nb_a(b(u'.v))</code></p>
+<p>چون <code>b</code> تعداد <code>a</code> را زیاد نمی‌کند:</p>
+<p class="ltr center"><code>nb_a(b(u'.v)) = nb_a(u'.v)</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>nb_a((bu').v)=nb_a(u')+nb_a(v)</code></p>
+<p>و چون <code>nb_a(bu')=nb_a(u')</code>:</p>
+<p class="ltr center"><code>nb_a((bu').v)=nb_a(bu')+nb_a(v)</code></p>
+
+<div class="ok">
+<strong>Réponse examen courte :</strong><br>
+<span class="ltr">
+On raisonne par induction structurelle sur <code>u</code>. Le cas <code>u=ε</code> est immédiat car <code>ε.v=v</code> et <code>nb_a(ε)=0</code>. Si <code>u=au'</code>, alors <code>(au').v=a(u'.v)</code> et, par hypothèse d'induction, on obtient <code>nb_a((au').v)=1+nb_a(u'.v)=1+nb_a(u')+nb_a(v)=nb_a(au')+nb_a(v)</code>. Si <code>u=bu'</code>, alors <code>(bu').v=b(u'.v)</code>, donc <code>nb_a((bu').v)=nb_a(u'.v)=nb_a(u')+nb_a(v)=nb_a(bu')+nb_a(v)</code>. Donc la propriété est vraie pour tout <code>u ∈ A*</code>.
+</span>
+</div>
+</section>
+
+<section class="card">
+<h2>۳) Annale 2024 — langage inductif avec <code>a(u.v)</code></h2>
+
+<div class="fr">
+<strong>Question exacte :</strong><br>
+<strong>b. (2 points)</strong> On définit par induction structurelle le langage <span class="math">L ⊆ A*</span> par :
+<ul>
+<li><span class="math">b ∈ L</span></li>
+<li>pour tous <span class="math">u, v ∈ L</span>, <span class="math">a(u.v) ∈ L</span>.</li>
+</ul>
+Montrer par induction structurelle que, pour tout mot <span class="math">u ∈ L</span>, <span class="math">nb_b(u)=nb_a(u)+1</span>.
+</div>
+
+<h3>حل مرحله‌به‌مرحله</h3>
+
+<h3>Base: <code>b ∈ L</code></h3>
+<p>برای <code>b</code> داریم:</p>
+<p class="ltr center"><code>nb_b(b)=1</code></p>
+<p class="ltr center"><code>nb_a(b)=0</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>nb_b(b)=nb_a(b)+1</code></p>
+
+<h3>Étape inductive: <code>w = a(u.v)</code></h3>
+<p>فرض کنیم برای <code>u</code> و <code>v</code> درست است:</p>
+<p class="ltr center"><code>nb_b(u)=nb_a(u)+1</code></p>
+<p class="ltr center"><code>nb_b(v)=nb_a(v)+1</code></p>
+
+<p>حالا برای <code>w=a(u.v)</code>:</p>
+<p class="ltr center"><code>nb_b(w)=nb_b(a(u.v))=nb_b(u.v)</code></p>
+<p>چون <code>a</code> تعداد <code>b</code> را زیاد نمی‌کند. با قانون concaténation:</p>
+<p class="ltr center"><code>nb_b(u.v)=nb_b(u)+nb_b(v)</code></p>
+<p>با فرض استقرایی:</p>
+<p class="ltr center"><code>nb_b(u)+nb_b(v)=(nb_a(u)+1)+(nb_a(v)+1)</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>nb_b(w)=nb_a(u)+nb_a(v)+2</code></p>
+
+<p>از طرف دیگر:</p>
+<p class="ltr center"><code>nb_a(w)=nb_a(a(u.v))=1+nb_a(u.v)</code></p>
+<p>و:</p>
+<p class="ltr center"><code>nb_a(u.v)=nb_a(u)+nb_a(v)</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>nb_a(w)=1+nb_a(u)+nb_a(v)</code></p>
+<p>بنابراین:</p>
+<p class="ltr center"><code>nb_b(w)=nb_a(w)+1</code></p>
+
+<div class="ok">
+<strong>نتیجه:</strong> برای همهٔ کلمات <code>w ∈ L</code> داریم:
+<p class="ltr center"><code>nb_b(w)=nb_a(w)+1</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۴) Annale 2024 — langage inductif avec <code>u.v.b</code></h2>
+
+<div class="fr">
+<strong>Question exacte :</strong><br>
+Soit <span class="math">A={a,b}</span> un alphabet. On définit le langage <span class="math">L ⊆ A*</span> par induction structurelle de la façon suivante :
+<ul>
+<li><span class="math">a ∈ L</span></li>
+<li>pour tous <span class="math">u, v ∈ L</span>, <span class="math">u.v.b ∈ L</span></li>
+</ul>
+Montrer par induction structurelle que, pour tout <span class="math">u ∈ L</span>, <span class="math">|u|</span> est impaire.
+</div>
+
+<h3>حل مرحله‌به‌مرحله</h3>
+
+<h3>Base: <code>a ∈ L</code></h3>
+<p>طول <code>a</code> برابر است با:</p>
+<p class="ltr center"><code>|a| = 1</code></p>
+<p>و <code>1</code> فرد است. پس base درست است.</p>
+
+<h3>Étape inductive</h3>
+<p>فرض کنیم <code>u</code> و <code>v</code> طول فرد دارند:</p>
+<p class="ltr center"><code>|u| = 2p+1</code></p>
+<p class="ltr center"><code>|v| = 2q+1</code></p>
+<p>حالا کلمهٔ جدید:</p>
+<p class="ltr center"><code>w = u.v.b</code></p>
+<p>طول آن:</p>
+<p class="ltr center"><code>|w| = |u| + |v| + 1</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>|w| = (2p+1)+(2q+1)+1 = 2(p+q+1)+1</code></p>
+<p>این عدد فرد است.</p>
+
+<div class="ok">
+<strong>Réponse examen :</strong><br>
+<span class="ltr">
+Par induction structurelle sur la définition de <code>L</code>. Le mot de base <code>a</code> est de longueur <code>1</code>, donc impaire. Supposons que <code>u</code> et <code>v</code> soient de longueurs impaires, donc <code>|u|=2p+1</code> et <code>|v|=2q+1</code>. Alors <code>|u.v.b|=|u|+|v|+1=(2p+1)+(2q+1)+1=2(p+q+1)+1</code>, qui est impair. Donc tout mot de <code>L</code> est de longueur impaire.
+</span>
+</div>
+</section>
+
+<section class="card">
+<h2>۵) Annale 2025 — construire un automate pour <code>L1.L2</code></h2>
+
+<div class="fr">
+<strong>Question exacte :</strong><br>
+Sur l'alphabet <span class="math">A={a,b}</span>, on considère les automates <span class="math">A1</span> et <span class="math">A2</span>, tels que <span class="math">L1=L(A1)</span> et <span class="math">L2=L(A2)</span>.<br>
+<strong>b. (2 points)</strong> Donner un automate pour <span class="math">L1.L2</span>.
+</div>
+
+<h3>۵.۱) دو اتومات اصلی</h3>
+
+<div class="grid2">
+<div class="box">
+<h3 class="ltr">Automate A1</h3>
+<p>ایدهٔ <code>A1</code>: کلمات دارای عامل <code>aa</code>.</p>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→ q0</td><td>{q0,q1}</td><td>{q0}</td></tr>
+<tr><td>q1</td><td>{q2}</td><td>∅</td></tr>
+<tr><td>* q2</td><td>{q2}</td><td>{q2}</td></tr>
+</table>
+
+<svg viewBox="0 0 680 260">
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker>
+<marker id="redarr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker></defs>
+<path class="edge" d="M40 130 L90 130"/>
+<circle class="state" cx="135" cy="130" r="38"/><text class="label" x="135" y="130">q0</text>
+<circle class="state" cx="335" cy="130" r="38"/><text class="label" x="335" y="130">q1</text>
+<circle class="state" cx="535" cy="130" r="38"/><circle class="ring" cx="535" cy="130" r="30"/><text class="label" x="535" y="130">q2</text>
+<path class="edge" d="M173 130 L297 130"/><text class="txt" x="235" y="112">a</text>
+<path class="edge" d="M373 130 L497 130"/><text class="txt" x="435" y="112">a</text>
+<path class="edge" d="M118 95 C75 45,195 45,152 95"/><text class="txt" x="135" y="40">a,b</text>
+<path class="edge" d="M518 95 C475 45,595 45,552 95"/><text class="txt" x="535" y="40">a,b</text>
+</svg>
+</div>
+
+<div class="box">
+<h3 class="ltr">Automate A2</h3>
+<p>ایدهٔ <code>A2</code>: یک زبان داده‌شده در sujet؛ حالت final آن <code>q2</code> است.</p>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→ q0</td><td>q1</td><td>q2</td></tr>
+<tr><td>q1</td><td>q1</td><td>q2</td></tr>
+<tr><td>* q2</td><td>q0</td><td>q3</td></tr>
+<tr><td>q3</td><td>q3</td><td>q3</td></tr>
+</table>
+
+<svg viewBox="0 0 760 330">
+<path class="edge" d="M40 250 L90 250"/>
+<circle class="state" cx="135" cy="250" r="36"/><text class="label" x="135" y="250">p0</text>
+<circle class="state" cx="135" cy="80" r="36"/><text class="label" x="135" y="80">p1</text>
+<circle class="state" cx="370" cy="165" r="38"/><circle class="ring" cx="370" cy="165" r="30"/><text class="label" x="370" y="165">p2</text>
+<circle class="state" cx="600" cy="165" r="38"/><text class="label" x="600" y="165">p3</text>
+<path class="edge" d="M135 214 L135 116"/><text class="txt" x="110" y="165">a</text>
+<path class="edge" d="M170 235 C245 200,300 180,335 170"/><text class="txt" x="250" y="195">b</text>
+<path class="edge" d="M170 95 C240 110,300 140,335 155"/><text class="txt" x="250" y="115">b</text>
+<path class="edge" d="M340 190 C270 250,200 260,170 252"/><text class="txt" x="245" y="275">a</text>
+<path class="edge" d="M408 165 L562 165"/><text class="txt" x="485" y="145">b</text>
+<path class="edge" d="M582 128 C540 75,660 75,618 128"/><text class="txt" x="600" y="70">a,b</text>
+<path class="edge" d="M118 43 C75 -5,195 -5,152 43"/><text class="txt" x="135" y="15">a</text>
+</svg>
+</div>
+</div>
+
+<h3>۵.۲) ساخت concaténation</h3>
+<div class="step">
+<strong>Étape 1.</strong> حالت final اتومات <code>A1</code> برابر است با <code>q2</code>.
+</div>
+<div class="step">
+<strong>Étape 2.</strong> حالت initial اتومات <code>A2</code> برابر است با <code>p0</code>، چون برای جلوگیری از اشتباه، حالت‌های <code>A2</code> را به <code>p0,p1,p2,p3</code> تغییر نام دادیم.
+</div>
+<div class="step">
+<strong>Étape 3.</strong> یک transition با <code>ε</code> از <code>q2</code> به <code>p0</code> اضافه می‌کنیم.
+</div>
+<div class="step">
+<strong>Étape 4.</strong> finalهای اتومات جدید، finalهای <code>A2</code> هستند؛ یعنی فقط <code>p2</code>.
+</div>
+
+<h3>۵.۳) اتومات نهایی برای <code>L1.L2</code></h3>
+<svg viewBox="0 0 1120 420">
+<defs><marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker>
+<marker id="redarr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker></defs>
+<!-- A1 -->
+<path class="edge2" d="M30 205 L75 205"/>
+<circle class="state" cx="120" cy="205" r="36"/><text class="label" x="120" y="205">q0</text>
+<circle class="state" cx="270" cy="205" r="36"/><text class="label" x="270" y="205">q1</text>
+<circle class="state oldfinal" cx="420" cy="205" r="36"/><text class="label" x="420" y="205">q2</text>
+<path class="edge2" d="M156 205 L234 205"/><text class="txt" x="195" y="185">a</text>
+<path class="edge2" d="M306 205 L384 205"/><text class="txt" x="345" y="185">a</text>
+<path class="edge2" d="M105 170 C65 120,175 120,135 170"/><text class="txt" x="120" y="110">a,b</text>
+<path class="edge2" d="M405 170 C365 120,475 120,435 170"/><text class="txt" x="420" y="110">a,b</text>
+<!-- epsilon -->
+<path class="rededge" style="marker-end:url(#redarr2)" d="M456 205 C505 205,525 275,575 300"/><text class="redtxt" x="515" y="238">ε</text>
+<!-- A2 -->
+<circle class="state" cx="635" cy="300" r="36"/><text class="label" x="635" y="300">p0</text>
+<circle class="state" cx="635" cy="110" r="36"/><text class="label" x="635" y="110">p1</text>
+<circle class="state" cx="840" cy="205" r="38"/><circle class="ring" cx="840" cy="205" r="30"/><text class="label" x="840" y="205">p2</text>
+<circle class="state" cx="1020" cy="205" r="36"/><text class="label" x="1020" y="205">p3</text>
+<path class="edge2" d="M635 264 L635 146"/><text class="txt" x="610" y="205">a</text>
+<path class="edge2" d="M670 285 C735 250,790 220,805 212"/><text class="txt" x="735" y="250">b</text>
+<path class="edge2" d="M670 120 C735 135,790 175,805 195"/><text class="txt" x="735" y="140">b</text>
+<path class="edge2" d="M812 230 C740 315,680 320,660 310"/><text class="txt" x="735" y="330">a</text>
+<path class="edge2" d="M878 205 L984 205"/><text class="txt" x="930" y="185">b</text>
+<path class="edge2" d="M1005 170 C965 120,1075 120,1035 170"/><text class="txt" x="1020" y="110">a,b</text>
+<path class="edge2" d="M620 75 C580 25,690 25,650 75"/><text class="txt" x="635" y="20">a</text>
+</svg>
+
+<div class="ok">
+<strong>Réponse examen :</strong> L'automate de <code>L1.L2</code> est obtenu en gardant les deux automates, en ajoutant une transition <code>ε</code> de <code>q2</code> vers <code>p0</code>, et en prenant <code>p2</code> comme unique état final.
+</div>
+</section>
+
+<section class="card">
+<h2>۶) Annale 2021 — construire <code>L(A).L(B)</code></h2>
+
+<div class="fr">
+<strong>Question exacte :</strong><br>
+On considère les deux automates <span class="math">A</span> et <span class="math">B</span>.<br>
+<strong>2.c. (1,5 points)</strong> Construire un automate reconnaissant le langage <span class="math">L(A).L(B)</span>.
+</div>
+
+<h3>۶.۱) دو اتومات اصلی</h3>
+
+<div class="grid2">
+<div class="box">
+<h3 class="ltr">Automate A</h3>
+<table>
+<tr><th>A</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td>1</td><td>2</td></tr>
+<tr><td>* 1</td><td>1</td><td>3</td></tr>
+<tr><td>2</td><td>3</td><td>∅</td></tr>
+<tr><td>3</td><td>0</td><td>0</td></tr>
+</table>
+<svg viewBox="0 0 640 360">
+<path class="edge" d="M40 180 L90 180"/>
+<circle class="state" cx="135" cy="180" r="36"/><text class="label" x="135" y="180">0</text>
+<circle class="state" cx="340" cy="95" r="36"/><circle class="ring" cx="340" cy="95" r="28"/><text class="label" x="340" y="95">1</text>
+<circle class="state" cx="135" cy="300" r="36"/><text class="label" x="135" y="300">2</text>
+<circle class="state" cx="340" cy="300" r="36"/><text class="label" x="340" y="300">3</text>
+<path class="edge" d="M168 166 L306 110"/><text class="txt" x="235" y="120">a</text>
+<path class="edge" d="M135 216 L135 264"/><text class="txt" x="110" y="240">b</text>
+<path class="edge" d="M171 300 L304 300"/><text class="txt" x="235" y="280">a</text>
+<path class="edge" d="M324 60 C285 5,395 5,356 60"/><text class="txt" x="340" y="20">a</text>
+<path class="edge" d="M340 131 L340 264"/><text class="txt" x="365" y="200">b</text>
+<path class="edge" d="M315 275 C250 220,200 195,170 185"/><text class="txt" x="240" y="240">a,b</text>
+</svg>
+</div>
+
+<div class="box">
+<h3 class="ltr">Automate B</h3>
+<p class="small">در این رسم، حالت‌های B را <code>B0,...,B4</code> می‌نویسیم تا با A قاطی نشود.</p>
+<table>
+<tr><th>B</th><th>a</th><th>b</th></tr>
+<tr><td>→ B0</td><td>B1</td><td>B3</td></tr>
+<tr><td>B1</td><td>{B1,B2}</td><td>{B1,B3}</td></tr>
+<tr><td>* B2</td><td>∅</td><td>∅</td></tr>
+<tr><td>B3</td><td>∅</td><td>{B3,B4}</td></tr>
+<tr><td>* B4</td><td>∅</td><td>∅</td></tr>
+</table>
+<svg viewBox="0 0 720 420">
+<path class="edge" d="M35 145 L85 145"/>
+<circle class="state" cx="130" cy="145" r="34"/><text class="label" x="130" y="145">B0</text>
+<circle class="state" cx="285" cy="145" r="34"/><text class="label" x="285" y="145">B1</text>
+<circle class="state" cx="440" cy="145" r="34"/><circle class="ring" cx="440" cy="145" r="26"/><text class="label" x="440" y="145">B2</text>
+<circle class="state" cx="130" cy="285" r="34"/><text class="label" x="130" y="285">B3</text>
+<circle class="state" cx="130" cy="375" r="34"/><circle class="ring" cx="130" cy="375" r="26"/><text class="label" x="130" y="375">B4</text>
+<path class="edge" d="M164 145 L251 145"/><text class="txt" x="207" y="125">a</text>
+<path class="edge" d="M130 179 L130 251"/><text class="txt" x="105" y="215">b</text>
+<path class="edge" d="M319 145 L406 145"/><text class="txt" x="362" y="125">a</text>
+<path class="edge" d="M270 110 C230 60,340 60,300 110"/><text class="txt" x="285" y="55">a,b</text>
+<path class="edge" d="M260 170 C220 235,175 260,158 272"/><text class="txt" x="220" y="250">b</text>
+<path class="edge" d="M112 320 C70 370,190 370,148 320"/><text class="txt" x="130" y="350">b</text>
+<path class="edge" d="M130 319 L130 341"/><text class="txt" x="105" y="335">b</text>
+</svg>
+</div>
+</div>
+
+<h3>۶.۲) ساخت concaténation</h3>
+<div class="step">حالت final اتومات <code>A</code> برابر <code>1</code> است.</div>
+<div class="step">حالت initial اتومات <code>B</code> برابر <code>B0</code> است.</div>
+<div class="step">پس یک transition با <code>ε</code> از <code>1</code> به <code>B0</code> اضافه می‌کنیم.</div>
+<div class="step">حالت‌های final اتومات جدید، finalهای <code>B</code> هستند: <code>B2</code> و <code>B4</code>.</div>
+
+<h3>۶.۳) جواب ساختاری امتحان</h3>
+<div class="ok">
+<span class="ltr">
+On prend l'union disjointe des états de <code>A</code> et de <code>B</code>. L'état initial est l'état initial de <code>A</code>, donc <code>0</code>. On ajoute une transition <code>ε</code> de l'état final de <code>A</code>, c'est-à-dire <code>1</code>, vers l'état initial de <code>B</code>, c'est-à-dire <code>B0</code>. Les états finaux du nouvel automate sont les états finaux de <code>B</code>, donc <code>B2</code> et <code>B4</code>.
+</span>
+</div>
+</section>
+
+<section class="card">
+<h2>۷) Annale 2026 — construire <code>M.N</code></h2>
+
+<div class="fr">
+<strong>Question exacte :</strong><br>
+On considère l'alphabet <span class="math">A={a,b}</span>. On note <span class="math">M=L(A)</span> et <span class="math">N=L(B)</span> pour les langages acceptés par les deux automates donnés.<br>
+<strong>(6) (2 points)</strong> Construire un automate acceptant le langage <span class="math">M.N</span>.
+</div>
+
+<h3>۷.۱) دو اتومات اصلی</h3>
+
+<div class="grid2">
+<div class="box">
+<h3 class="ltr">Automate A</h3>
+<table>
+<tr><th>A</th><th>a</th><th>b</th></tr>
+<tr><td>→ 1</td><td>∅</td><td>2</td></tr>
+<tr><td>2</td><td>{2,3}</td><td>∅</td></tr>
+<tr><td>* 3</td><td>∅</td><td>2</td></tr>
+</table>
+<svg viewBox="0 0 680 260">
+<path class="edge" d="M40 130 L90 130"/>
+<circle class="state" cx="135" cy="130" r="38"/><text class="label" x="135" y="130">1</text>
+<circle class="state" cx="335" cy="130" r="38"/><text class="label" x="335" y="130">2</text>
+<circle class="state" cx="535" cy="130" r="38"/><circle class="ring" cx="535" cy="130" r="30"/><text class="label" x="535" y="130">3</text>
+<path class="edge" d="M173 130 L297 130"/><text class="txt" x="235" y="110">b</text>
+<path class="edge" d="M318 95 C275 45,395 45,352 95"/><text class="txt" x="335" y="40">a</text>
+<path class="edge" d="M373 118 C425 80,480 80,507 110"/><text class="txt" x="440" y="75">a</text>
+<path class="edge" d="M505 152 C450 190,395 190,365 155"/><text class="txt" x="440" y="205">b</text>
+</svg>
+</div>
+
+<div class="box">
+<h3 class="ltr">Automate B</h3>
+<p class="small">این اتومات دو حالت initial دارد: <code>B0</code> و <code>B1</code>.</p>
+<table>
+<tr><th>B</th><th>a</th><th>b</th></tr>
+<tr><td>→ B0</td><td>B1</td><td>B0</td></tr>
+<tr><td>→ B1</td><td>B2</td><td>B1</td></tr>
+<tr><td>* B2</td><td>B0</td><td>∅</td></tr>
+</table>
+<svg viewBox="0 0 740 280">
+<path class="edge" d="M40 135 L90 135"/>
+<path class="edge" d="M300 245 L300 178"/>
+<circle class="state" cx="135" cy="135" r="38"/><text class="label" x="135" y="135">B0</text>
+<circle class="state" cx="300" cy="135" r="38"/><text class="label" x="300" y="135">B1</text>
+<circle class="state" cx="500" cy="135" r="38"/><circle class="ring" cx="500" cy="135" r="30"/><text class="label" x="500" y="135">B2</text>
+<path class="edge" d="M118 100 C75 45,195 45,152 100"/><text class="txt" x="135" y="40">b</text>
+<path class="edge" d="M283 100 C240 45,360 45,317 100"/><text class="txt" x="300" y="40">b</text>
+<path class="edge" d="M173 135 L262 135"/><text class="txt" x="215" y="115">a</text>
+<path class="edge" d="M338 135 L462 135"/><text class="txt" x="400" y="115">a</text>
+<path class="edge" d="M470 160 C370 230,210 230,155 165"/><text class="txt" x="310" y="240">a</text>
+</svg>
+</div>
+</div>
+
+<h3>۷.۲) ساخت concaténation</h3>
+<div class="step">حالت final اتومات <code>A</code> برابر <code>3</code> است.</div>
+<div class="step">اتومات <code>B</code> دو حالت initial دارد: <code>B0</code> و <code>B1</code>.</div>
+<div class="step">پس باید دو transition با <code>ε</code> اضافه کنیم:
+<p class="ltr center"><code>3 --ε--> B0</code></p>
+<p class="ltr center"><code>3 --ε--> B1</code></p>
+</div>
+<div class="step">finalهای اتومات جدید، finalهای <code>B</code> هستند؛ یعنی <code>B2</code>.</div>
+
+<h3>۷.۳) اتومات نهایی برای <code>M.N</code></h3>
+<svg viewBox="0 0 1180 420">
+<!-- A -->
+<path class="edge2" d="M35 210 L85 210"/>
+<circle class="state" cx="130" cy="210" r="36"/><text class="label" x="130" y="210">1</text>
+<circle class="state" cx="300" cy="210" r="36"/><text class="label" x="300" y="210">2</text>
+<circle class="state oldfinal" cx="470" cy="210" r="36"/><text class="label" x="470" y="210">3</text>
+<path class="edge2" d="M166 210 L264 210"/><text class="txt" x="215" y="190">b</text>
+<path class="edge2" d="M285 175 C245 125,355 125,315 175"/><text class="txt" x="300" y="120">a</text>
+<path class="edge2" d="M336 198 C385 160,430 160,450 190"/><text class="txt" x="390" y="155">a</text>
+<path class="edge2" d="M445 230 C400 265,350 265,325 230"/><text class="txt" x="390" y="280">b</text>
+<!-- epsilons -->
+<path class="rededge" style="marker-end:url(#redarr)" d="M506 200 C555 170,590 145,625 135"/><text class="redtxt" x="565" y="155">ε</text>
+<path class="rededge" style="marker-end:url(#redarr)" d="M506 220 C570 245,625 250,680 225"/><text class="redtxt" x="590" y="260">ε</text>
+<!-- B -->
+<circle class="state" cx="675" cy="135" r="36"/><text class="label" x="675" y="135">B0</text>
+<circle class="state" cx="835" cy="225" r="36"/><text class="label" x="835" y="225">B1</text>
+<circle class="state" cx="1020" cy="180" r="38"/><circle class="ring" cx="1020" cy="180" r="30"/><text class="label" x="1020" y="180">B2</text>
+<path class="edge2" d="M660 100 C620 50,730 50,690 100"/><text class="txt" x="675" y="45">b</text>
+<path class="edge2" d="M820 190 C780 140,890 140,850 190"/><text class="txt" x="835" y="135">b</text>
+<path class="edge2" d="M710 150 C760 165,790 190,808 205"/><text class="txt" x="760" y="155">a</text>
+<path class="edge2" d="M871 215 C925 200,965 190,984 184"/><text class="txt" x="930" y="185">a</text>
+<path class="edge2" d="M990 205 C870 300,720 270,690 165"/><text class="txt" x="845" y="315">a</text>
+</svg>
+
+<div class="ok">
+<strong>Réponse examen :</strong><br>
+<span class="ltr">
+On construit l'automate de concaténation en gardant les deux automates. L'état initial est <code>1</code>, l'état initial de <code>A</code>. On ajoute deux transitions <code>ε</code> depuis l'état final <code>3</code> de <code>A</code> vers les deux états initiaux de <code>B</code>, c'est-à-dire <code>B0</code> et <code>B1</code>. L'état final du nouvel automate est <code>B2</code>.
+</span>
+</div>
+</section>
+
+<section class="card">
+<h2>۸) Résumé exam-ready</h2>
+<table>
+<tr><th>Notation / Question</th><th>Réponse essentielle</th></tr>
+<tr><td><code>L.∅</code></td><td><code>∅</code>, چون هیچ کلمه‌ای در <code>∅</code> وجود ندارد.</td></tr>
+<tr><td><code>nb_a(u.v)</code></td><td><code>nb_a(u.v)=nb_a(u)+nb_a(v)</code></td></tr>
+<tr><td><code>L1.L2</code></td><td><code>{uv | u ∈ L1, v ∈ L2}</code></td></tr>
+<tr><td>concaténation d'automates</td><td>از finalهای اتومات اول به initialهای اتومات دوم transition با <code>ε</code> اضافه کن.</td></tr>
+<tr><td>finalهای اتومات concaténé</td><td>معمولاً finalهای اتومات دوم هستند.</td></tr>
+</table>
+
+<div class="warn">
+نکتهٔ امتحانی: اگر در سؤال گفتند <code>Donner un automate pour L1.L2</code>، لازم نیست حتماً déterministe باشد. یک automate non déterministe avec <code>ε</code>-transitions کاملاً قابل قبول است، مگر اینکه صراحتاً بگویند déterministe.
+</div>
+</section>
+
+</body>
+</html>
