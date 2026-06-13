@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automates — Produit, Intersection, Union, Différence, Déterminisation</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#111827; --muted:#4b5563;
+  --line:#d1d5db; --blue:#4f46e5; --green:#059669; --red:#dc2626;
+  --amber:#f59e0b; --softBlue:#eef2ff; --softGreen:#ecfdf5; --softRed:#fef2f2; --softAmber:#fffbeb;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:28px;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px}
+h3{margin:18px 0 10px 0}
+.subtitle{max-width:1050px;margin:0 auto 28px auto;text-align:center;color:var(--muted);font-size:17px}
+.card{max-width:1240px;margin:0 auto 26px auto;background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{background:#fbfdff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+code{direction:ltr;display:inline-block;background:#eef2ff;padding:2px 7px;border-radius:6px;font-family:Consolas,Monaco,monospace}
+table{width:100%;border-collapse:collapse;direction:ltr;text-align:center;margin-top:12px;font-size:15px}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.nonfinal{background:#fff}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.state{fill:#fff;stroke:#111827;stroke-width:3}
+.ring{fill:none;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.edge2{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr2)}
+.edge3{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr3)}
+.label{font-size:18px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:16px;font-weight:bold;fill:#111827;direction:ltr}
+.small{font-size:14px;color:#6b7280}
+.kbd{background:#111827;color:white;border-radius:6px;padding:2px 7px;direction:ltr;display:inline-block}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>درس کامل با مثال‌های بیشتر: <code>produit</code>, <code>intersection</code>, <code>union</code>, <code>différence</code>, <code>déterminisation</code></h1>
+<p class="subtitle">
+اینجا همه چیز با روش جدولی و ریاضی نوشته شده است. هدف این است که در امتحان وقتی دو اتومات دیدی، بدانی چطور حالت‌های جدید را بسازی و کدام حالت‌ها final می‌شوند.
+</p>
+
+<section class="card">
+<h2>۰) قانون ذهنی قبل از شروع</h2>
+<div class="note">
+اگر دو اتومات داریم، برای ساختن <code>intersection</code>، <code>union</code> یا <code>différence</code> باید هر دو اتومات را همزمان اجرا کنیم.
+پس حالت جدید باید بگوید: «در اتومات اول کجا هستم؟ در اتومات دوم کجا هستم؟»
+</div>
+
+<p class="center ltr" style="font-size:22px;">
+<code>nouvel état = (état dans A1, état dans A2)</code>
+</p>
+
+<table>
+<tr><th>Opération</th><th>Condition pour que (p,q) soit final</th><th>معنی فارسی</th></tr>
+<tr><td><code>L1 ∩ L2</code></td><td><code>p final ET q final</code></td><td>کلمه باید در هر دو زبان باشد.</td></tr>
+<tr><td><code>L1 ∪ L2</code></td><td><code>p final OU q final</code></td><td>کلمه باید حداقل در یکی از دو زبان باشد.</td></tr>
+<tr><td><code>L1 \ L2</code></td><td><code>p final ET q non final</code></td><td>کلمه در زبان اول باشد ولی در زبان دوم نباشد.</td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2>مثال ۱ — دو اتومات ساده و ساخت کامل product</h2>
+
+<div class="grid2">
+<div class="box">
+<h3 class="ltr">A1 : mots qui se terminent par b</h3>
+<p>حالت‌ها:</p>
+<ul>
+<li><code>N</code> : کلمه فعلی با <code>b</code> تمام نمی‌شود.</li>
+<li><code>B</code> : کلمه فعلی با <code>b</code> تمام می‌شود.</li>
+</ul>
+<p>Final در <code>A1</code> : <code>B</code></p>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→ N</td><td>N</td><td>B</td></tr>
+<tr><td>* B</td><td>N</td><td>B</td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3 class="ltr">A2 : mots contenant au moins un a</h3>
+<p>حالت‌ها:</p>
+<ul>
+<li><code>0</code> : هنوز <code>a</code> ندیده‌ایم.</li>
+<li><code>A</code> : حداقل یک <code>a</code> دیده‌ایم.</li>
+</ul>
+<p>Final در <code>A2</code> : <code>A</code></p>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td>A</td><td>0</td></tr>
+<tr><td>* A</td><td>A</td><td>A</td></tr>
+</table>
+</div>
+</div>
+
+<h3>۱.۱) ساخت حالت‌های product</h3>
+<table>
+<tr><th>États de A1</th><th>États de A2</th><th>États du produit</th></tr>
+<tr><td><code>N</code></td><td><code>0</code>, <code>A</code></td><td><code>(N,0)</code>, <code>(N,A)</code></td></tr>
+<tr><td><code>B</code></td><td><code>0</code>, <code>A</code></td><td><code>(B,0)</code>, <code>(B,A)</code></td></tr>
+</table>
+
+<h3>۱.۲) جدول محاسبه transitionها</h3>
+<table>
+<tr><th>État produit</th><th>Lettre</th><th>A1</th><th>A2</th><th>Résultat</th></tr>
+<tr><td><code>(N,0)</code></td><td><code>a</code></td><td><code>N --a--> N</code></td><td><code>0 --a--> A</code></td><td><code>(N,A)</code></td></tr>
+<tr><td><code>(N,0)</code></td><td><code>b</code></td><td><code>N --b--> B</code></td><td><code>0 --b--> 0</code></td><td><code>(B,0)</code></td></tr>
+<tr><td><code>(N,A)</code></td><td><code>a</code></td><td><code>N --a--> N</code></td><td><code>A --a--> A</code></td><td><code>(N,A)</code></td></tr>
+<tr><td><code>(N,A)</code></td><td><code>b</code></td><td><code>N --b--> B</code></td><td><code>A --b--> A</code></td><td><code>(B,A)</code></td></tr>
+<tr><td><code>(B,0)</code></td><td><code>a</code></td><td><code>B --a--> N</code></td><td><code>0 --a--> A</code></td><td><code>(N,A)</code></td></tr>
+<tr><td><code>(B,0)</code></td><td><code>b</code></td><td><code>B --b--> B</code></td><td><code>0 --b--> 0</code></td><td><code>(B,0)</code></td></tr>
+<tr><td><code>(B,A)</code></td><td><code>a</code></td><td><code>B --a--> N</code></td><td><code>A --a--> A</code></td><td><code>(N,A)</code></td></tr>
+<tr><td><code>(B,A)</code></td><td><code>b</code></td><td><code>B --b--> B</code></td><td><code>A --b--> A</code></td><td><code>(B,A)</code></td></tr>
+</table>
+
+<h3>۱.۳) جدول نهایی product</h3>
+<table>
+<tr><th>Produit</th><th>a</th><th>b</th></tr>
+<tr><td>→ <code>(N,0)</code></td><td><code>(N,A)</code></td><td><code>(B,0)</code></td></tr>
+<tr><td><code>(N,A)</code></td><td><code>(N,A)</code></td><td><code>(B,A)</code></td></tr>
+<tr><td><code>(B,0)</code></td><td><code>(N,A)</code></td><td><code>(B,0)</code></td></tr>
+<tr><td><code>(B,A)</code></td><td><code>(N,A)</code></td><td><code>(B,A)</code></td></tr>
+</table>
+
+<h3>۱.۴) finalها برای سه عملیات</h3>
+<table>
+<tr><th>Opération</th><th>États finaux</th><th>Langage obtenu</th><th>Exemples acceptés</th></tr>
+<tr><td><code>L1 ∩ L2</code></td><td><code>(B,A)</code></td><td>با <code>b</code> تمام شود و حداقل یک <code>a</code> داشته باشد.</td><td><code>ab</code>, <code>aab</code>, <code>bab</code></td></tr>
+<tr><td><code>L1 ∪ L2</code></td><td><code>(N,A)</code>, <code>(B,0)</code>, <code>(B,A)</code></td><td>یا با <code>b</code> تمام شود یا حداقل یک <code>a</code> داشته باشد.</td><td><code>a</code>, <code>b</code>, <code>ab</code>, <code>aba</code></td></tr>
+<tr><td><code>L1 \ L2</code></td><td><code>(B,0)</code></td><td>با <code>b</code> تمام شود ولی هیچ <code>a</code> نداشته باشد.</td><td><code>b</code>, <code>bb</code>, <code>bbb</code></td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2>مثال ۲ — product با parité: زوج بودن تعداد <code>a</code> و فرد بودن تعداد <code>b</code></h2>
+
+<div class="grid2">
+<div class="box">
+<h3 class="ltr">A1 : nombre de a pair</h3>
+<p>حالت‌ها:</p>
+<ul>
+<li><code>P</code> : تعداد <code>a</code> زوج است.</li>
+<li><code>I</code> : تعداد <code>a</code> فرد است.</li>
+</ul>
+<p>Final: <code>P</code></p>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→* P</td><td>I</td><td>P</td></tr>
+<tr><td>I</td><td>P</td><td>I</td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3 class="ltr">A2 : nombre de b impair</h3>
+<p>حالت‌ها:</p>
+<ul>
+<li><code>P</code> : تعداد <code>b</code> زوج است.</li>
+<li><code>I</code> : تعداد <code>b</code> فرد است.</li>
+</ul>
+<p>Final: <code>I</code></p>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→ P</td><td>P</td><td>I</td></tr>
+<tr><td>* I</td><td>I</td><td>P</td></tr>
+</table>
+</div>
+</div>
+
+<div class="note">
+برای جلوگیری از اشتباه، نام حالت‌های product را این‌طور می‌نویسیم:
+<code>(aP,bP)</code> یعنی تعداد <code>a</code> زوج و تعداد <code>b</code> زوج.
+</div>
+
+<h3>۲.۱) حالت‌های product</h3>
+<table>
+<tr><th>États produit</th><th>معنی</th></tr>
+<tr><td><code>(aP,bP)</code></td><td>تعداد <code>a</code> زوج، تعداد <code>b</code> زوج</td></tr>
+<tr><td><code>(aP,bI)</code></td><td>تعداد <code>a</code> زوج، تعداد <code>b</code> فرد</td></tr>
+<tr><td><code>(aI,bP)</code></td><td>تعداد <code>a</code> فرد، تعداد <code>b</code> زوج</td></tr>
+<tr><td><code>(aI,bI)</code></td><td>تعداد <code>a</code> فرد، تعداد <code>b</code> فرد</td></tr>
+</table>
+
+<h3>۲.۲) جدول transitionها</h3>
+<table>
+<tr><th>Produit</th><th>a</th><th>b</th></tr>
+<tr><td>→ <code>(aP,bP)</code></td><td><code>(aI,bP)</code></td><td><code>(aP,bI)</code></td></tr>
+<tr><td><code>(aP,bI)</code></td><td><code>(aI,bI)</code></td><td><code>(aP,bP)</code></td></tr>
+<tr><td><code>(aI,bP)</code></td><td><code>(aP,bP)</code></td><td><code>(aI,bI)</code></td></tr>
+<tr><td><code>(aI,bI)</code></td><td><code>(aP,bI)</code></td><td><code>(aI,bP)</code></td></tr>
+</table>
+
+<h3>۲.۳) finalها</h3>
+<table>
+<tr><th>Opération</th><th>Final</th><th>معنی</th></tr>
+<tr><td><code>L1 ∩ L2</code></td><td><code>(aP,bI)</code></td><td>تعداد <code>a</code> زوج و تعداد <code>b</code> فرد.</td></tr>
+<tr><td><code>L1 ∪ L2</code></td><td><code>(aP,bP)</code>, <code>(aP,bI)</code>, <code>(aI,bI)</code></td><td>تعداد <code>a</code> زوج یا تعداد <code>b</code> فرد.</td></tr>
+<tr><td><code>L1 \ L2</code></td><td><code>(aP,bP)</code></td><td>تعداد <code>a</code> زوج ولی تعداد <code>b</code> فرد نباشد، یعنی زوج باشد.</td></tr>
+</table>
+
+<div class="ok">
+مثال برای <code>intersection</code>: کلمه <code>b</code> قبول است، چون تعداد <code>a</code> برابر ۰ زوج است و تعداد <code>b</code> برابر ۱ فرد است.
+کلمه <code>ab</code> رد است، چون تعداد <code>a</code> فرد است.
+</div>
+</section>
+
+<section class="card">
+<h2>مثال ۳ — product با ۶ حالت: longueur paire و nombre de b divisible par 3</h2>
+
+<p>
+اینجا دو اتومات داریم:
+</p>
+<ul>
+<li><code>L1</code> : کلمات با طول زوج.</li>
+<li><code>L2</code> : کلمات که تعداد <code>b</code> آن‌ها مضرب ۳ است.</li>
+</ul>
+
+<div class="grid2">
+<div class="box">
+<h3 class="ltr">A1 : longueur paire</h3>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→* E</td><td>O</td><td>O</td></tr>
+<tr><td>O</td><td>E</td><td>E</td></tr>
+</table>
+<p><code>E</code> = طول زوج، <code>O</code> = طول فرد.</p>
+</div>
+
+<div class="box">
+<h3 class="ltr">A2 : nombre de b divisible par 3</h3>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→* R0</td><td>R0</td><td>R1</td></tr>
+<tr><td>R1</td><td>R1</td><td>R2</td></tr>
+<tr><td>R2</td><td>R2</td><td>R0</td></tr>
+</table>
+<p><code>R0</code>, <code>R1</code>, <code>R2</code> یعنی reste modulo 3 برای تعداد <code>b</code>.</p>
+</div>
+</div>
+
+<h3>۳.۱) حالت‌های product</h3>
+<p>
+چون اتومات اول ۲ حالت دارد و دومی ۳ حالت، product دارای <code>2 × 3 = 6</code> حالت است.
+</p>
+<table>
+<tr><th>États</th></tr>
+<tr><td><code>(E,R0)</code>, <code>(E,R1)</code>, <code>(E,R2)</code>, <code>(O,R0)</code>, <code>(O,R1)</code>, <code>(O,R2)</code></td></tr>
+</table>
+
+<h3>۳.۲) جدول transitionهای product</h3>
+<table>
+<tr><th>Produit</th><th>a</th><th>b</th></tr>
+<tr><td>→ <code>(E,R0)</code></td><td><code>(O,R0)</code></td><td><code>(O,R1)</code></td></tr>
+<tr><td><code>(E,R1)</code></td><td><code>(O,R1)</code></td><td><code>(O,R2)</code></td></tr>
+<tr><td><code>(E,R2)</code></td><td><code>(O,R2)</code></td><td><code>(O,R0)</code></td></tr>
+<tr><td><code>(O,R0)</code></td><td><code>(E,R0)</code></td><td><code>(E,R1)</code></td></tr>
+<tr><td><code>(O,R1)</code></td><td><code>(E,R1)</code></td><td><code>(E,R2)</code></td></tr>
+<tr><td><code>(O,R2)</code></td><td><code>(E,R2)</code></td><td><code>(E,R0)</code></td></tr>
+</table>
+
+<h3>۳.۳) finalها برای intersection</h3>
+<p>
+برای <code>L1 ∩ L2</code> باید هم طول زوج باشد و هم تعداد <code>b</code> مضرب ۳ باشد.
+پس final فقط:
+</p>
+<p class="ltr center" style="font-size:20px;"><code>(E,R0)</code></p>
+<div class="ok">
+مثال قبول: <code>aa</code>، چون طول ۲ است و تعداد <code>b</code> صفر است. صفر مضرب ۳ است.<br>
+مثال قبول: <code>bbba</code>، چون طول ۴ است و تعداد <code>b</code> سه است.<br>
+مثال رد: <code>bbb</code>، چون تعداد <code>b</code> خوب است ولی طول ۳ فرد است.
+</div>
+</section>
+
+<section class="card">
+<h2>مثال ۴ — <code>différence</code> یعنی <code>L1 \ L2</code></h2>
+<p>
+از مثال ۱ استفاده می‌کنیم:
+</p>
+<ul>
+<li><code>L1</code> : کلمات که با <code>b</code> تمام می‌شوند.</li>
+<li><code>L2</code> : کلمات که حداقل یک <code>a</code> دارند.</li>
+</ul>
+
+<p>
+پس:
+</p>
+<p class="ltr center" style="font-size:20px;"><code>L1 \ L2 = mots qui se terminent par b ET ne contiennent aucun a</code></p>
+
+<div class="note">
+یعنی کلماتی که فقط از <code>b</code> ساخته شده‌اند و خالی نیستند:
+<code>b+</code> = <code>b, bb, bbb, ...</code>
+</div>
+
+<table>
+<tr><th>Produit</th><th>در A1 final؟</th><th>در A2 final؟</th><th>برای <code>L1 \ L2</code> final؟</th></tr>
+<tr><td><code>(N,0)</code></td><td>non</td><td>non</td><td>non</td></tr>
+<tr><td><code>(N,A)</code></td><td>non</td><td>oui</td><td>non</td></tr>
+<tr><td class="final"><code>(B,0)</code></td><td>oui</td><td>non</td><td class="final">oui</td></tr>
+<tr><td><code>(B,A)</code></td><td>oui</td><td>oui</td><td>non</td></tr>
+</table>
+
+<div class="ok">
+قانون: برای <code>L1 \ L2</code> باید اولی final باشد و دومی final نباشد.
+پس فقط <code>(B,0)</code> final می‌شود.
+</div>
+</section>
+
+<section class="card">
+<h2>مثال ۵ — <code>déterminisation</code> با جدول مجموعه‌ها</h2>
+
+<p>
+حالا یک اتومات non déterministe داریم که زبان «کلمات دارای عامل <code>ab</code>» را می‌شناسد.
+</p>
+
+<div class="grid2">
+<div class="box">
+<h3>اتومات non déterministe</h3>
+<p>
+حالت‌ها: <code>0</code>, <code>1</code>, <code>2</code>. حالت initial: <code>0</code>. حالت final: <code>2</code>.
+</p>
+<table>
+<tr><th>NFA</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td><code>{0,1}</code></td><td><code>{0}</code></td></tr>
+<tr><td>1</td><td><code>∅</code></td><td><code>{2}</code></td></tr>
+<tr><td>* 2</td><td><code>{2}</code></td><td><code>{2}</code></td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3>منطق déterminisation</h3>
+<p>
+در اتومات جدید، هر حالت یک مجموعه از حالت‌های قدیمی است.
+اگر از یک مجموعه با یک حرف حرکت کنیم، مقصد می‌شود union همه مقصدهای اعضای آن مجموعه.
+</p>
+<p class="ltr center"><code>δ'({p,q}, x) = δ(p,x) ∪ δ(q,x)</code></p>
+</div>
+</div>
+
+<h3>۵.۱) محاسبه مجموعه‌حالت‌ها</h3>
+<table>
+<tr><th>État déterminisé</th><th>a</th><th>b</th><th>Final ?</th></tr>
+<tr><td>→ <code>{0}</code></td><td><code>{0,1}</code></td><td><code>{0}</code></td><td>non</td></tr>
+<tr><td><code>{0,1}</code></td><td><code>{0,1}</code></td><td><code>{0,2}</code></td><td>non</td></tr>
+<tr><td class="final"><code>{0,2}</code></td><td><code>{0,1,2}</code></td><td><code>{0,2}</code></td><td class="final">oui</td></tr>
+<tr><td class="final"><code>{0,1,2}</code></td><td><code>{0,1,2}</code></td><td><code>{0,2}</code></td><td class="final">oui</td></tr>
+</table>
+
+<div class="note">
+چرا <code>{0,2}</code> و <code>{0,1,2}</code> final هستند؟
+چون داخلشان حالت final قدیمی یعنی <code>2</code> وجود دارد.
+</div>
+
+<h3>۵.۲) مثال مسیر در automate déterminisé</h3>
+<p>کلمه <code>aab</code> را بخوانیم:</p>
+<p class="ltr center" style="font-size:20px;">
+<code>{0} --a--> {0,1} --a--> {0,1} --b--> {0,2}</code>
+</p>
+<p>
+چون <code>{0,2}</code> final است، کلمه <code>aab</code> قبول می‌شود. واقعاً هم داخل <code>aab</code> عامل <code>ab</code> وجود دارد.
+</p>
+</section>
+
+<section class="card">
+<h2>مثال ۶ — <code>déterminisation</code> با حالت <code>∅</code></h2>
+
+<p>
+گاهی در déterminisation ممکن است به مجموعه خالی برسیم. این مجموعه مثل état puits عمل می‌کند.
+</p>
+
+<table>
+<tr><th>NFA</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td><code>{1}</code></td><td><code>∅</code></td></tr>
+<tr><td>* 1</td><td><code>∅</code></td><td><code>{1}</code></td></tr>
+</table>
+
+<p>
+حالا déterminisation:
+</p>
+
+<table>
+<tr><th>État déterminisé</th><th>a</th><th>b</th><th>Final ?</th></tr>
+<tr><td>→ <code>{0}</code></td><td><code>{1}</code></td><td><code>∅</code></td><td>non</td></tr>
+<tr><td class="final"><code>{1}</code></td><td><code>∅</code></td><td><code>{1}</code></td><td class="final">oui</td></tr>
+<tr><td><code>∅</code></td><td><code>∅</code></td><td><code>∅</code></td><td>non</td></tr>
+</table>
+
+<div class="ok">
+در déterminisation، اگر <code>∅</code> به وجود آمد و automate باید کامل باشد، آن را به عنوان یک state نگه می‌داریم و روی همه حروف به خودش loop می‌دهیم.
+</div>
+</section>
+
+<section class="card">
+<h2>خلاصه نهایی برای امتحان</h2>
+<div class="ok">
+برای <code>intersection</code>, <code>union</code>, <code>différence</code>:
+<br>۱) دو اتومات را کامل و déterministe کن.
+<br>۲) حالت‌های product را بساز: <code>(p,q)</code>.
+<br>۳) transitionها را با حرکت همزمان دو اتومات حساب کن.
+<br>۴) finalها را با قانون عملیات انتخاب کن.
+</div>
+
+<div class="warn">
+برای <code>déterminisation</code>:
+<br>۱) حالت جدید = مجموعه‌ای از حالت‌های قدیمی.
+<br>۲) از حالت initial به شکل مجموعه شروع کن: <code>{q0}</code>.
+<br>۳) برای هر حرف، union مقصدهای همه اعضای مجموعه را حساب کن.
+<br>۴) هر مجموعه‌ای که حداقل یک حالت final قدیمی دارد، final می‌شود.
+</div>
+</section>
+
+</body>
+</html>

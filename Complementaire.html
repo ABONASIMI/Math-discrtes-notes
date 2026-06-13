@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complémentaire d'automates — exemples type annales</title>
+  <style>
+    body{
+      margin:0;
+      padding:28px;
+      font-family:Arial, Helvetica, sans-serif;
+      background:#f4f6fb;
+      color:#111827;
+    }
+    h1{
+      text-align:center;
+      margin:0 0 8px 0;
+      font-size:32px;
+    }
+    .subtitle{
+      text-align:center;
+      max-width:1000px;
+      margin:0 auto 28px auto;
+      font-size:17px;
+      line-height:1.6;
+      color:#374151;
+    }
+    .rule{
+      max-width:1100px;
+      margin:0 auto 28px auto;
+      background:#fff7ed;
+      border-left:6px solid #f97316;
+      border-radius:12px;
+      padding:18px 22px;
+      line-height:1.7;
+      font-size:17px;
+      box-shadow:0 4px 14px rgba(0,0,0,.06);
+    }
+    .example{
+      max-width:1180px;
+      margin:0 auto 34px auto;
+      background:white;
+      border:1px solid #e5e7eb;
+      border-radius:18px;
+      padding:22px;
+      box-shadow:0 10px 28px rgba(0,0,0,.09);
+    }
+    .example h2{
+      margin:0 0 10px 0;
+      font-size:25px;
+    }
+    .statement{
+      background:#eef2ff;
+      border-left:5px solid #6366f1;
+      padding:14px 16px;
+      border-radius:10px;
+      margin:14px 0 18px 0;
+      line-height:1.65;
+      font-size:16px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+      align-items:start;
+    }
+    .panel{
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:14px;
+      background:#fbfdff;
+    }
+    .panel h3{
+      text-align:center;
+      margin:0 0 12px 0;
+      font-size:20px;
+    }
+    svg{
+      width:100%;
+      height:auto;
+      background:white;
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+    }
+    .state{ fill:#fff; stroke:#111827; stroke-width:3; }
+    .ring{ fill:none; stroke:#111827; stroke-width:3; }
+    .dead{ fill:#fafafa; stroke:#111827; stroke-width:3; }
+    .label{ font-size:20px; font-weight:700; text-anchor:middle; dominant-baseline:middle; }
+    .edge{ stroke:#111827; stroke-width:3; fill:none; marker-end:url(#arrow); }
+    .edge2{ stroke:#111827; stroke-width:3; fill:none; marker-end:url(#arrow2); }
+    .edge3{ stroke:#111827; stroke-width:3; fill:none; marker-end:url(#arrow3); }
+    .edge4{ stroke:#111827; stroke-width:3; fill:none; marker-end:url(#arrow4); }
+    .text{ font-size:18px; font-weight:700; fill:#111827; }
+    .small{ font-size:16px; fill:#111827; font-weight:700; }
+    .explain{
+      margin-top:12px;
+      line-height:1.65;
+      font-size:15.5px;
+      background:#f9fafb;
+      border-radius:10px;
+      padding:12px 14px;
+    }
+    code{
+      background:#f3f4f6;
+      padding:2px 5px;
+      border-radius:5px;
+      font-size:95%;
+    }
+    .ok{ font-weight:700; }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+      font-size:15px;
+    }
+    th,td{
+      border:1px solid #d1d5db;
+      padding:8px;
+      text-align:center;
+    }
+    th{ background:#f3f4f6; }
+    .footer-note{
+      max-width:1100px;
+      margin:0 auto;
+      background:#ecfdf5;
+      border-left:6px solid #10b981;
+      border-radius:12px;
+      padding:18px 22px;
+      line-height:1.7;
+      font-size:17px;
+    }
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<h1>Complémentaire d’un automate — exemples type annales</h1>
+<p class="subtitle">
+  Idée principale : si l’automate est déterministe et complet, le complémentaire se construit en gardant les mêmes transitions et en inversant seulement les états finaux.
+</p>
+
+<div class="rule">
+  <strong>Règle examen :</strong><br>
+  Pour construire le complémentaire de <code>L(A)</code>, il faut d’abord que l’automate soit <strong>déterministe</strong> et <strong>complet</strong>.
+  Ensuite, on garde les mêmes états, le même état initial, les mêmes transitions, et on remplace les états finaux <code>F</code> par <code>Q \ F</code>.
+</div>
+
+<!-- EXAMPLE 1 -->
+<section class="example">
+  <h2>Exemple 1 — Mots qui se terminent par <code>b</code></h2>
+  <div class="statement">
+    Alphabet : <code>A = {a,b}</code>.<br>
+    Automate original : reconnaît les mots qui se terminent par <code>b</code>.<br>
+    Complémentaire : reconnaît les mots qui ne se terminent pas par <code>b</code>.
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Automate original</h3>
+      <svg viewBox="0 0 560 300">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <path class="edge" d="M40 150 L105 150"/>
+        <circle class="state" cx="150" cy="150" r="40"/><text class="label" x="150" y="150">q0</text>
+        <circle class="state" cx="410" cy="150" r="40"/><circle class="ring" cx="410" cy="150" r="31"/><text class="label" x="410" y="150">q1</text>
+        <path class="edge" d="M190 140 C250 100, 310 100, 370 140"/><text class="text" x="280" y="92">b</text>
+        <path class="edge" d="M370 165 C310 205, 250 205, 190 165"/><text class="text" x="280" y="222">a</text>
+        <path class="edge" d="M132 113 C90 60, 210 60, 168 113"/><text class="text" x="150" y="55">a</text>
+        <path class="edge" d="M392 113 C350 60, 470 60, 428 113"/><text class="text" x="410" y="55">b</text>
+      </svg>
+      <div class="explain">
+        <code>q0</code> : ne se termine pas par <code>b</code>.<br>
+        <code>q1</code> : se termine par <code>b</code>.<br>
+        État final : <code>q1</code>.
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Automate complémentaire</h3>
+      <svg viewBox="0 0 560 300">
+        <defs>
+          <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <path class="edge2" d="M40 150 L105 150"/>
+        <circle class="state" cx="150" cy="150" r="40"/><circle class="ring" cx="150" cy="150" r="31"/><text class="label" x="150" y="150">q0</text>
+        <circle class="state" cx="410" cy="150" r="40"/><text class="label" x="410" y="150">q1</text>
+        <path class="edge2" d="M190 140 C250 100, 310 100, 370 140"/><text class="text" x="280" y="92">b</text>
+        <path class="edge2" d="M370 165 C310 205, 250 205, 190 165"/><text class="text" x="280" y="222">a</text>
+        <path class="edge2" d="M132 113 C90 60, 210 60, 168 113"/><text class="text" x="150" y="55">a</text>
+        <path class="edge2" d="M392 113 C350 60, 470 60, 428 113"/><text class="text" x="410" y="55">b</text>
+      </svg>
+      <div class="explain">
+        On inverse les états finaux : <code>q0</code> devient final, <code>q1</code> ne l’est plus.<br>
+        Acceptés : <code>ε</code>, <code>a</code>, <code>ba</code>, <code>aba</code>.<br>
+        Refusés : <code>b</code>, <code>ab</code>, <code>bb</code>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMPLE 2 -->
+<section class="example">
+  <h2>Exemple 2 — Automate non complet : il faut ajouter un état puits</h2>
+  <div class="statement">
+    Alphabet : <code>A = {a,b}</code>.<br>
+    Automate original non complet : reconnaît <code>a*</code>, c’est-à-dire les mots ne contenant que des <code>a</code>.<br>
+    Pour prendre le complémentaire, on complète d’abord l’automate avec un état puits <code>P</code>.
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Automate complété pour <code>a*</code></h3>
+      <svg viewBox="0 0 560 300">
+        <defs>
+          <marker id="arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <path class="edge3" d="M45 150 L110 150"/>
+        <circle class="state" cx="160" cy="150" r="42"/><circle class="ring" cx="160" cy="150" r="33"/><text class="label" x="160" y="150">q0</text>
+        <circle class="dead" cx="410" cy="150" r="42"/><text class="label" x="410" y="150">P</text>
+        <path class="edge3" d="M202 150 L365 150"/><text class="text" x="285" y="135">b</text>
+        <path class="edge3" d="M140 112 C95 58, 225 58, 180 112"/><text class="text" x="160" y="52">a</text>
+        <path class="edge3" d="M390 112 C345 58, 475 58, 430 112"/><text class="text" x="410" y="52">a,b</text>
+      </svg>
+      <div class="explain">
+        <code>q0</code> final : aucun <code>b</code> lu.<br>
+        <code>P</code> non final : on a déjà lu un <code>b</code>.<br>
+        L’automate est maintenant complet.
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Complémentaire : mots contenant au moins un <code>b</code></h3>
+      <svg viewBox="0 0 560 300">
+        <defs>
+          <marker id="arrow4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <path class="edge4" d="M45 150 L110 150"/>
+        <circle class="state" cx="160" cy="150" r="42"/><text class="label" x="160" y="150">q0</text>
+        <circle class="dead" cx="410" cy="150" r="42"/><circle class="ring" cx="410" cy="150" r="33"/><text class="label" x="410" y="150">P</text>
+        <path class="edge4" d="M202 150 L365 150"/><text class="text" x="285" y="135">b</text>
+        <path class="edge4" d="M140 112 C95 58, 225 58, 180 112"/><text class="text" x="160" y="52">a</text>
+        <path class="edge4" d="M390 112 C345 58, 475 58, 430 112"/><text class="text" x="410" y="52">a,b</text>
+      </svg>
+      <div class="explain">
+        On inverse : <code>q0</code> devient non final, <code>P</code> devient final.<br>
+        Acceptés : <code>b</code>, <code>ab</code>, <code>ba</code>, <code>aab</code>.<br>
+        Refusés : <code>ε</code>, <code>a</code>, <code>aa</code>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMPLE 3 -->
+<section class="example">
+  <h2>Exemple 3 — Nombre de <code>b</code> divisible par 3</h2>
+  <div class="statement">
+    Alphabet : <code>A = {a,b}</code>.<br>
+    Automate original : reconnaît les mots dont le nombre de <code>b</code> est divisible par 3.<br>
+    Complémentaire : reconnaît les mots dont le nombre de <code>b</code> n’est pas divisible par 3.
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Automate original</h3>
+      <svg viewBox="0 0 620 330">
+        <defs>
+          <marker id="arrow5" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <path class="edge" style="marker-end:url(#arrow5)" d="M35 165 L90 165"/>
+        <circle class="state" cx="135" cy="165" r="40"/><circle class="ring" cx="135" cy="165" r="31"/><text class="label" x="135" y="165">q0</text>
+        <circle class="state" cx="310" cy="80" r="40"/><text class="label" x="310" y="80">q1</text>
+        <circle class="state" cx="485" cy="165" r="40"/><text class="label" x="485" y="165">q2</text>
+        <path class="edge" style="marker-end:url(#arrow5)" d="M170 145 C215 105, 250 85, 270 82"/><text class="text" x="220" y="98">b</text>
+        <path class="edge" style="marker-end:url(#arrow5)" d="M348 88 C400 100, 430 125, 455 145"/><text class="text" x="410" y="103">b</text>
+        <path class="edge" style="marker-end:url(#arrow5)" d="M445 178 C340 235, 250 235, 175 178"/><text class="text" x="310" y="252">b</text>
+        <path class="edge" style="marker-end:url(#arrow5)" d="M120 128 C78 75, 198 75, 155 128"/><text class="text" x="138" y="67">a</text>
+        <path class="edge" style="marker-end:url(#arrow5)" d="M293 43 C250 0, 370 0, 327 43"/><text class="text" x="310" y="18">a</text>
+        <path class="edge" style="marker-end:url(#arrow5)" d="M468 128 C425 75, 545 75, 502 128"/><text class="text" x="485" y="67">a</text>
+      </svg>
+      <div class="explain">
+        Final : <code>q0</code> seulement.<br>
+        <code>q0</code> : reste 0 modulo 3 ; <code>q1</code> : reste 1 ; <code>q2</code> : reste 2.
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Automate complémentaire</h3>
+      <svg viewBox="0 0 620 330">
+        <defs>
+          <marker id="arrow6" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <path class="edge" style="marker-end:url(#arrow6)" d="M35 165 L90 165"/>
+        <circle class="state" cx="135" cy="165" r="40"/><text class="label" x="135" y="165">q0</text>
+        <circle class="state" cx="310" cy="80" r="40"/><circle class="ring" cx="310" cy="80" r="31"/><text class="label" x="310" y="80">q1</text>
+        <circle class="state" cx="485" cy="165" r="40"/><circle class="ring" cx="485" cy="165" r="31"/><text class="label" x="485" y="165">q2</text>
+        <path class="edge" style="marker-end:url(#arrow6)" d="M170 145 C215 105, 250 85, 270 82"/><text class="text" x="220" y="98">b</text>
+        <path class="edge" style="marker-end:url(#arrow6)" d="M348 88 C400 100, 430 125, 455 145"/><text class="text" x="410" y="103">b</text>
+        <path class="edge" style="marker-end:url(#arrow6)" d="M445 178 C340 235, 250 235, 175 178"/><text class="text" x="310" y="252">b</text>
+        <path class="edge" style="marker-end:url(#arrow6)" d="M120 128 C78 75, 198 75, 155 128"/><text class="text" x="138" y="67">a</text>
+        <path class="edge" style="marker-end:url(#arrow6)" d="M293 43 C250 0, 370 0, 327 43"/><text class="text" x="310" y="18">a</text>
+        <path class="edge" style="marker-end:url(#arrow6)" d="M468 128 C425 75, 545 75, 502 128"/><text class="text" x="485" y="67">a</text>
+      </svg>
+      <div class="explain">
+        Final : <code>q1</code> et <code>q2</code>.<br>
+        Acceptés : mots avec 1, 2, 4, 5, ... lettres <code>b</code>.<br>
+        Refusés : mots avec 0, 3, 6, ... lettres <code>b</code>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMPLE 4 -->
+<section class="example">
+  <h2>Exemple 4 — Automate à 4 états : mots contenant <code>aaa</code></h2>
+  <div class="statement">
+    Alphabet : <code>A = {a,b}</code>.<br>
+    Automate original : reconnaît les mots qui contiennent trois <code>a</code> consécutifs, donc le facteur <code>aaa</code>.<br>
+    Complémentaire : reconnaît les mots qui ne contiennent pas le facteur <code>aaa</code>.
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Automate original : contient <code>aaa</code></h3>
+      <svg viewBox="0 0 720 330">
+        <defs>
+          <marker id="arrow7" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M30 165 L80 165"/>
+        <circle class="state" cx="120" cy="165" r="38"/><text class="label" x="120" y="165">q0</text>
+        <circle class="state" cx="280" cy="165" r="38"/><text class="label" x="280" y="165">q1</text>
+        <circle class="state" cx="440" cy="165" r="38"/><text class="label" x="440" y="165">q2</text>
+        <circle class="state" cx="600" cy="165" r="38"/><circle class="ring" cx="600" cy="165" r="29"/><text class="label" x="600" y="165">q3</text>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M158 165 L242 165"/><text class="text" x="200" y="145">a</text>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M318 165 L402 165"/><text class="text" x="360" y="145">a</text>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M478 165 L562 165"/><text class="text" x="520" y="145">a</text>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M105 128 C65 78, 175 78, 135 128"/><text class="text" x="120" y="72">b</text>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M270 128 C230 78, 340 78, 300 128"/><text class="text" x="280" y="72">b</text>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M430 128 C390 78, 500 78, 460 128"/><text class="text" x="440" y="72">b</text>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M585 128 C545 78, 655 78, 615 128"/><text class="text" x="600" y="72">a,b</text>
+        <!-- b reset arrows -->
+        <path class="edge" style="marker-end:url(#arrow7)" d="M260 195 C220 255, 155 255, 130 205"/><text class="text" x="195" y="270">b</text>
+        <path class="edge" style="marker-end:url(#arrow7)" d="M420 200 C345 290, 175 290, 132 207"/><text class="text" x="280" y="307">b</text>
+      </svg>
+      <div class="explain">
+        <code>q0</code> : 0 <code>a</code> consécutif à la fin.<br>
+        <code>q1</code> : on vient de lire 1 <code>a</code>.<br>
+        <code>q2</code> : on vient de lire 2 <code>a</code> consécutifs.<br>
+        <code>q3</code> : on a déjà vu <code>aaa</code>. Final.
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Complémentaire : ne contient pas <code>aaa</code></h3>
+      <svg viewBox="0 0 720 330">
+        <defs>
+          <marker id="arrow8" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#111827"></path>
+          </marker>
+        </defs>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M30 165 L80 165"/>
+        <circle class="state" cx="120" cy="165" r="38"/><circle class="ring" cx="120" cy="165" r="29"/><text class="label" x="120" y="165">q0</text>
+        <circle class="state" cx="280" cy="165" r="38"/><circle class="ring" cx="280" cy="165" r="29"/><text class="label" x="280" y="165">q1</text>
+        <circle class="state" cx="440" cy="165" r="38"/><circle class="ring" cx="440" cy="165" r="29"/><text class="label" x="440" y="165">q2</text>
+        <circle class="state" cx="600" cy="165" r="38"/><text class="label" x="600" y="165">q3</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M158 165 L242 165"/><text class="text" x="200" y="145">a</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M318 165 L402 165"/><text class="text" x="360" y="145">a</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M478 165 L562 165"/><text class="text" x="520" y="145">a</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M105 128 C65 78, 175 78, 135 128"/><text class="text" x="120" y="72">b</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M270 128 C230 78, 340 78, 300 128"/><text class="text" x="280" y="72">b</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M430 128 C390 78, 500 78, 460 128"/><text class="text" x="440" y="72">b</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M585 128 C545 78, 655 78, 615 128"/><text class="text" x="600" y="72">a,b</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M260 195 C220 255, 155 255, 130 205"/><text class="text" x="195" y="270">b</text>
+        <path class="edge" style="marker-end:url(#arrow8)" d="M420 200 C345 290, 175 290, 132 207"/><text class="text" x="280" y="307">b</text>
+      </svg>
+      <div class="explain">
+        On inverse les états finaux : <code>q0</code>, <code>q1</code>, <code>q2</code> deviennent finaux ; <code>q3</code> ne l’est plus.<br>
+        Acceptés : <code>ε</code>, <code>a</code>, <code>aa</code>, <code>aaba</code>.<br>
+        Refusés : <code>aaa</code>, <code>baaa</code>, <code>aaab</code>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-note">
+  <strong>À retenir :</strong> le complémentaire ne change pas les flèches. Il change seulement les doubles cercles, mais uniquement après avoir vérifié que l’automate est déterministe et complet.
+</div>
+
+</body>
+</html>
