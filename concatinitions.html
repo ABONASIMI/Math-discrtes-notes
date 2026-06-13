@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concaténation des automates — cours complet</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#111827; --muted:#4b5563; --line:#d1d5db;
+  --blue:#4f46e5; --green:#059669; --amber:#f59e0b; --red:#dc2626;
+  --softBlue:#eef2ff; --softGreen:#ecfdf5; --softAmber:#fffbeb; --softRed:#fef2f2;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:28px;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px;color:#0b2447}
+h3{margin:20px 0 10px 0;color:#1849a9}
+.subtitle{max-width:1120px;margin:0 auto 28px auto;text-align:center;color:var(--muted);font-size:17px}
+.card{max-width:1280px;margin:0 auto 26px auto;background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{background:#fbfdff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+.fr{direction:ltr;text-align:left;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin:12px 0}
+code{direction:ltr;display:inline-block;background:#eef2ff;padding:2px 7px;border-radius:6px;font-family:Consolas,Monaco,monospace}
+table{width:100%;border-collapse:collapse;direction:ltr;text-align:center;margin-top:12px;font-size:15px}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.oldfinal{background:#fff7ed;font-weight:bold}
+.eps{color:#dc2626;font-weight:bold}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.state{fill:#fff;stroke:#111827;stroke-width:3}
+.ring{fill:none;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.edge2{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr2)}
+.rededge{stroke:#dc2626;stroke-width:3;fill:none;stroke-dasharray:8 6;marker-end:url(#redarr)}
+.label{font-size:17px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:15px;font-weight:bold;fill:#111827;direction:ltr}
+.redtxt{font-size:16px;font-weight:bold;fill:#dc2626;direction:ltr}
+.small{font-size:14px;color:#6b7280}
+.step{border-right:4px solid #c7d2fe;padding:8px 12px;background:#fafafa;border-radius:8px;margin:10px 0}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>Concaténation des automates — درس کامل با همه حالت‌ها</h1>
+<p class="subtitle">
+اینجا فقط <code>concaténation</code> را یاد می‌گیری: چرا با <code>ε</code> وصل می‌کنیم، آیا همیشه با <code>ε</code> است، اگر اتومات اول چند final داشته باشد چه می‌شود، اگر اتومات دوم چند initial داشته باشد چه می‌شود، و اگر <code>ε-transition</code> مجاز نباشد چه کار می‌کنیم.
+</p>
+
+<section class="card">
+<h2>۱) معنی اصلی <code>L1.L2</code></h2>
+
+<div class="note">
+<p class="ltr center" style="font-size:22px;"><code>L1.L2 = { uv | u ∈ L1 et v ∈ L2 }</code></p>
+یعنی کلمهٔ نهایی باید دو بخش داشته باشد:
+<ul>
+<li>بخش اول <code>u</code> توسط اتومات اول قبول شود.</li>
+<li>بخش دوم <code>v</code> توسط اتومات دوم قبول شود.</li>
+</ul>
+</div>
+
+<div class="box">
+<h3>ایدهٔ اتوماتی</h3>
+<p>
+اول کلمه را با اتومات اول می‌خوانیم. وقتی به final اتومات اول رسیدیم، یعنی بخش <code>u</code> تمام شده است.
+بعد باید بدون خواندن هیچ حرفی وارد اتومات دوم شویم تا بخش <code>v</code> را بخوانیم.
+</p>
+<p class="ltr center" style="font-size:22px;"><code>final de A1 --ε--> initial de A2</code></p>
+</div>
+
+<div class="ok">
+پس بله: در روش استانداردِ ساخت concaténation، ما finalهای اتومات اول را با <code>ε</code> به initialهای اتومات دوم وصل می‌کنیم.
+</div>
+</section>
+
+<section class="card">
+<h2>۲) چرا با <code>ε</code> وصل می‌کنیم؟</h2>
+
+<p>
+چون در تعریف:
+</p>
+<p class="ltr center"><code>w = uv</code></p>
+<p>
+بین <code>u</code> و <code>v</code> هیچ حرف اضافه‌ای وجود ندارد. ما فقط باید از اتومات اول به اتومات دوم منتقل شویم، اما نباید یک حرف از کلمه مصرف کنیم.
+</p>
+
+<div class="grid2">
+<div class="box">
+<h3>اگر با حرف وصل کنیم</h3>
+<p>
+مثلاً اگر با <code>a</code> وصل کنیم:
+</p>
+<p class="ltr center"><code>final de A1 --a--> initial de A2</code></p>
+<p>
+آن‌وقت یک <code>a</code> اضافه بین <code>u</code> و <code>v</code> مجبور می‌شود. این دیگر <code>L1.L2</code> نیست، بلکه چیزی شبیه <code>L1.a.L2</code> می‌شود.
+</p>
+</div>
+
+<div class="box">
+<h3>اگر با <code>ε</code> وصل کنیم</h3>
+<p>
+<code>ε</code> یعنی انتقال بدون خواندن حرف.
+</p>
+<p class="ltr center"><code>u ε v = uv</code></p>
+<p>
+پس دقیقاً مطابق concaténation است.
+</p>
+</div>
+</div>
+
+<div class="ok">
+جواب کوتاه امتحانی: از <code>ε</code> استفاده می‌کنیم چون پایان بخش اول و شروع بخش دوم نباید هیچ حرف اضافی به کلمه اضافه کند.
+</div>
+</section>
+
+<section class="card">
+<h2>۳) آیا همیشه با <code>ε</code> است؟</h2>
+
+<table>
+<tr><th>Situation</th><th>Construction</th><th>توضیح</th></tr>
+<tr>
+<td>سؤال فقط می‌گوید <code>construire un automate pour L1.L2</code></td>
+<td><code>ε-transitions</code></td>
+<td>روش ساده و استاندارد؛ معمولاً قبول است.</td>
+</tr>
+<tr>
+<td>سؤال می‌گوید automate déterministe بسازید</td>
+<td>اول با <code>ε</code> بساز، بعد déterminiser</td>
+<td>چون وجود <code>ε</code> معمولاً اتومات را non déterministe می‌کند.</td>
+</tr>
+<tr>
+<td>در درس اجازهٔ <code>ε-transition</code> ندارید</td>
+<td>باید <code>ε</code> را حذف کنید یا اتومات را déterminiser کنید</td>
+<td>روش exam معمولاً: ساخت <code>ε-NFA</code> سپس déterminisation.</td>
+</tr>
+<tr>
+<td>اتومات دوم چند initial دارد</td>
+<td>از هر final اول به همه initialهای دوم <code>ε</code> بزن</td>
+<td>چون بخش دوم می‌تواند از هر initial مجاز شروع شود.</td>
+</tr>
+<tr>
+<td>اتومات اول چند final دارد</td>
+<td>از همه finalهای اول به initial دوم <code>ε</code> بزن</td>
+<td>چون بخش اول می‌تواند در هر final تمام شود.</td>
+</tr>
+</table>
+
+<div class="warn">
+پس جواب دقیق: برای ساخت سادهٔ concaténation بله، با <code>ε</code> وصل می‌کنیم. اما اگر استاد اتومات deterministic یا بدون <code>ε</code> بخواهد، بعد از ساخت باید <code>ε</code>ها را حذف یا déterminiser کنیم.
+</div>
+</section>
+
+<section class="card">
+<h2>۴) مثال پایه — یک final در اول، یک initial در دوم</h2>
+
+<div class="grid2">
+<div class="box">
+<h3>قبل: اتومات <code>A1</code></h3>
+<p><code>A1</code> کلمات تمام‌شونده با <code>a</code> را قبول می‌کند.</p>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→ q0</td><td>q1</td><td>q0</td></tr>
+<tr><td>* q1</td><td>q1</td><td>q0</td></tr>
+</table>
+<svg viewBox="0 0 560 250">
+<defs>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker>
+<marker id="redarr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker>
+</defs>
+<path class="edge" d="M40 125 L105 125"/>
+<circle class="state" cx="150" cy="125" r="40"/><text class="label" x="150" y="125">q0</text>
+<circle class="state" cx="410" cy="125" r="40"/><circle class="ring" cx="410" cy="125" r="31"/><text class="label" x="410" y="125">q1</text>
+<path class="edge" d="M190 115 C250 75,310 75,370 115"/><text class="txt" x="280" y="70">a</text>
+<path class="edge" d="M370 140 C310 180,250 180,190 140"/><text class="txt" x="280" y="200">b</text>
+<path class="edge" d="M132 90 C90 40,210 40,168 90"/><text class="txt" x="150" y="35">b</text>
+<path class="edge" d="M392 90 C350 40,470 40,428 90"/><text class="txt" x="410" y="35">a</text>
+</svg>
+</div>
+
+<div class="box">
+<h3>قبل: اتومات <code>A2</code></h3>
+<p><code>A2</code> کلمات شروع‌شونده با <code>b</code> را قبول می‌کند.</p>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→ p0</td><td>p2</td><td>p1</td></tr>
+<tr><td>* p1</td><td>p1</td><td>p1</td></tr>
+<tr><td>p2</td><td>p2</td><td>p2</td></tr>
+</table>
+<svg viewBox="0 0 650 250">
+<path class="edge" d="M35 125 L85 125"/>
+<circle class="state" cx="130" cy="125" r="38"/><text class="label" x="130" y="125">p0</text>
+<circle class="state" cx="330" cy="75" r="38"/><circle class="ring" cx="330" cy="75" r="30"/><text class="label" x="330" y="75">p1</text>
+<circle class="state" cx="330" cy="175" r="38"/><text class="label" x="330" y="175">p2</text>
+<path class="edge" d="M166 115 C220 90,270 80,292 77"/><text class="txt" x="230" y="80">b</text>
+<path class="edge" d="M166 135 C220 160,270 170,292 173"/><text class="txt" x="230" y="180">a</text>
+<path class="edge" d="M312 40 C270 -8,390 -8,348 40"/><text class="txt" x="330" y="15">a,b</text>
+<path class="edge" d="M312 212 C270 260,390 260,348 212"/><text class="txt" x="330" y="245">a,b</text>
+</svg>
+</div>
+</div>
+
+<h3>بعد: اتومات <code>L(A1).L(A2)</code></h3>
+<p>چون final اتومات اول <code>q1</code> است و initial اتومات دوم <code>p0</code> است:</p>
+<p class="ltr center"><code>q1 --ε--> p0</code></p>
+
+<svg viewBox="0 0 1120 340">
+<!-- A1 -->
+<path class="edge2" d="M35 170 L85 170"/>
+<circle class="state" cx="130" cy="170" r="38"/><text class="label" x="130" y="170">q0</text>
+<circle class="state oldfinal" cx="330" cy="170" r="38"/><text class="label" x="330" y="170">q1</text>
+<path class="edge2" d="M168 160 C215 125,260 125,292 160"/><text class="txt" x="230" y="120">a</text>
+<path class="edge2" d="M292 185 C240 225,205 225,168 185"/><text class="txt" x="230" y="240">b</text>
+<path class="edge2" d="M112 135 C72 85,190 85,150 135"/><text class="txt" x="130" y="80">b</text>
+<path class="edge2" d="M312 135 C272 85,390 85,350 135"/><text class="txt" x="330" y="80">a</text>
+<!-- eps -->
+<path class="rededge" d="M368 170 C430 170,455 170,520 170"/><text class="redtxt" x="445" y="145">ε</text>
+<!-- A2 -->
+<circle class="state" cx="565" cy="170" r="38"/><text class="label" x="565" y="170">p0</text>
+<circle class="state" cx="785" cy="105" r="38"/><circle class="ring" cx="785" cy="105" r="30"/><text class="label" x="785" y="105">p1</text>
+<circle class="state" cx="785" cy="235" r="38"/><text class="label" x="785" y="235">p2</text>
+<path class="edge2" d="M602 155 C665 120,720 108,747 106"/><text class="txt" x="675" y="110">b</text>
+<path class="edge2" d="M602 185 C665 220,720 232,747 234"/><text class="txt" x="675" y="245">a</text>
+<path class="edge2" d="M767 70 C727 20,845 20,805 70"/><text class="txt" x="785" y="15">a,b</text>
+<path class="edge2" d="M767 272 C727 320,845 320,805 272"/><text class="txt" x="785" y="315">a,b</text>
+</svg>
+
+<div class="ok">
+در اتومات جدید، final واقعی فقط finalهای اتومات دوم هستند، یعنی <code>p1</code>. حالت <code>q1</code> فقط محل عبور است، نه final نهایی.
+</div>
+</section>
+
+<section class="card">
+<h2>۵) اگر اتومات اول چند final داشته باشد</h2>
+
+<div class="note">
+اگر <code>A1</code> چند final داشته باشد، یعنی بخش اول <code>u</code> می‌تواند در چند جای مختلف تمام شود. پس از همهٔ finalهای <code>A1</code> باید به initial اتومات دوم <code>ε</code> بزنیم.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>قبل: <code>A1</code> با دو final</h3>
+<p><code>A1</code> دو حالت final دارد: <code>q1</code> و <code>q2</code>.</p>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→ q0</td><td>q1</td><td>q2</td></tr>
+<tr><td>* q1</td><td>q1</td><td>q2</td></tr>
+<tr><td>* q2</td><td>q1</td><td>q2</td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3>قبل: <code>A2</code></h3>
+<p>حالت initial اتومات دوم: <code>p0</code>.</p>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→ p0</td><td>p1</td><td>p0</td></tr>
+<tr><td>* p1</td><td>p1</td><td>p1</td></tr>
+</table>
+</div>
+</div>
+
+<h3>بعد: دو transition با <code>ε</code></h3>
+<p class="ltr center"><code>q1 --ε--> p0</code></p>
+<p class="ltr center"><code>q2 --ε--> p0</code></p>
+
+<svg viewBox="0 0 1100 430">
+<!-- A1 -->
+<path class="edge2" d="M35 215 L85 215"/>
+<circle class="state" cx="130" cy="215" r="38"/><text class="label" x="130" y="215">q0</text>
+<circle class="state oldfinal" cx="330" cy="120" r="38"/><text class="label" x="330" y="120">q1</text>
+<circle class="state oldfinal" cx="330" cy="310" r="38"/><text class="label" x="330" y="310">q2</text>
+<path class="edge2" d="M165 200 C220 165,270 135,295 125"/><text class="txt" x="230" y="150">a</text>
+<path class="edge2" d="M165 230 C220 265,270 295,295 305"/><text class="txt" x="230" y="280">b</text>
+<path class="edge2" d="M312 85 C272 35,390 35,350 85"/><text class="txt" x="330" y="30">a</text>
+<path class="edge2" d="M312 347 C272 395,390 395,350 347"/><text class="txt" x="330" y="390">b</text>
+<path class="edge2" d="M355 145 C405 190,405 240,355 285"/><text class="txt" x="425" y="215">b</text>
+<path class="edge2" d="M305 285 C255 240,255 190,305 145"/><text class="txt" x="240" y="215">a</text>
+<!-- eps -->
+<path class="rededge" d="M368 120 C450 120,505 160,570 205"/><text class="redtxt" x="480" y="135">ε</text>
+<path class="rededge" d="M368 310 C450 310,505 260,570 225"/><text class="redtxt" x="480" y="295">ε</text>
+<!-- A2 -->
+<circle class="state" cx="620" cy="215" r="38"/><text class="label" x="620" y="215">p0</text>
+<circle class="state" cx="830" cy="215" r="38"/><circle class="ring" cx="830" cy="215" r="30"/><text class="label" x="830" y="215">p1</text>
+<path class="edge2" d="M658 215 L792 215"/><text class="txt" x="725" y="190">a</text>
+<path class="edge2" d="M602 180 C562 130,680 130,640 180"/><text class="txt" x="620" y="125">b</text>
+<path class="edge2" d="M812 180 C772 130,890 130,850 180"/><text class="txt" x="830" y="125">a,b</text>
+</svg>
+
+<div class="ok">
+قانون امتحانی: اگر <code>F1 = {q1, q2}</code> و initial دوم <code>p0</code> است، باید از هر عضو <code>F1</code> به <code>p0</code> یک <code>ε</code> اضافه کنیم.
+</div>
+</section>
+
+<section class="card">
+<h2>۶) اگر اتومات دوم چند initial داشته باشد</h2>
+
+<div class="note">
+اگر اتومات دوم چند initial داشته باشد، بخش دوم <code>v</code> می‌تواند از هرکدام از آن initialها شروع شود. پس از هر final اتومات اول به همهٔ initialهای اتومات دوم <code>ε</code> می‌زنیم.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>قبل: <code>A1</code></h3>
+<p>حالت final اول: <code>qf</code>.</p>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→ q0</td><td>qf</td><td>q0</td></tr>
+<tr><td>* qf</td><td>qf</td><td>q0</td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3>قبل: <code>A2</code> با دو initial</h3>
+<p>حالت‌های initial دوم: <code>p0</code> و <code>p1</code>.</p>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→ p0</td><td>p0</td><td>pf</td></tr>
+<tr><td>→ p1</td><td>pf</td><td>p1</td></tr>
+<tr><td>* pf</td><td>pf</td><td>pf</td></tr>
+</table>
+</div>
+</div>
+
+<h3>بعد: از <code>qf</code> به هر دو initial</h3>
+<p class="ltr center"><code>qf --ε--> p0</code></p>
+<p class="ltr center"><code>qf --ε--> p1</code></p>
+
+<svg viewBox="0 0 1120 430">
+<!-- A1 -->
+<path class="edge2" d="M35 215 L85 215"/>
+<circle class="state" cx="130" cy="215" r="38"/><text class="label" x="130" y="215">q0</text>
+<circle class="state oldfinal" cx="330" cy="215" r="38"/><text class="label" x="330" y="215">qf</text>
+<path class="edge2" d="M168 205 C215 165,260 165,292 205"/><text class="txt" x="230" y="160">a</text>
+<path class="edge2" d="M292 230 C240 270,205 270,168 230"/><text class="txt" x="230" y="285">b</text>
+<path class="edge2" d="M112 180 C72 130,190 130,150 180"/><text class="txt" x="130" y="125">b</text>
+<path class="edge2" d="M312 180 C272 130,390 130,350 180"/><text class="txt" x="330" y="125">a</text>
+<!-- eps -->
+<path class="rededge" d="M368 205 C455 140,515 115,580 115"/><text class="redtxt" x="480" y="135">ε</text>
+<path class="rededge" d="M368 225 C455 295,515 315,580 315"/><text class="redtxt" x="480" y="300">ε</text>
+<!-- A2 -->
+<circle class="state" cx="630" cy="115" r="38"/><text class="label" x="630" y="115">p0</text>
+<circle class="state" cx="630" cy="315" r="38"/><text class="label" x="630" y="315">p1</text>
+<circle class="state" cx="850" cy="215" r="40"/><circle class="ring" cx="850" cy="215" r="32"/><text class="label" x="850" y="215">pf</text>
+<path class="edge2" d="M668 130 C730 150,785 180,815 200"/><text class="txt" x="745" y="150">b</text>
+<path class="edge2" d="M668 300 C730 280,785 250,815 230"/><text class="txt" x="745" y="290">a</text>
+<path class="edge2" d="M612 80 C572 30,690 30,650 80"/><text class="txt" x="630" y="25">a</text>
+<path class="edge2" d="M612 352 C572 400,690 400,650 352"/><text class="txt" x="630" y="395">b</text>
+<path class="edge2" d="M832 178 C792 128,910 128,870 178"/><text class="txt" x="850" y="123">a,b</text>
+</svg>
+</section>
+
+<section class="card">
+<h2>۷) اگر هم اول چند final داشته باشد و هم دوم چند initial</h2>
+
+<div class="bad">
+این حالت مهم‌ترین حالت عمومی است.
+اگر <code>A1</code> دو final داشته باشد و <code>A2</code> دو initial داشته باشد، باید <strong>۴ transition با ε</strong> اضافه کنی.
+</div>
+
+<p class="ltr center" style="font-size:20px;"><code>F1 = {f1, f2}</code></p>
+<p class="ltr center" style="font-size:20px;"><code>I2 = {i1, i2}</code></p>
+
+<p>پس:</p>
+<p class="ltr center"><code>f1 --ε--> i1</code></p>
+<p class="ltr center"><code>f1 --ε--> i2</code></p>
+<p class="ltr center"><code>f2 --ε--> i1</code></p>
+<p class="ltr center"><code>f2 --ε--> i2</code></p>
+
+<div class="ok">
+فرمول عمومی:
+<p class="ltr center" style="font-size:22px;"><code>pour tout f ∈ F1 et tout i ∈ I2, ajouter f --ε--> i</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۸) اگر initial اتومات دوم خودش final باشد</h2>
+
+<div class="note">
+اگر initial اتومات دوم final باشد، یعنی <code>ε ∈ L2</code>. در این حالت هر کلمه‌ای که در <code>L1</code> است، خودش می‌تواند در <code>L1.L2</code> باشد، چون می‌توانیم <code>v=ε</code> بگیریم.
+</div>
+
+<p>آیا باید finalهای اتومات اول را final نگه داریم؟</p>
+
+<div class="grid2">
+<div class="box">
+<h3>روش با <code>ε</code></h3>
+<p>
+نه لازم نیست finalهای <code>A1</code> را final نهایی نگه داری.
+اگر از final اتومات اول با <code>ε</code> به initial اتومات دوم بروی، و initial اتومات دوم final باشد، کلمه قبول می‌شود.
+</p>
+<p class="ltr center"><code>f --ε--> i2</code></p>
+<p>اگر <code>i2</code> final باشد، پس بعد از <code>ε</code> قبول می‌شود.</p>
+</div>
+
+<div class="box">
+<h3>روش بدون <code>ε</code></h3>
+<p>
+اگر بخواهی <code>ε</code> را حذف کنی، باید مراقب باشی. در این حالت ممکن است finalهای <code>A1</code> هم final بمانند، چون <code>v=ε</code> مجاز است.
+</p>
+</div>
+</div>
+
+<div class="warn">
+برای امتحان اگر با <code>ε-transition</code> می‌سازی، ساده‌ترین کار این است: finalهای نهایی = finalهای اتومات دوم. اگر initial دوم final باشد، مسیر <code>ε</code> خودش باعث قبول می‌شود.
+</div>
+</section>
+
+<section class="card">
+<h2>۹) اگر استاد بگوید بدون <code>ε</code> یا déterministe بساز</h2>
+
+<p>در این حالت، دو راه داری:</p>
+
+<table>
+<tr><th>روش</th><th>چی کار می‌کنی؟</th><th>برای امتحان</th></tr>
+<tr>
+<td>روش ۱</td>
+<td>اول <code>ε-NFA</code> برای concaténation بساز، بعد آن را déterminiser کن.</td>
+<td>بهترین و استانداردترین روش</td>
+</tr>
+<tr>
+<td>روش ۲</td>
+<td>حذف دستی <code>ε</code> با انتقال‌های initial دوم</td>
+<td>ممکن است سخت و خطاپذیر باشد</td>
+</tr>
+</table>
+
+<div class="note">
+در déterminisation با <code>ε</code> باید اول <code>ε-closure</code> را حساب کنی: یعنی از یک حالت، با هر تعداد <code>ε</code> کجاها می‌توانی بروی.
+</div>
+
+<h3>مثال خیلی کوچک برای <code>ε-closure</code></h3>
+<p>اگر داشته باشیم:</p>
+<p class="ltr center"><code>q1 --ε--> p0</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>ε-closure(q1) = {q1, p0}</code></p>
+<p>یعنی وقتی در <code>q1</code> هستی، بدون خواندن حرف می‌توانی در <code>p0</code> هم باشی.</p>
+</section>
+
+<section class="card">
+<h2>۱۰) قالب جواب امتحانی آماده</h2>
+
+<div class="ok">
+<span class="ltr">
+Pour construire un automate reconnaissant <code>L(A1).L(A2)</code>, on prend l'union disjointe des états de <code>A1</code> et de <code>A2</code>. L'état initial est celui de <code>A1</code>. Pour chaque état final <code>f</code> de <code>A1</code> et chaque état initial <code>i</code> de <code>A2</code>, on ajoute une transition <code>f --ε--> i</code>. Les états finaux du nouvel automate sont les états finaux de <code>A2</code>. Cet automate reconnaît bien <code>L(A1).L(A2)</code>, car un mot accepté est de la forme <code>uv</code>, avec <code>u ∈ L(A1)</code> et <code>v ∈ L(A2)</code>.
+</span>
+</div>
+</section>
+
+<section class="card">
+<h2>۱۱) سؤال تمرینی آخر</h2>
+
+<div class="fr">
+<strong>Question.</strong> Construire un automate reconnaissant <code>L(A1).L(A2)</code>.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3 class="ltr">Automate A1</h3>
+<table>
+<tr><th>A1</th><th>a</th><th>b</th></tr>
+<tr><td>→ q0</td><td>q1</td><td>q2</td></tr>
+<tr><td>* q1</td><td>q1</td><td>q2</td></tr>
+<tr><td>* q2</td><td>q1</td><td>q2</td></tr>
+</table>
+<p>Finals: <code>q1</code>, <code>q2</code></p>
+</div>
+
+<div class="box">
+<h3 class="ltr">Automate A2</h3>
+<table>
+<tr><th>A2</th><th>a</th><th>b</th></tr>
+<tr><td>→ p0</td><td>pf</td><td>p0</td></tr>
+<tr><td>→ p1</td><td>p1</td><td>pf</td></tr>
+<tr><td>* pf</td><td>pf</td><td>pf</td></tr>
+</table>
+<p>Initials: <code>p0</code>, <code>p1</code>. Final: <code>pf</code></p>
+</div>
+</div>
+
+<h3>À faire</h3>
+<ol>
+<li>Écrire l’état initial du nouvel automate.</li>
+<li>Écrire tous les états finaux du nouvel automate.</li>
+<li>Écrire toutes les transitions <code>ε</code> à ajouter.</li>
+<li>Dire combien de transitions <code>ε</code> il y a au total.</li>
+</ol>
+
+<div class="warn">
+این تمرین دقیقاً حالت عمومی است: اتومات اول چند final دارد و اتومات دوم چند initial دارد.
+</div>
+</section>
+
+</body>
+</html>
