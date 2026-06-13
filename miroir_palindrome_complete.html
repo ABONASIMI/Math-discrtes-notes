@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miroir et Palindrome — Automates et Langages</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#111827; --muted:#4b5563; --line:#d1d5db;
+  --blue:#4f46e5; --green:#059669; --amber:#f59e0b; --red:#dc2626; --purple:#7c3aed;
+  --softBlue:#eef2ff; --softGreen:#ecfdf5; --softAmber:#fffbeb; --softRed:#fef2f2; --softPurple:#f5f3ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:28px;
+  font-family:Arial,Tahoma,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.9;
+}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px;color:#0b2447}
+h3{margin:20px 0 10px 0;color:#1849a9}
+.subtitle{
+  max-width:1120px;
+  margin:0 auto 28px auto;
+  text-align:center;
+  color:var(--muted);
+  font-size:17px;
+}
+.card{
+  max-width:1280px;
+  margin:0 auto 26px auto;
+  background:var(--card);
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{
+  background:#fbfdff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:16px;
+}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.purple{background:var(--softPurple);border-right:6px solid var(--purple);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+.fr{direction:ltr;text-align:left;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin:12px 0}
+code{
+  direction:ltr;
+  display:inline-block;
+  background:#eef2ff;
+  padding:2px 7px;
+  border-radius:6px;
+  font-family:Consolas,Monaco,monospace;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  direction:ltr;
+  text-align:center;
+  margin-top:12px;
+  font-size:15px;
+}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.empty{background:#fef2f2;color:#991b1b;font-weight:bold}
+.step{border-right:4px solid #c7d2fe;padding:8px 12px;background:#fafafa;border-radius:8px;margin:10px 0}
+.big{font-size:22px}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.state{fill:#fff;stroke:#111827;stroke-width:3}
+.ring{fill:none;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.rededge{stroke:#dc2626;stroke-width:3;fill:none;stroke-dasharray:8 6;marker-end:url(#redarr)}
+.label{font-size:16px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:14px;font-weight:bold;fill:#111827;direction:ltr}
+.redtxt{font-size:14px;font-weight:bold;fill:#dc2626;direction:ltr}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>Miroir et Palindrome — درس کامل</h1>
+<p class="subtitle">
+این فایل فقط موضوع <code>miroir</code> و <code>palindrome</code> را درس می‌دهد. بخش <code>langage inductif</code> را بعداً در همین سبک جدا می‌خوانیم.
+</p>
+
+<section class="card">
+<h2>۱) معنی <code>miroir</code> یک کلمه</h2>
+
+<div class="note">
+<code>miroir</code> یعنی کلمه را برعکس کنیم. در فرانسوی معمولاً می‌نویسند:
+<p class="ltr center big"><code>˜w</code> یا <code>w~</code></p>
+یعنی <strong>miroir de w</strong>.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>مثال ساده</h3>
+<table>
+<tr><th>w</th><th>w~</th></tr>
+<tr><td><code>ab</code></td><td><code>ba</code></td></tr>
+<tr><td><code>aab</code></td><td><code>baa</code></td></tr>
+<tr><td><code>abba</code></td><td><code>abba</code></td></tr>
+<tr><td><code>aaabb</code></td><td><code>bbaaa</code></td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3>قانون خیلی ساده</h3>
+<p>آخرین حرف می‌آید اول، حرف اول می‌رود آخر.</p>
+<p class="ltr center big"><code>w = a b b a b</code></p>
+<p class="ltr center big"><code>w~ = b a b b a</code></p>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>۲) تعریف بازگشتی <code>miroir</code></h2>
+
+<div class="fr">
+Définition récursive du miroir :
+<br><br>
+<code>ε~ = ε</code>
+<br>
+Pour tout mot <code>u</code> et toute lettre <code>c ∈ A</code> :
+<br>
+<code>(uc)~ = c u~</code>
+</div>
+
+<div class="note">
+یعنی اگر یک کلمه به شکل <code>uc</code> باشد، یعنی آخرش حرف <code>c</code> است، در miroir آن، حرف <code>c</code> می‌آید اول، بعد miroir کلمهٔ قبلی <code>u</code>.
+</div>
+
+<h3>مثال با تعریف بازگشتی</h3>
+
+<p>می‌خواهیم miroir کلمهٔ <code>abb</code> را حساب کنیم.</p>
+
+<div class="step">
+کلمه را به شکل <code>u c</code> می‌نویسیم:
+<p class="ltr center"><code>abb = ab . b</code></p>
+پس:
+<p class="ltr center"><code>(abb)~ = b (ab)~</code></p>
+</div>
+
+<div class="step">
+حالا:
+<p class="ltr center"><code>ab = a . b</code></p>
+پس:
+<p class="ltr center"><code>(ab)~ = b (a)~</code></p>
+</div>
+
+<div class="step">
+و:
+<p class="ltr center"><code>(a)~ = a</code></p>
+پس:
+<p class="ltr center"><code>(ab)~ = ba</code></p>
+</div>
+
+<div class="step">
+در نتیجه:
+<p class="ltr center big"><code>(abb)~ = bba</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۳) قانون مهم: miroir de concaténation</h2>
+
+<div class="purple">
+قانون بسیار مهم برای امتحان:
+<p class="ltr center big"><code>(uv)~ = v~ u~</code></p>
+یعنی miroirِ concaténation ترتیب را برعکس می‌کند.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>مثال</h3>
+<p>فرض کن:</p>
+<p class="ltr center"><code>u = ab</code></p>
+<p class="ltr center"><code>v = baa</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>uv = abbaa</code></p>
+<p>و:</p>
+<p class="ltr center"><code>(uv)~ = aabba</code></p>
+</div>
+
+<div class="box">
+<h3>حالا با قانون</h3>
+<p class="ltr center"><code>v~ = aab</code></p>
+<p class="ltr center"><code>u~ = ba</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>v~u~ = aab ba = aabba</code></p>
+<p>همان نتیجه است.</p>
+</div>
+</div>
+
+<div class="bad">
+اشتباه رایج:
+<p class="ltr center"><code>(uv)~ ≠ u~v~</code></p>
+درست:
+<p class="ltr center"><code>(uv)~ = v~u~</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۴) چند خاصیت مهم miroir</h2>
+
+<table>
+<tr><th>Propriété</th><th>معنی</th><th>مثال</th></tr>
+<tr>
+<td><code>(w~)~ = w</code></td>
+<td>اگر دو بار برعکس کنیم، برمی‌گردیم به کلمهٔ اصلی.</td>
+<td><code>ab~ = ba</code>, بعد <code>ba~ = ab</code></td>
+</tr>
+<tr>
+<td><code>|w~| = |w|</code></td>
+<td>طول کلمه تغییر نمی‌کند.</td>
+<td><code>|abb|=3</code>, <code>|bba|=3</code></td>
+</tr>
+<tr>
+<td><code>nb_a(w~)=nb_a(w)</code></td>
+<td>تعداد حروف تغییر نمی‌کند.</td>
+<td><code>aab~ = baa</code> هر دو دو تا <code>a</code> دارند.</td>
+</tr>
+<tr>
+<td><code>(uv)~ = v~u~</code></td>
+<td>ترتیب دو کلمه عوض می‌شود.</td>
+<td><code>(ab.ba)~ = (ba)~(ab)~ = ab.ba</code></td>
+</tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۵) Palindrome چیست؟</h2>
+
+<div class="note">
+یک کلمه <code>palindrome</code> است اگر با miroir خودش برابر باشد:
+<p class="ltr center big"><code>w = w~</code></p>
+یعنی از چپ به راست و از راست به چپ یکسان خوانده شود.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>Palindrome است</h3>
+<table>
+<tr><th>w</th><th>w~</th><th>نتیجه</th></tr>
+<tr><td><code>ε</code></td><td><code>ε</code></td><td class="final">oui</td></tr>
+<tr><td><code>a</code></td><td><code>a</code></td><td class="final">oui</td></tr>
+<tr><td><code>aa</code></td><td><code>aa</code></td><td class="final">oui</td></tr>
+<tr><td><code>aba</code></td><td><code>aba</code></td><td class="final">oui</td></tr>
+<tr><td><code>abba</code></td><td><code>abba</code></td><td class="final">oui</td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3>Palindrome نیست</h3>
+<table>
+<tr><th>w</th><th>w~</th><th>نتیجه</th></tr>
+<tr><td><code>ab</code></td><td><code>ba</code></td><td class="empty">non</td></tr>
+<tr><td><code>aab</code></td><td><code>baa</code></td><td class="empty">non</td></tr>
+<tr><td><code>abb</code></td><td><code>bba</code></td><td class="empty">non</td></tr>
+<tr><td><code>baababb</code></td><td><code>bbabaab</code></td><td class="empty">non</td></tr>
+</table>
+</div>
+</div>
+
+<div class="ok">
+روش سریع برای تشخیص palindrome: حرف اول با حرف آخر یکی باشد، حرف دوم با حرف یکی‌مانده به آخر یکی باشد، و همین‌طور تا وسط.
+</div>
+</section>
+
+<section class="card">
+<h2>۶) Miroir d’un langage</h2>
+
+<p>
+تا اینجا miroir یک کلمه را دیدیم. حالا اگر یک زبان <code>L</code> داشته باشیم، miroir زبان یعنی miroir همهٔ کلمات آن زبان.
+</p>
+
+<div class="note">
+تعریف:
+<p class="ltr center big"><code>L~ = { w~ | w ∈ L }</code></p>
+</div>
+
+<h3>مثال ساده</h3>
+<p>اگر:</p>
+<p class="ltr center"><code>L = {ab, aab, b}</code></p>
+<p>پس:</p>
+<p class="ltr center"><code>L~ = {ba, baa, b}</code></p>
+
+<h3>مثال با expression rationnelle</h3>
+<table>
+<tr><th>L</th><th>L~</th><th>توضیح</th></tr>
+<tr><td><code>A*ab</code></td><td><code>baA*</code></td><td>کلمات ending with <code>ab</code> بعد از miroir می‌شوند starting with <code>ba</code>.</td></tr>
+<tr><td><code>a*b*</code></td><td><code>b*a*</code></td><td>اول <code>a</code>ها بعد <code>b</code>ها، برعکس می‌شود.</td></tr>
+<tr><td><code>(ab)*</code></td><td><code>(ba)*</code></td><td>هر بلوک <code>ab</code> برعکس می‌شود <code>ba</code>.</td></tr>
+<tr><td><code>aA*b</code></td><td><code>bA*a</code></td><td>شروع با <code>a</code> و پایان با <code>b</code> برعکس می‌شود.</td></tr>
+</table>
+
+<div class="warn">
+برای expression، فقط همه چیز را برعکس نکن؛ باید ترتیب concaténation را برعکس کنی:
+<p class="ltr center"><code>(EF)~ = F~E~</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۷) قواعد miroir برای expression rationnelle</h2>
+
+<table>
+<tr><th>Expression</th><th>Miroir</th><th>توضیح</th></tr>
+<tr><td><code>∅</code></td><td><code>∅</code></td><td>هیچ کلمه‌ای ندارد.</td></tr>
+<tr><td><code>ε</code></td><td><code>ε</code></td><td>کلمهٔ خالی برعکسش خودش است.</td></tr>
+<tr><td><code>a</code></td><td><code>a</code></td><td>یک حرف برعکسش خودش است.</td></tr>
+<tr><td><code>E + F</code></td><td><code>E~ + F~</code></td><td>union ترتیب ندارد.</td></tr>
+<tr><td><code>EF</code></td><td><code>F~E~</code></td><td>concaténation ترتیب را عوض می‌کند.</td></tr>
+<tr><td><code>E*</code></td><td><code>(E~)*</code></td><td>تکرار بلوک miroir شده.</td></tr>
+</table>
+
+<div class="ok">
+مثال:
+<p class="ltr center"><code>(a*b + ab*)~ = (a*b)~ + (ab*)~ = b~(a*)~ + (b*)~a~ = ba* + b*a</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۸) آیا زبان palindrome reconnaissable است؟</h2>
+
+<div class="warn">
+اگر الفبا فقط یک حرف داشته باشد، مثل <code>A={a}</code>، همهٔ کلمات palindrome هستند. پس recognisable است.
+</div>
+
+<div class="bad">
+اما روی الفبای <code>{a,b}</code>، زبان همهٔ palindromeها معمولاً <code>non reconnaissable</code> است، چون اتومات finite باید نصف اول کلمه را حفظ کند تا با نصف دوم مقایسه کند، و حافظهٔ نامحدود ندارد.
+</div>
+
+<p>
+برای امتحان تو معمولاً لازم نیست اثبات کامل non reconnaissable بودن palindrome را انجام بدهی، مگر اینکه سؤال دقیقاً بخواهد. بیشتر وقت‌ها تعریف، miroir، و چند propriété می‌آید.
+</p>
+</section>
+
+<section class="card">
+<h2>۹) نوع سؤال‌های امتحانی درباره miroir</h2>
+
+<div class="fr">
+<strong>Types de questions possibles :</strong>
+<ol>
+<li>Calculer le miroir d’un mot.</li>
+<li>Dire si un mot est un palindrome.</li>
+<li>Montrer que <code>(uv)~ = v~u~</code>.</li>
+<li>Calculer le miroir d’un langage ou d’une expression rationnelle.</li>
+<li>Construire un automate pour le miroir d’un langage reconnaissable.</li>
+</ol>
+</div>
+
+<h3>جواب‌های کوتاه exam-ready</h3>
+
+<table>
+<tr><th>Question</th><th>Réponse courte</th></tr>
+<tr>
+<td>Définir <code>w~</code></td>
+<td><code>w~</code> est le mot obtenu en lisant <code>w</code> de droite à gauche.</td>
+</tr>
+<tr>
+<td>Définir palindrome</td>
+<td>Un mot <code>w</code> est un palindrome si <code>w = w~</code>.</td>
+</tr>
+<tr>
+<td>Miroir de <code>uv</code></td>
+<td><code>(uv)~ = v~u~</code>.</td>
+</tr>
+<tr>
+<td>Miroir de <code>L</code></td>
+<td><code>L~ = {w~ | w ∈ L}</code>.</td>
+</tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۱۰) اگر بخواهیم automate du miroir بسازیم</h2>
+
+<div class="note">
+اگر یک زبان <code>L</code> با یک automate شناخته شود، زبان miroir آن <code>L~</code> هم reconnaissable است. ایده: همهٔ فلش‌های اتومات را برعکس می‌کنیم.
+</div>
+
+<h3>روش ساخت</h3>
+<ol>
+<li>همهٔ transitions را برعکس کن.</li>
+<li>états finaux قدیمی تبدیل به états initiaux جدید می‌شوند.</li>
+<li>état initial قدیمی تبدیل به état final جدید می‌شود.</li>
+<li>اگر چند initial جدید داشتی، می‌توانی یک initial تازه اضافه کنی و با <code>ε</code> به آن‌ها وصل کنی.</li>
+</ol>
+
+<div class="grid2">
+<div class="box">
+<h3>اتومات اصلی برای <code>ab</code></h3>
+<svg viewBox="0 0 620 230">
+<defs>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker>
+<marker id="redarr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker>
+</defs>
+<path class="edge" d="M35 115 L85 115"/>
+<circle class="state" cx="130" cy="115" r="36"/><text class="label" x="130" y="115">0</text>
+<circle class="state" cx="310" cy="115" r="36"/><text class="label" x="310" y="115">1</text>
+<circle class="state" cx="490" cy="115" r="36"/><circle class="ring" cx="490" cy="115" r="28"/><text class="label" x="490" y="115">2</text>
+<path class="edge" d="M166 115 L274 115"/><text class="txt" x="220" y="95">a</text>
+<path class="edge" d="M346 115 L454 115"/><text class="txt" x="400" y="95">b</text>
+</svg>
+</div>
+
+<div class="box">
+<h3>اتومات miroir برای <code>ba</code></h3>
+<svg viewBox="0 0 620 230">
+<path class="edge" d="M35 115 L85 115"/>
+<circle class="state" cx="130" cy="115" r="36"/><text class="label" x="130" y="115">2</text>
+<circle class="state" cx="310" cy="115" r="36"/><text class="label" x="310" y="115">1</text>
+<circle class="state" cx="490" cy="115" r="36"/><circle class="ring" cx="490" cy="115" r="28"/><text class="label" x="490" y="115">0</text>
+<path class="edge" d="M166 115 L274 115"/><text class="txt" x="220" y="95">b</text>
+<path class="edge" d="M346 115 L454 115"/><text class="txt" x="400" y="95">a</text>
+</svg>
+</div>
+</div>
+
+<div class="ok">
+چرا؟ اتومات اصلی <code>ab</code> را می‌خواند. اگر فلش‌ها را برعکس کنیم، اتومات جدید <code>ba</code> را می‌خواند، یعنی miroir زبان قبلی.
+</div>
+</section>
+
+<section class="card">
+<h2>۱۱) تمرین‌های کوتاه برای تو</h2>
+
+<p>اول فقط این تمرین‌ها را حل کن:</p>
+
+<table>
+<tr><th>شماره</th><th>Question</th><th>جواب تو</th></tr>
+<tr><td>1</td><td>Calculer le miroir de <code>abbab</code>.</td><td></td></tr>
+<tr><td>2</td><td>Dire si <code>baab</code> est un palindrome.</td><td></td></tr>
+<tr><td>3</td><td>Donner le miroir de <code>A*ab</code>.</td><td></td></tr>
+<tr><td>4</td><td>Donner le miroir de <code>a*b*</code>.</td><td></td></tr>
+<tr><td>5</td><td>Compléter : <code>(uv)~ = ...</code></td><td></td></tr>
+</table>
+
+<div class="warn">
+بعد از اینکه این‌ها را حل کردی، می‌رویم سراغ <code>langage inductif</code>.
+</div>
+</section>
+
+</body>
+</html>
