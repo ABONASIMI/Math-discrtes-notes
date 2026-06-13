@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expressions rationnelles — cours complet + annales</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#111827; --muted:#4b5563; --line:#d1d5db;
+  --blue:#4f46e5; --green:#059669; --amber:#f59e0b; --red:#dc2626;
+  --softBlue:#eef2ff; --softGreen:#ecfdf5; --softAmber:#fffbeb; --softRed:#fef2f2;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:28px;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px;color:#0b2447}
+h3{margin:20px 0 10px 0;color:#1849a9}
+.subtitle{max-width:1120px;margin:0 auto 28px auto;text-align:center;color:var(--muted);font-size:17px}
+.card{max-width:1280px;margin:0 auto 26px auto;background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{background:#fbfdff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+.fr{direction:ltr;text-align:left;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin:12px 0}
+code{direction:ltr;display:inline-block;background:#eef2ff;padding:2px 7px;border-radius:6px;font-family:Consolas,Monaco,monospace}
+table{width:100%;border-collapse:collapse;direction:ltr;text-align:center;margin-top:12px;font-size:15px}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.empty{background:#fef2f2;color:#991b1b;font-weight:bold}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.state{fill:#fff;stroke:#111827;stroke-width:3}
+.ring{fill:none;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.edge2{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr2)}
+.label{font-size:17px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:15px;font-weight:bold;fill:#111827;direction:ltr}
+.step{border-right:4px solid #c7d2fe;padding:8px 12px;background:#fafafa;border-radius:8px;margin:10px 0}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>Expressions rationnelles — درس کامل + سؤال‌های Annales</h1>
+<p class="subtitle">
+هدف: بتوانی از روی یک <code>expression rationnelle</code> زبان را توضیح بدهی، و از روی توضیح یک زبان، expression بسازی. آخر فایل چند سؤال annales-style و exact annales با حل مرحله‌به‌مرحله آمده است.
+</p>
+
+<section class="card">
+<h2>۱) تعریف خیلی ساده</h2>
+
+<div class="note">
+<code>expression rationnelle</code> یا <code>expression régulière</code> یک فرمول است که یک زبان را توصیف می‌کند.
+مثلاً به جای گفتن «همه کلماتی که با <code>ab</code> تمام می‌شوند»، می‌نویسیم:
+<p class="ltr center" style="font-size:22px;"><code>A*ab</code></p>
+</div>
+
+<table>
+<tr><th>Notation</th><th>معنی در زبان</th><th>مثال</th></tr>
+<tr><td><code>∅</code></td><td>هیچ کلمه‌ای ندارد</td><td><code>L(∅)=∅</code></td></tr>
+<tr><td><code>ε</code></td><td>کلمهٔ خالی</td><td>طولش صفر است</td></tr>
+<tr><td><code>a</code></td><td>فقط کلمهٔ <code>a</code></td><td><code>{a}</code></td></tr>
+<tr><td><code>E + F</code></td><td>یا <code>E</code> یا <code>F</code></td><td><code>a+b={a,b}</code></td></tr>
+<tr><td><code>E | F</code></td><td>همان union، مثل <code>+</code></td><td><code>a|b={a,b}</code></td></tr>
+<tr><td><code>EF</code></td><td>concaténation</td><td><code>ab={ab}</code></td></tr>
+<tr><td><code>E*</code></td><td>تکرار صفر یا چند بار</td><td><code>(ab)*={ε,ab,abab,...}</code></td></tr>
+</table>
+
+<div class="warn">
+دقت خیلی مهم: <code>a+b</code> در expression rationnelle معمولاً یعنی <code>a ou b</code>، اما <code>a+</code> در بعضی notationها یعنی «یک یا چند <code>a</code>». پس فاصله و contexte مهم است.
+</div>
+</section>
+
+<section class="card">
+<h2>۲) اولویت عملیات‌ها</h2>
+
+<p>
+در expressions rationnelles، اولویت معمولاً این است:
+</p>
+
+<table>
+<tr><th>اولویت</th><th>عملیات</th><th>مثال</th></tr>
+<tr><td>1</td><td><code>*</code></td><td><code>ab*</code> یعنی <code>a(b*)</code>، نه <code>(ab)*</code></td></tr>
+<tr><td>2</td><td>concaténation</td><td><code>a*b</code> یعنی اول <code>a*</code> بعد <code>b</code></td></tr>
+<tr><td>3</td><td><code>+</code> یا <code>|</code></td><td><code>a+bc</code> یعنی <code>a | (bc)</code></td></tr>
+</table>
+
+<div class="ok">
+اگر شک داشتی، پرانتز بگذار. در امتحان نوشتن <code>(ab)*</code> خیلی واضح‌تر از <code>ab*</code> است.
+</div>
+</section>
+
+<section class="card">
+<h2>۳) Expression → Langage</h2>
+<p>
+روش: expression را از بیرون به داخل بخوان، بعد چند کلمهٔ accepted و refused بده.
+</p>
+
+<div class="grid2">
+<div class="box">
+<h3><code>a + b</code> یا <code>a | b</code></h3>
+<p>یعنی فقط یکی از دو حرف:</p>
+<p class="ltr center"><code>L = {a,b}</code></p>
+
+<svg viewBox="0 0 560 230">
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker></defs>
+<path class="edge" d="M40 115 L105 115"/>
+<circle class="state" cx="150" cy="115" r="40"/><text class="label" x="150" y="115">q0</text>
+<circle class="state" cx="410" cy="115" r="40"/><circle class="ring" cx="410" cy="115" r="31"/><text class="label" x="410" y="115">qf</text>
+<path class="edge" d="M190 115 L365 115"/><text class="txt" x="280" y="90">a,b</text>
+</svg>
+
+<table>
+<tr><th>Acceptés</th><th>Refusés</th></tr>
+<tr><td><code>a</code>, <code>b</code></td><td><code>ε</code>, <code>ab</code>, <code>aa</code></td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3><code>(ab)*</code></h3>
+<p>یعنی بلوک <code>ab</code> صفر یا چند بار تکرار شود.</p>
+<p class="ltr center"><code>{ε, ab, abab, ababab, ...}</code></p>
+
+<svg viewBox="0 0 560 250">
+<defs><marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker></defs>
+<path class="edge2" d="M40 125 L105 125"/>
+<circle class="state" cx="150" cy="125" r="40"/><circle class="ring" cx="150" cy="125" r="31"/><text class="label" x="150" y="125">q0</text>
+<circle class="state" cx="410" cy="125" r="40"/><text class="label" x="410" y="125">q1</text>
+<path class="edge2" d="M190 115 C250 75,310 75,370 115"/><text class="txt" x="280" y="70">a</text>
+<path class="edge2" d="M370 140 C310 180,250 180,190 140"/><text class="txt" x="280" y="200">b</text>
+</svg>
+
+<table>
+<tr><th>Acceptés</th><th>Refusés</th></tr>
+<tr><td><code>ε</code>, <code>ab</code>, <code>abab</code></td><td><code>a</code>, <code>b</code>, <code>aba</code>, <code>abb</code></td></tr>
+</table>
+</div>
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3><code>a*b*</code></h3>
+<p>یعنی اول صفر یا چند <code>a</code>، بعد صفر یا چند <code>b</code>.</p>
+<p class="ltr center"><code>aaaa...bbbb...</code></p>
+
+<svg viewBox="0 0 560 250">
+<path class="edge" d="M40 125 L105 125"/>
+<circle class="state" cx="150" cy="125" r="40"/><circle class="ring" cx="150" cy="125" r="31"/><text class="label" x="150" y="125">q0</text>
+<circle class="state" cx="410" cy="125" r="40"/><circle class="ring" cx="410" cy="125" r="31"/><text class="label" x="410" y="125">q1</text>
+<path class="edge" d="M190 125 L365 125"/><text class="txt" x="280" y="100">b</text>
+<path class="edge" d="M132 90 C90 40,210 40,168 90"/><text class="txt" x="150" y="35">a</text>
+<path class="edge" d="M392 90 C350 40,470 40,428 90"/><text class="txt" x="410" y="35">b</text>
+</svg>
+
+<table>
+<tr><th>Acceptés</th><th>Refusés</th></tr>
+<tr><td><code>ε</code>, <code>a</code>, <code>b</code>, <code>aaabb</code></td><td><code>ba</code>, <code>aba</code>, <code>baba</code></td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3><code>A*ab</code></h3>
+<p>اگر <code>A={a,b}</code>، یعنی هر چیزی، بعد در آخر <code>ab</code>.</p>
+<p class="ltr center"><code>mots qui se terminent par ab</code></p>
+
+<svg viewBox="0 0 700 250">
+<path class="edge" d="M35 125 L90 125"/>
+<circle class="state" cx="135" cy="125" r="38"/><text class="label" x="135" y="125">q0</text>
+<circle class="state" cx="335" cy="125" r="38"/><text class="label" x="335" y="125">q1</text>
+<circle class="state" cx="535" cy="125" r="38"/><circle class="ring" cx="535" cy="125" r="30"/><text class="label" x="535" y="125">q2</text>
+<path class="edge" d="M173 125 L297 125"/><text class="txt" x="235" y="105">a</text>
+<path class="edge" d="M373 125 L497 125"/><text class="txt" x="435" y="105">b</text>
+<path class="edge" d="M118 90 C75 40,195 40,152 90"/><text class="txt" x="135" y="35">a,b</text>
+</svg>
+
+<table>
+<tr><th>Acceptés</th><th>Refusés</th></tr>
+<tr><td><code>ab</code>, <code>aab</code>, <code>bbab</code>, <code>abab</code></td><td><code>a</code>, <code>b</code>, <code>aba</code>, <code>abb</code></td></tr>
+</table>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>۴) Langage → Expression</h2>
+
+<p>
+روش سریع امتحانی:
+</p>
+
+<table>
+<tr><th>زبان با جمله</th><th>Expression rationnelle</th></tr>
+<tr><td>همه کلمات روی <code>{a,b}</code></td><td><code>(a+b)*</code> یا <code>A*</code></td></tr>
+<tr><td>کلمات که با <code>a</code> شروع می‌شوند</td><td><code>aA*</code></td></tr>
+<tr><td>کلمات که با <code>b</code> تمام می‌شوند</td><td><code>A*b</code></td></tr>
+<tr><td>کلمات که با <code>ab</code> تمام می‌شوند</td><td><code>A*ab</code></td></tr>
+<tr><td>کلمات که دقیقاً یک <code>a</code> دارند</td><td><code>b*ab*</code></td></tr>
+<tr><td>کلمات که دقیقاً دو <code>a</code> دارند</td><td><code>b*ab*ab*</code></td></tr>
+<tr><td>کلمات که حداقل یک <code>a</code> دارند</td><td><code>A*aA*</code></td></tr>
+<tr><td>کلمات فقط از <code>a</code>ها و بعد <code>b</code>ها ساخته شده‌اند</td><td><code>a*b*</code></td></tr>
+<tr><td>تکرار بلوک <code>ab</code></td><td><code>(ab)*</code></td></tr>
+<tr><td>طول <code>2 mod 3</code> روی <code>{a}</code></td><td><code>aa(aaa)*</code></td></tr>
+</table>
+
+<div class="warn">
+همیشه اول جملهٔ زبان را به «ساختار» تبدیل کن. مثلاً «دقیقاً دو <code>a</code>» یعنی:
+<p class="ltr center"><code>b* a b* a b*</code></p>
+چون قبل، وسط، بعد از دو <code>a</code> فقط <code>b</code> می‌تواند بیاید.
+</div>
+</section>
+
+<section class="card">
+<h2>۵) سؤال Annale 2026 — expression rationnelle</h2>
+
+<div class="fr">
+<strong>Question exacte visible dans le fichier annales :</strong><br>
+On se place sur l'alphabet réduit à une seule lettre <code>A = {a}</code>.<br>
+Soit <code>L</code> le langage sur <code>A</code> contenant les mots de longueur <code>n</code>, pour tout <code>n</code> vérifiant <code>n = 2 + 3 × k</code>, pour <code>k ∈ N</code>.<br>
+<strong>a. (1 point)</strong> Donner une expression rationnelle associée à <code>L</code>.<br>
+<strong>b. (1 point)</strong> Dessiner un automate reconnaissant <code>L</code>.
+</div>
+
+<h3>حل مرحله‌به‌مرحله</h3>
+
+<div class="step">
+<strong>Étape 1.</strong> چون <code>n = 2 + 3k</code>، اول باید دقیقاً دو <code>a</code> داشته باشیم:
+<p class="ltr center"><code>aa</code></p>
+</div>
+
+<div class="step">
+<strong>Étape 2.</strong> بعد می‌توانیم هر بار سه <code>a</code> اضافه کنیم:
+<p class="ltr center"><code>aaa</code></p>
+</div>
+
+<div class="step">
+<strong>Étape 3.</strong> چون <code>k</code> می‌تواند صفر، یک، دو، ... باشد، سه‌تایی‌ها با <code>*</code> می‌آیند:
+<p class="ltr center" style="font-size:22px;"><code>aa(aaa)*</code></p>
+</div>
+
+<div class="ok">
+<strong>Réponse :</strong>
+<p class="ltr center" style="font-size:22px;"><code>L = aa(aaa)*</code></p>
+مثال‌ها: <code>aa</code> طول ۲، <code>aaaaa</code> طول ۵، <code>aaaaaaaa</code> طول ۸.
+</div>
+
+<h3>Automate correspondant</h3>
+<svg viewBox="0 0 650 250">
+<path class="edge" d="M35 125 L90 125"/>
+<circle class="state" cx="135" cy="125" r="38"/><text class="label" x="135" y="125">r0</text>
+<circle class="state" cx="310" cy="125" r="38"/><text class="label" x="310" y="125">r1</text>
+<circle class="state" cx="485" cy="125" r="38"/><circle class="ring" cx="485" cy="125" r="30"/><text class="label" x="485" y="125">r2</text>
+<path class="edge" d="M173 125 L272 125"/><text class="txt" x="220" y="105">a</text>
+<path class="edge" d="M348 125 L447 125"/><text class="txt" x="395" y="105">a</text>
+<path class="edge" d="M485 87 C450 20,170 20,135 87"/><text class="txt" x="310" y="30">a</text>
+</svg>
+
+<div class="note">
+ایدهٔ automate: هر <code>a</code> طول را یکی زیاد می‌کند. ما طول را modulo 3 حساب می‌کنیم. حالت final وقتی است که طول ≡ 2 mod 3 باشد.
+</div>
+</section>
+
+<section class="card">
+<h2>۶) سؤال Annale 2021 — automate → expression rationnelle</h2>
+
+<div class="fr">
+<strong>Question exacte visible dans le fichier annales :</strong><br>
+En utilisant la méthode du cours, donner une expression rationnelle équivalente au langage <code>L(A)</code>.
+</div>
+
+<p>
+اتومات visible در annales این transitionها را دارد:
+</p>
+
+<table>
+<tr><th>A</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td>1</td><td>2</td></tr>
+<tr><td>* 1</td><td>1</td><td>3</td></tr>
+<tr><td>2</td><td>3</td><td>∅</td></tr>
+<tr><td>3</td><td>0</td><td>0</td></tr>
+</table>
+
+<svg viewBox="0 0 760 360">
+<path class="edge2" d="M40 185 L90 185"/>
+<circle class="state" cx="135" cy="185" r="38"/><text class="label" x="135" y="185">0</text>
+<circle class="state" cx="355" cy="90" r="38"/><circle class="ring" cx="355" cy="90" r="30"/><text class="label" x="355" y="90">1</text>
+<circle class="state" cx="135" cy="300" r="38"/><text class="label" x="135" y="300">2</text>
+<circle class="state" cx="355" cy="300" r="38"/><text class="label" x="355" y="300">3</text>
+<path class="edge2" d="M170 170 C230 130,295 100,320 92"/><text class="txt" x="245" y="115">a</text>
+<path class="edge2" d="M135 223 L135 262"/><text class="txt" x="105" y="245">b</text>
+<path class="edge2" d="M173 300 L317 300"/><text class="txt" x="245" y="280">a</text>
+<path class="edge2" d="M337 55 C295 5,415 5,373 55"/><text class="txt" x="355" y="25">a</text>
+<path class="edge2" d="M355 128 L355 262"/><text class="txt" x="385" y="195">b</text>
+<path class="edge2" d="M327 275 C250 210,195 190,173 185"/><text class="txt" x="245" y="245">a,b</text>
+</svg>
+
+<h3>روش معادلات زبان</h3>
+
+<p>
+برای هر état یک متغیر می‌گذاریم:
+</p>
+<p class="ltr center"><code>X0, X1, X2, X3</code></p>
+<p>
+<code>Xi</code> یعنی زبان کلماتی که اگر از état <code>i</code> شروع کنیم، ما را به final می‌رسانند.
+</p>
+
+<table>
+<tr><th>État</th><th>Équation</th></tr>
+<tr><td><code>X0</code></td><td><code>X0 = aX1 + bX2</code></td></tr>
+<tr><td><code>X1</code></td><td><code>X1 = ε + aX1 + bX3</code></td></tr>
+<tr><td><code>X2</code></td><td><code>X2 = aX3</code></td></tr>
+<tr><td><code>X3</code></td><td><code>X3 = (a+b)X0</code></td></tr>
+</table>
+
+<h3>حل خلاصه با Arden</h3>
+<div class="step">
+از <code>X1 = ε + aX1 + bX3</code> داریم:
+<p class="ltr center"><code>X1 = a*(ε + bX3)</code></p>
+</div>
+
+<div class="step">
+جایگذاری:
+<p class="ltr center"><code>X3 = (a+b)X0</code></p>
+<p class="ltr center"><code>X2 = a(a+b)X0</code></p>
+</div>
+
+<div class="step">
+حالا:
+<p class="ltr center"><code>X0 = aX1 + bX2</code></p>
+<p class="ltr center"><code>X0 = aa* + (aa*b + ba)(a+b)X0</code></p>
+</div>
+
+<div class="step">
+با Arden:
+<p class="ltr center" style="font-size:20px;"><code>X0 = ((aa*b + ba)(a+b))* aa*</code></p>
+</div>
+
+<div class="ok">
+پس یک expression rationnelle برای <code>L(A)</code>:
+<p class="ltr center" style="font-size:22px;"><code>((aa*b + ba)(a+b))*aa*</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۷) سؤال Annale 2023 — توجه به زبان غیرقابل تشخیص</h2>
+
+<div class="fr">
+در فایل annales، سؤال 2023 شامل <code>L2 = {a^{2n}b^{2n+1} | n ∈ N}</code> و بحث recognisable / non-reconnaissable است.
+</div>
+
+<div class="bad">
+نکتهٔ مهم: هر زبان الزاماً expression rationnelle ندارد. اگر زبان non reconnaissable باشد، expression rationnelle هم برای آن وجود ندارد.
+</div>
+
+<p>
+مثلاً:
+</p>
+<p class="ltr center" style="font-size:20px;"><code>{a^{2n}b^{2n+1} | n ∈ N}</code></p>
+<p>
+اینجا تعداد <code>a</code>ها و <code>b</code>ها به هم وابسته‌اند. اتومات finite نمی‌تواند هر عدد <code>n</code> را نگه دارد. پس نباید برایش دنبال expression rationnelle ساده بگردی.
+</p>
+</section>
+
+<section class="card">
+<h2>۸) تمرین‌های حل‌شده سریع</h2>
+
+<table>
+<tr><th>Question</th><th>Expression</th><th>چرا؟</th></tr>
+<tr><td>کلمات شامل حداقل یک <code>ab</code></td><td><code>A*abA*</code></td><td>قبل از <code>ab</code> هرچیزی، بعدش هرچیزی</td></tr>
+<tr><td>کلمات شروع با <code>a</code> و پایان با <code>b</code></td><td><code>aA*b</code></td><td>اول <code>a</code>، وسط هرچیزی، آخر <code>b</code></td></tr>
+<tr><td>کلمات بدون <code>a</code></td><td><code>b*</code></td><td>فقط <code>b</code>ها مجازند</td></tr>
+<tr><td>کلمات با دقیقاً سه <code>b</code></td><td><code>a*ba*ba*ba*</code></td><td>بین <code>b</code>ها فقط <code>a</code> می‌آید</td></tr>
+<tr><td>کلمات با طول زوج روی <code>{a,b}</code></td><td><code>((a+b)(a+b))*</code></td><td>هر بار دو حرف اضافه می‌شود</td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۹) یک سؤال آخر برای تو</h2>
+
+<p>
+این را حل کن و عکس بفرست:
+</p>
+
+<div class="fr">
+Soit <code>A = {a,b}</code>. Donner une expression rationnelle pour chacun des langages suivants :
+<ol>
+<li>Les mots qui se terminent par <code>ba</code>.</li>
+<li>Les mots qui contiennent exactement deux <code>b</code>.</li>
+<li>Les mots qui commencent par <code>a</code> et contiennent au moins un <code>b</code>.</li>
+<li>Les mots de longueur paire.</li>
+</ol>
+</div>
+
+<div class="warn">
+جواب کامل باید فقط expression نباشد؛ برای هر کدام ۲ کلمه accepted و ۲ کلمه refused هم بنویس.
+</div>
+</section>
+
+<section class="card">
+<h2>۱۰) خلاصه exam-ready</h2>
+
+<div class="ok">
+<span class="ltr">
+Une expression rationnelle décrit un langage. Les opérations principales sont l'union <code>+</code> ou <code>|</code>, la concaténation et l'étoile de Kleene <code>*</code>. Pour passer d'un langage à une expression, on traduit la propriété du langage en blocs : début, milieu, fin, nombre exact de lettres, répétition. Pour passer d'un automate à une expression, on peut écrire des équations de langages et utiliser le lemme d'Arden.
+</span>
+</div>
+</section>
+
+</body>
+</html>
