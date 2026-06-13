@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lemme d'Arden — درس کامل</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#111827; --muted:#4b5563; --line:#d1d5db;
+  --blue:#4f46e5; --green:#059669; --amber:#f59e0b; --red:#dc2626;
+  --softBlue:#eef2ff; --softGreen:#ecfdf5; --softAmber:#fffbeb; --softRed:#fef2f2;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:28px;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px;color:#0b2447}
+h3{margin:20px 0 10px 0;color:#1849a9}
+.subtitle{max-width:1120px;margin:0 auto 28px auto;text-align:center;color:var(--muted);font-size:17px}
+.card{max-width:1280px;margin:0 auto 26px auto;background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{background:#fbfdff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+.fr{direction:ltr;text-align:left;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin:12px 0}
+code{direction:ltr;display:inline-block;background:#eef2ff;padding:2px 7px;border-radius:6px;font-family:Consolas,Monaco,monospace}
+table{width:100%;border-collapse:collapse;direction:ltr;text-align:center;margin-top:12px;font-size:15px}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.empty{background:#fef2f2;color:#991b1b;font-weight:bold}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.state{fill:#fff;stroke:#111827;stroke-width:3}
+.ring{fill:none;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.label{font-size:17px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:15px;font-weight:bold;fill:#111827;direction:ltr}
+.step{border-right:4px solid #c7d2fe;padding:8px 12px;background:#fafafa;border-radius:8px;margin:10px 0}
+.big{font-size:22px}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>Lemme d’Arden — درس کامل مرحله‌به‌مرحله</h1>
+<p class="subtitle">
+هدف: وقتی در معادلات زبان به چیزی مثل <code>X = aX + b</code> یا <code>X = AX + B</code> رسیدی، بتوانی سریع expression rationnelle نهایی را پیدا کنی.
+</p>
+
+<section class="card">
+<h2>۰) اول جواب سؤال تو: آیا <code>a+b</code> را می‌توانیم <code>ab</code> بنویسیم؟</h2>
+
+<div class="bad">
+خیر. <code>a+b</code> و <code>ab</code> اصلاً یکی نیستند.
+</div>
+
+<table>
+<tr><th>Expression</th><th>معنی</th><th>زبان</th></tr>
+<tr>
+<td><code>a+b</code></td>
+<td><code>a ou b</code> یعنی یکی از این دو</td>
+<td><code>{a,b}</code></td>
+</tr>
+<tr>
+<td><code>ab</code></td>
+<td>اول <code>a</code> بعد <code>b</code></td>
+<td><code>{ab}</code></td>
+</tr>
+</table>
+
+<div class="note">
+در expression rationnelle، علامت <code>+</code> یعنی <strong>یا / union</strong>.  
+اما چسبیدن دو چیز کنار هم یعنی <strong>concaténation</strong>.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>مثال union</h3>
+<p class="ltr center big"><code>a+b</code></p>
+<p>کلمه‌های accepted:</p>
+<p class="ltr center"><code>a</code>, <code>b</code></p>
+<p>کلمهٔ <code>ab</code> accepted نیست، چون <code>a+b</code> فقط یک حرف می‌پذیرد.</p>
+</div>
+
+<div class="box">
+<h3>مثال concaténation</h3>
+<p class="ltr center big"><code>ab</code></p>
+<p>کلمهٔ accepted:</p>
+<p class="ltr center"><code>ab</code></p>
+<p>کلمه‌های <code>a</code> و <code>b</code> accepted نیستند، چون باید هر دو پشت سر هم بیایند.</p>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>۱) Lemme d’Arden چیست؟</h2>
+
+<div class="note">
+قانون Arden برای حل معادله‌های زبانی است. وقتی متغیر خودش دوباره در سمت راست ظاهر می‌شود، Arden کمک می‌کند آن را حذف کنیم و به expression rationnelle برسیم.
+</div>
+
+<p>فرم اصلی:</p>
+<p class="ltr center big"><code>X = AX + B</code></p>
+
+<p>جواب:</p>
+<p class="ltr center big"><code>X = A*B</code></p>
+
+<div class="ok">
+معنی ساده: اول می‌توانیم <code>A</code> را صفر یا چند بار تکرار کنیم، بعد در آخر <code>B</code> را بخوانیم.
+</div>
+
+<table>
+<tr><th>معادله</th><th>با Arden</th><th>زبان</th></tr>
+<tr><td><code>X = aX + b</code></td><td><code>X = a*b</code></td><td>چندتا <code>a</code>، بعد <code>b</code></td></tr>
+<tr><td><code>X = bX + a</code></td><td><code>X = b*a</code></td><td>چندتا <code>b</code>، بعد <code>a</code></td></tr>
+<tr><td><code>X = (a+b)X + ab</code></td><td><code>X = (a+b)*ab</code></td><td>هر چیزی، بعد <code>ab</code></td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۲) چرا <code>X = aX + b</code> می‌شود <code>a*b</code>؟</h2>
+
+<p>
+معادله:
+</p>
+<p class="ltr center big"><code>X = aX + b</code></p>
+
+<p>
+یعنی برای ساختن یک کلمه از <code>X</code> دو راه داریم:
+</p>
+
+<ul>
+<li>یا مستقیماً <code>b</code> را بگیریم.</li>
+<li>یا اول یک <code>a</code> بگیریم و دوباره وارد <code>X</code> شویم.</li>
+</ul>
+
+<div class="step">
+اگر راه دوم را صفر بار انجام بدهیم:
+<p class="ltr center"><code>b</code></p>
+</div>
+
+<div class="step">
+اگر راه دوم را یک بار انجام بدهیم:
+<p class="ltr center"><code>ab</code></p>
+</div>
+
+<div class="step">
+اگر راه دوم را دو بار انجام بدهیم:
+<p class="ltr center"><code>aab</code></p>
+</div>
+
+<div class="step">
+پس زبان می‌شود:
+<p class="ltr center"><code>{b, ab, aab, aaab, ...}</code></p>
+</div>
+
+<div class="ok">
+این دقیقاً:
+<p class="ltr center big"><code>a*b</code></p>
+است.
+</div>
+</section>
+
+<section class="card">
+<h2>۳) فرم‌های Arden که در امتحان می‌بینی</h2>
+
+<table>
+<tr><th>فرم</th><th>چطور تبدیل کنیم؟</th><th>جواب</th></tr>
+<tr>
+<td><code>X = AX + B</code></td>
+<td>مستقیم Arden</td>
+<td><code>X = A*B</code></td>
+</tr>
+<tr>
+<td><code>X = B + AX</code></td>
+<td>اول جابه‌جا کن: <code>X = AX + B</code></td>
+<td><code>X = A*B</code></td>
+</tr>
+<tr>
+<td><code>X = AX + BX + C</code></td>
+<td>مشترک بگیر: <code>X = (A+B)X + C</code></td>
+<td><code>X = (A+B)*C</code></td>
+</tr>
+<tr>
+<td><code>X = ε + aX</code></td>
+<td>جابه‌جا: <code>X = aX + ε</code></td>
+<td><code>X = a*</code></td>
+</tr>
+<tr>
+<td><code>X = aX</code></td>
+<td>اینجا <code>B=∅</code></td>
+<td><code>X = ∅</code> در جواب کمینه</td>
+</tr>
+</table>
+
+<div class="warn">
+در نسخه رسمی، برای یکتایی جواب معمولاً باید <code>ε ∉ A</code> باشد. در تمرین‌های ما معمولاً همین حالت است. فعلاً برای امتحان عملی کافی است فرم را درست تشخیص بدهی.
+</div>
+</section>
+
+<section class="card">
+<h2>۴) مثال‌های خیلی ساده</h2>
+
+<div class="grid2">
+<div class="box">
+<h3>مثال ۱</h3>
+<p class="ltr center big"><code>X = aX + b</code></p>
+<p>فرم:</p>
+<p class="ltr center"><code>A = a, B = b</code></p>
+<p>پس:</p>
+<p class="ltr center big"><code>X = a*b</code></p>
+</div>
+
+<div class="box">
+<h3>مثال ۲</h3>
+<p class="ltr center big"><code>X = ε + bX</code></p>
+<p>اول جابه‌جا:</p>
+<p class="ltr center"><code>X = bX + ε</code></p>
+<p>پس:</p>
+<p class="ltr center big"><code>X = b*</code></p>
+</div>
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>مثال ۳</h3>
+<p class="ltr center big"><code>X = aX + bX + ε</code></p>
+<p>مشترک:</p>
+<p class="ltr center"><code>X = (a+b)X + ε</code></p>
+<p>پس:</p>
+<p class="ltr center big"><code>X = (a+b)*</code></p>
+</div>
+
+<div class="box">
+<h3>مثال ۴</h3>
+<p class="ltr center big"><code>X = aaX + b</code></p>
+<p>اینجا <code>A=aa</code> و <code>B=b</code></p>
+<p>پس:</p>
+<p class="ltr center big"><code>X = (aa)*b</code></p>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>۵) مثال از اتومات: از معادله تا expression</h2>
+
+<div class="grid2">
+<div class="box">
+<h3>اتومات</h3>
+<table>
+<tr><th>État</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td>0</td><td>1</td></tr>
+<tr><td>* 1</td><td>1</td><td>1</td></tr>
+</table>
+
+<svg viewBox="0 0 580 250">
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker></defs>
+<path class="edge" d="M40 125 L100 125"/>
+<circle class="state" cx="145" cy="125" r="40"/><text class="label" x="145" y="125">0</text>
+<circle class="state" cx="410" cy="125" r="40"/><circle class="ring" cx="410" cy="125" r="31"/><text class="label" x="410" y="125">1</text>
+<path class="edge" d="M185 125 L365 125"/><text class="txt" x="280" y="103">b</text>
+<path class="edge" d="M127 90 C85 40,205 40,163 90"/><text class="txt" x="145" y="35">a</text>
+<path class="edge" d="M392 90 C350 40,470 40,428 90"/><text class="txt" x="410" y="35">a,b</text>
+</svg>
+</div>
+
+<div class="box">
+<h3>معادله‌ها</h3>
+<p>چون état <code>1</code> final است:</p>
+<p class="ltr center"><code>X1 = ε + aX1 + bX1</code></p>
+<p>از état <code>0</code>:</p>
+<p class="ltr center"><code>X0 = aX0 + bX1</code></p>
+</div>
+</div>
+
+<h3>حل</h3>
+
+<div class="step">
+برای <code>X1</code>:
+<p class="ltr center"><code>X1 = ε + aX1 + bX1</code></p>
+<p class="ltr center"><code>X1 = (a+b)X1 + ε</code></p>
+<p class="ltr center"><code>X1 = (a+b)*</code></p>
+</div>
+
+<div class="step">
+برای <code>X0</code>:
+<p class="ltr center"><code>X0 = aX0 + bX1</code></p>
+<p>Arden:</p>
+<p class="ltr center"><code>X0 = a*bX1</code></p>
+<p>جایگذاری:</p>
+<p class="ltr center"><code>X0 = a*b(a+b)*</code></p>
+</div>
+
+<div class="ok">
+زبان: کلمات که حداقل یک <code>b</code> دارند:
+<p class="ltr center big"><code>a*b(a+b)*</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۶) مثال از تمرین قبلی تو</h2>
+
+<p>معادله‌ها:</p>
+<p class="ltr center big"><code>X0 = aX1 + bX0</code></p>
+<p class="ltr center big"><code>X1 = ε + aX1 + bX2</code></p>
+<p class="ltr center big"><code>X2 = aX1 + bX0</code></p>
+
+<h3>گام ۱ — حل <code>X0</code> نسبت به <code>X1</code></h3>
+<p class="ltr center"><code>X0 = bX0 + aX1</code></p>
+<p>Arden:</p>
+<p class="ltr center big"><code>X0 = b*aX1</code></p>
+
+<h3>گام ۲ — جایگذاری در <code>X2</code></h3>
+<p class="ltr center"><code>X2 = aX1 + bX0</code></p>
+<p class="ltr center"><code>X2 = aX1 + b(b*aX1)</code></p>
+<p class="ltr center"><code>X2 = aX1 + bb*aX1</code></p>
+<p class="ltr center"><code>X2 = (a + bb*a)X1</code></p>
+
+<div class="note">
+اینجا:
+<p class="ltr center"><code>a + bb*a = b*a</code></p>
+چون <code>b*a = a + ba + bba + bbba + ...</code>.
+</div>
+
+<p>پس:</p>
+<p class="ltr center big"><code>X2 = b*aX1</code></p>
+
+<h3>گام ۳ — حل <code>X1</code></h3>
+<p class="ltr center"><code>X1 = ε + aX1 + bX2</code></p>
+<p>جایگذاری:</p>
+<p class="ltr center"><code>X1 = ε + aX1 + b(b*aX1)</code></p>
+<p class="ltr center"><code>X1 = ε + aX1 + bb*aX1</code></p>
+<p class="ltr center"><code>X1 = ε + (a + bb*a)X1</code></p>
+<p class="ltr center"><code>X1 = ε + b*aX1</code></p>
+<p>Arden:</p>
+<p class="ltr center big"><code>X1 = (b*a)*</code></p>
+
+<h3>گام ۴ — جواب نهایی</h3>
+<p>داشتیم:</p>
+<p class="ltr center"><code>X0 = b*aX1</code></p>
+<p>پس:</p>
+<p class="ltr center big"><code>X0 = b*a(b*a)*</code></p>
+
+<div class="ok">
+این را می‌توان ساده‌تر نوشت:
+<p class="ltr center big"><code>X0 = (a+b)*a</code></p>
+یعنی همهٔ کلماتی که با <code>a</code> تمام می‌شوند.
+</div>
+</section>
+
+<section class="card">
+<h2>۷) اشتباهات رایج در Arden</h2>
+
+<table>
+<tr><th>اشتباه</th><th>چرا غلط است؟</th><th>درست</th></tr>
+<tr>
+<td><code>X = a + b</code> را <code>ab</code> بنویسی</td>
+<td><code>+</code> یعنی ou، نه چسباندن</td>
+<td><code>a+b</code> همان <code>{a,b}</code> است</td>
+</tr>
+<tr>
+<td><code>X = aX + b</code> را <code>ab*</code> بنویسی</td>
+<td>تکرار روی چیزی است که قبل از <code>X</code> است، یعنی <code>a</code></td>
+<td><code>a*b</code></td>
+</tr>
+<tr>
+<td><code>X = ε + aX</code> را <code>a+</code> بنویسی</td>
+<td>چون <code>ε</code> هم قبول است</td>
+<td><code>a*</code></td>
+</tr>
+<tr>
+<td>وقتی final است، <code>ε</code> را فراموش کنی</td>
+<td>بدون خواندن حرف هم قبول می‌شود</td>
+<td>در معادلهٔ final، <code>ε</code> اضافه کن</td>
+</tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۸) تمرین‌های کوتاه برای تو</h2>
+
+<p>این‌ها را حل کن. فقط جواب expression را بنویس:</p>
+
+<table>
+<tr><th>شماره</th><th>معادله</th><th>جواب تو</th></tr>
+<tr><td>1</td><td><code>X = aX + b</code></td><td></td></tr>
+<tr><td>2</td><td><code>X = bX + ε</code></td><td></td></tr>
+<tr><td>3</td><td><code>X = aX + bX + a</code></td><td></td></tr>
+<tr><td>4</td><td><code>X = aaX + b</code></td><td></td></tr>
+<tr><td>5</td><td><code>X = (a+b)X + ab</code></td><td></td></tr>
+</table>
+
+<div class="warn">
+یادت باشد: اول باید فرم را به <code>X = AX + B</code> تبدیل کنی، بعد جواب <code>A*B</code> است.
+</div>
+</section>
+
+<section class="card">
+<h2>۹) قالب امتحانی آماده</h2>
+
+<div class="ok">
+<span class="ltr">
+On utilise le lemme d'Arden. Si une équation est de la forme <code>X = AX + B</code>, alors la solution est <code>X = A*B</code>, à condition que <code>ε ∉ A</code>. On regroupe d'abord tous les termes contenant <code>X</code>, puis on applique le lemme pour éliminer la récursion.
+</span>
+</div>
+</section>
+
+</body>
+</html>
