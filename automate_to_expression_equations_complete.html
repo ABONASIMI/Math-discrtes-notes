@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automate → Expression rationnelle + Équations de langages</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#111827; --muted:#4b5563; --line:#d1d5db;
+  --blue:#4f46e5; --green:#059669; --amber:#f59e0b; --red:#dc2626;
+  --softBlue:#eef2ff; --softGreen:#ecfdf5; --softAmber:#fffbeb; --softRed:#fef2f2;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:28px;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+h1{text-align:center;margin:0 0 8px 0;font-size:32px}
+h2{margin:0 0 14px 0;border-right:6px solid var(--blue);padding-right:12px;color:#0b2447}
+h3{margin:20px 0 10px 0;color:#1849a9}
+.subtitle{max-width:1120px;margin:0 auto 28px auto;text-align:center;color:var(--muted);font-size:17px}
+.card{max-width:1280px;margin:0 auto 26px auto;background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.box{background:#fbfdff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.note{background:var(--softBlue);border-right:6px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ok{background:var(--softGreen);border-right:6px solid var(--green);border-radius:12px;padding:14px 16px;margin:14px 0}
+.warn{background:var(--softAmber);border-right:6px solid var(--amber);border-radius:12px;padding:14px 16px;margin:14px 0}
+.bad{background:var(--softRed);border-right:6px solid var(--red);border-radius:12px;padding:14px 16px;margin:14px 0}
+.ltr{direction:ltr;text-align:left}
+.center{text-align:center}
+.fr{direction:ltr;text-align:left;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin:12px 0}
+code{direction:ltr;display:inline-block;background:#eef2ff;padding:2px 7px;border-radius:6px;font-family:Consolas,Monaco,monospace}
+table{width:100%;border-collapse:collapse;direction:ltr;text-align:center;margin-top:12px;font-size:15px}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:middle}
+th{background:#eef2ff}
+.final{background:#dcfce7;font-weight:bold}
+.empty{background:#fef2f2;color:#991b1b;font-weight:bold}
+svg{width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px}
+.state{fill:#fff;stroke:#111827;stroke-width:3}
+.ring{fill:none;stroke:#111827;stroke-width:3}
+.edge{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr)}
+.edge2{stroke:#111827;stroke-width:3;fill:none;marker-end:url(#arr2)}
+.label{font-size:17px;font-weight:bold;text-anchor:middle;dominant-baseline:middle;direction:ltr}
+.txt{font-size:15px;font-weight:bold;fill:#111827;direction:ltr}
+.step{border-right:4px solid #c7d2fe;padding:8px 12px;background:#fafafa;border-radius:8px;margin:10px 0}
+@media(max-width:950px){.grid2,.grid3{grid-template-columns:1fr}body{padding:16px}}
+</style>
+</head>
+<body>
+
+<h1>Automate → Expression rationnelle<br>و Équations de langages</h1>
+<p class="subtitle">
+این درس دو چیز را کامل یاد می‌دهد: ۱) چطور از روی اتومات یک expression rationnelle بسازیم، ۲) چطور برای هر état معادلهٔ زبانی مثل <code>X0, X1, X2</code> بنویسیم.
+</p>
+
+<section class="card">
+<h2>۱) ایدهٔ اصلی</h2>
+
+<div class="note">
+وقتی سؤال می‌گوید:
+<p class="ltr center" style="font-size:21px;"><code>Donner une expression rationnelle équivalente à L(A)</code></p>
+یعنی باید زبانِ اتومات را با یک expression مثل <code>a*b</code>، <code>A*ab</code>، <code>(ab)*</code>، یا یک expression بزرگ‌تر بنویسی.
+</div>
+
+<div class="grid2">
+<div class="box">
+<h3>روش سریع</h3>
+<p>اگر اتومات خیلی ساده باشد، با نگاه کردن زبان را تشخیص می‌دهیم.</p>
+<p>مثلاً اگر اتومات کلمات ending with <code>ab</code> را قبول کند:</p>
+<p class="ltr center"><code>A*ab</code></p>
+</div>
+
+<div class="box">
+<h3>روش رسمی</h3>
+<p>اگر اتومات سخت‌تر باشد، برای هر état یک متغیر می‌گذاریم:</p>
+<p class="ltr center"><code>X0, X1, X2, ...</code></p>
+<p>بعد برای هر état یک équation de langage می‌نویسیم.</p>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>۲) معنی <code>X0, X1, X2</code> چیست؟</h2>
+
+<div class="note">
+<code>Xi</code> یعنی: مجموعهٔ کلماتی که اگر از état <code>i</code> شروع کنیم، ما را به یک état final می‌رسانند.
+</div>
+
+<p>
+مثلاً:
+</p>
+<p class="ltr center" style="font-size:21px;"><code>X0 = langage accepté en partant de l'état 0</code></p>
+
+<div class="ok">
+زبان اصلی اتومات همیشه متغیرِ حالت initial است. اگر حالت initial برابر <code>0</code> باشد، زبان اتومات:
+<p class="ltr center" style="font-size:21px;"><code>L(A)=X0</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۳) قانون نوشتن معادله برای هر état</h2>
+
+<p>
+برای هر état نگاه می‌کنیم چه transitionهایی از آن خارج می‌شود.
+</p>
+
+<table>
+<tr><th>اگر داشته باشیم</th><th>در معادله می‌نویسیم</th><th>چرا؟</th></tr>
+<tr><td><code>i --a--> j</code></td><td><code>aXj</code></td><td>اول حرف <code>a</code> را می‌خوانیم، بعد از état <code>j</code> ادامه می‌دهیم.</td></tr>
+<tr><td><code>i --b--> k</code></td><td><code>bXk</code></td><td>اول <code>b</code>، بعد زبان از <code>k</code>.</td></tr>
+<tr><td>اگر <code>i</code> final باشد</td><td><code>ε</code></td><td>چون اگر همین‌جا توقف کنیم، کلمهٔ خالی قبول می‌شود.</td></tr>
+<tr><td>چند راه وجود دارد</td><td><code>+</code></td><td>چون یعنی «یا این راه، یا آن راه».</td></tr>
+</table>
+
+<div class="ok">
+قالب کلی:
+<p class="ltr center" style="font-size:21px;"><code>Xi = ε اگر i final باشد + مجموع تمام étiquette.Xdestination</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۴) مثال ۱ — اتومات خیلی ساده</h2>
+
+<div class="grid2">
+<div class="box">
+<h3>اتومات</h3>
+<svg viewBox="0 0 620 260">
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#111827"/></marker></defs>
+<path class="edge" d="M40 130 L95 130"/>
+<circle class="state" cx="140" cy="130" r="38"/><text class="label" x="140" y="130">0</text>
+<circle class="state" cx="340" cy="130" r="38"/><circle class="ring" cx="340" cy="130" r="30"/><text class="label" x="340" y="130">1</text>
+<path class="edge" d="M178 130 L302 130"/><text class="txt" x="240" y="110">a</text>
+<path class="edge" d="M322 95 C280 45,400 45,358 95"/><text class="txt" x="340" y="40">b</text>
+</svg>
+
+<table>
+<tr><th>État</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td>1</td><td>∅</td></tr>
+<tr><td>* 1</td><td>∅</td><td>1</td></tr>
+</table>
+</div>
+
+<div class="box">
+<h3>زبان با نگاه سریع</h3>
+<p>از <code>0</code> باید اول یک <code>a</code> بخوانیم و به final برویم.</p>
+<p>بعد در final می‌توانیم هر تعداد <code>b</code> بخوانیم.</p>
+<p class="ltr center" style="font-size:22px;"><code>ab*</code></p>
+</div>
+</div>
+
+<h3>نوشتن معادله‌ها</h3>
+<table>
+<tr><th>État</th><th>Equation</th><th>توضیح</th></tr>
+<tr><td><code>X0</code></td><td><code>X0 = aX1</code></td><td>از 0 با <code>a</code> می‌رویم 1.</td></tr>
+<tr><td><code>X1</code></td><td><code>X1 = ε + bX1</code></td><td>1 final است، پس <code>ε</code> دارد؛ و با <code>b</code> به خودش برمی‌گردد.</td></tr>
+</table>
+
+<h3>حل</h3>
+<div class="step">
+از <code>X1 = ε + bX1</code> نتیجه می‌گیریم:
+<p class="ltr center"><code>X1 = b*</code></p>
+چون از état 1 می‌توانیم صفر یا چند <code>b</code> بخوانیم.
+</div>
+
+<div class="step">
+حالا:
+<p class="ltr center"><code>X0 = aX1 = ab*</code></p>
+</div>
+
+<div class="ok">
+پس:
+<p class="ltr center" style="font-size:22px;"><code>L(A)=ab*</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۵) چرا برای final حالت <code>ε</code> اضافه می‌کنیم؟</h2>
+
+<div class="note">
+اگر یک état final باشد، یعنی اگر همین‌جا بایستیم، کلمه قبول است. وقتی از خودش شروع می‌کنیم و هیچ حرفی نخوانیم، کلمهٔ خالی <code>ε</code> قبول می‌شود.
+</div>
+
+<p>
+مثلاً در مثال قبلی، از état <code>1</code> شروع کنیم:
+</p>
+<ul>
+<li>می‌توانیم هیچ حرفی نخوانیم و قبول شویم: <code>ε</code></li>
+<li>می‌توانیم یک <code>b</code> بخوانیم: <code>b</code></li>
+<li>می‌توانیم دو <code>b</code> بخوانیم: <code>bb</code></li>
+</ul>
+
+<p>پس:</p>
+<p class="ltr center" style="font-size:21px;"><code>X1 = ε + b + bb + bbb + ... = b*</code></p>
+</section>
+
+<section class="card">
+<h2>۶) قانون کوچک قبل از Arden</h2>
+
+<div class="warn">
+درس کامل <code>lemme d'Arden</code> را بعداً جدا می‌خوانیم. فعلاً همین قانون را لازم داری:
+</div>
+
+<table>
+<tr><th>معادله</th><th>حل</th><th>معنی</th></tr>
+<tr><td><code>X = ε + aX</code></td><td><code>X = a*</code></td><td>صفر یا چند <code>a</code></td></tr>
+<tr><td><code>X = ε + bX</code></td><td><code>X = b*</code></td><td>صفر یا چند <code>b</code></td></tr>
+<tr><td><code>X = B + AX</code></td><td><code>X = A*B</code></td><td>این همان Arden است.</td></tr>
+</table>
+
+<div class="ok">
+برای شروع، اگر دیدی <code>X = ε + aX</code>، سریع بنویس <code>X=a*</code>.
+</div>
+</section>
+
+<section class="card">
+<h2>۷) مثال ۲ — کلمات تمام‌شونده با <code>b</code></h2>
+
+<div class="grid2">
+<div class="box">
+<h3>اتومات</h3>
+<svg viewBox="0 0 620 260">
+<path class="edge" d="M40 130 L95 130"/>
+<circle class="state" cx="140" cy="130" r="38"/><text class="label" x="140" y="130">0</text>
+<circle class="state" cx="390" cy="130" r="38"/><circle class="ring" cx="390" cy="130" r="30"/><text class="label" x="390" y="130">1</text>
+<path class="edge" d="M178 120 C240 80,290 80,352 120"/><text class="txt" x="265" y="75">b</text>
+<path class="edge" d="M352 145 C290 185,240 185,178 145"/><text class="txt" x="265" y="205">a</text>
+<path class="edge" d="M122 95 C80 45,200 45,158 95"/><text class="txt" x="140" y="40">a</text>
+<path class="edge" d="M372 95 C330 45,450 45,408 95"/><text class="txt" x="390" y="40">b</text>
+</svg>
+</div>
+
+<div class="box">
+<h3>معادله‌ها</h3>
+<table>
+<tr><th>État</th><th>Equation</th></tr>
+<tr><td><code>X0</code></td><td><code>X0 = aX0 + bX1</code></td></tr>
+<tr><td><code>X1</code></td><td><code>X1 = ε + aX0 + bX1</code></td></tr>
+</table>
+</div>
+</div>
+
+<h3>فهم زبان با نگاه</h3>
+<p>
+این اتومات وقتی final است که آخرین حرف خوانده‌شده <code>b</code> باشد.
+پس زبان:
+</p>
+<p class="ltr center" style="font-size:22px;"><code>A*b</code></p>
+
+<div class="ok">
+در امتحان اگر زبان را سریع فهمیدی، می‌توانی مستقیم expression را بنویسی:
+<p class="ltr center"><code>L(A)=A*b</code></p>
+اما اگر سؤال نوشته بود <code>méthode du cours</code>، باید معادله بنویسی.
+</div>
+</section>
+
+<section class="card">
+<h2>۸) مثال ۳ — اتومات سه حالته برای <code>A*ab</code></h2>
+
+<div class="grid2">
+<div class="box">
+<h3>اتومات</h3>
+<svg viewBox="0 0 760 260">
+<path class="edge" d="M40 130 L90 130"/>
+<circle class="state" cx="135" cy="130" r="38"/><text class="label" x="135" y="130">0</text>
+<circle class="state" cx="335" cy="130" r="38"/><text class="label" x="335" y="130">1</text>
+<circle class="state" cx="535" cy="130" r="38"/><circle class="ring" cx="535" cy="130" r="30"/><text class="label" x="535" y="130">2</text>
+<path class="edge" d="M173 130 L297 130"/><text class="txt" x="235" y="110">a</text>
+<path class="edge" d="M373 130 L497 130"/><text class="txt" x="435" y="110">b</text>
+<path class="edge" d="M118 95 C75 45,195 45,152 95"/><text class="txt" x="135" y="40">a,b</text>
+</svg>
+</div>
+
+<div class="box">
+<h3>معادله‌ها</h3>
+<table>
+<tr><th>État</th><th>Equation</th></tr>
+<tr><td><code>X0</code></td><td><code>X0 = aX0 + bX0 + aX1</code></td></tr>
+<tr><td><code>X1</code></td><td><code>X1 = bX2</code></td></tr>
+<tr><td><code>X2</code></td><td><code>X2 = ε</code></td></tr>
+</table>
+</div>
+</div>
+
+<h3>حل ساده</h3>
+<div class="step">
+از <code>X2 = ε</code> داریم:
+<p class="ltr center"><code>X1 = bX2 = b</code></p>
+</div>
+
+<div class="step">
+حالا:
+<p class="ltr center"><code>X0 = aX0 + bX0 + aX1</code></p>
+<p class="ltr center"><code>X0 = (a+b)X0 + ab</code></p>
+</div>
+
+<div class="step">
+با قانون Arden:
+<p class="ltr center"><code>X0 = (a+b)*ab</code></p>
+</div>
+
+<div class="ok">
+اگر <code>A={a,b}</code> باشد:
+<p class="ltr center" style="font-size:22px;"><code>L(A)=A*ab</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۹) مثال ۴ — اتومات annale-style با چهار état</h2>
+
+<p>
+این همان نوع سؤالی است که معمولاً در annales می‌آید: «با روش درس expression بدهید».
+</p>
+
+<table>
+<tr><th>A</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td>1</td><td>2</td></tr>
+<tr><td>* 1</td><td>1</td><td>3</td></tr>
+<tr><td>2</td><td>3</td><td>∅</td></tr>
+<tr><td>3</td><td>0</td><td>0</td></tr>
+</table>
+
+<svg viewBox="0 0 760 360">
+<path class="edge2" d="M40 185 L90 185"/>
+<circle class="state" cx="135" cy="185" r="38"/><text class="label" x="135" y="185">0</text>
+<circle class="state" cx="355" cy="90" r="38"/><circle class="ring" cx="355" cy="90" r="30"/><text class="label" x="355" y="90">1</text>
+<circle class="state" cx="135" cy="300" r="38"/><text class="label" x="135" y="300">2</text>
+<circle class="state" cx="355" cy="300" r="38"/><text class="label" x="355" y="300">3</text>
+<path class="edge2" d="M170 170 C230 130,295 100,320 92"/><text class="txt" x="245" y="115">a</text>
+<path class="edge2" d="M135 223 L135 262"/><text class="txt" x="105" y="245">b</text>
+<path class="edge2" d="M173 300 L317 300"/><text class="txt" x="245" y="280">a</text>
+<path class="edge2" d="M337 55 C295 5,415 5,373 55"/><text class="txt" x="355" y="25">a</text>
+<path class="edge2" d="M355 128 L355 262"/><text class="txt" x="385" y="195">b</text>
+<path class="edge2" d="M327 275 C250 210,195 190,173 185"/><text class="txt" x="245" y="245">a,b</text>
+</svg>
+
+<h3>گام ۱ — معادله برای هر état</h3>
+<table>
+<tr><th>État</th><th>Equation</th><th>چرا؟</th></tr>
+<tr><td><code>X0</code></td><td><code>X0 = aX1 + bX2</code></td><td>از 0 با a به 1، با b به 2.</td></tr>
+<tr><td><code>X1</code></td><td><code>X1 = ε + aX1 + bX3</code></td><td>1 final است، پس ε؛ با a به خودش، با b به 3.</td></tr>
+<tr><td><code>X2</code></td><td><code>X2 = aX3</code></td><td>از 2 فقط با a به 3.</td></tr>
+<tr><td><code>X3</code></td><td><code>X3 = aX0 + bX0</code></td><td>از 3 با a یا b به 0.</td></tr>
+</table>
+
+<h3>گام ۲ — ساده‌سازی</h3>
+<div class="step">
+از <code>X3 = aX0 + bX0</code> داریم:
+<p class="ltr center"><code>X3 = (a+b)X0</code></p>
+</div>
+
+<div class="step">
+پس:
+<p class="ltr center"><code>X2 = aX3 = a(a+b)X0</code></p>
+</div>
+
+<div class="step">
+برای <code>X1</code>:
+<p class="ltr center"><code>X1 = ε + aX1 + bX3</code></p>
+با Arden:
+<p class="ltr center"><code>X1 = a*(ε + bX3)</code></p>
+و چون <code>X3=(a+b)X0</code>:
+<p class="ltr center"><code>X1 = a*(ε + b(a+b)X0)</code></p>
+</div>
+
+<div class="step">
+حالا <code>X0 = aX1 + bX2</code>:
+<p class="ltr center"><code>X0 = a[a*(ε + b(a+b)X0)] + b[a(a+b)X0]</code></p>
+<p class="ltr center"><code>X0 = aa* + aa*b(a+b)X0 + ba(a+b)X0</code></p>
+<p class="ltr center"><code>X0 = aa* + (aa*b + ba)(a+b)X0</code></p>
+</div>
+
+<div class="step">
+با Arden:
+<p class="ltr center" style="font-size:21px;"><code>X0 = ((aa*b + ba)(a+b))*aa*</code></p>
+</div>
+
+<div class="ok">
+پس:
+<p class="ltr center" style="font-size:22px;"><code>L(A)=((aa*b + ba)(a+b))*aa*</code></p>
+</div>
+</section>
+
+<section class="card">
+<h2>۱۰) اشتباهات رایج</h2>
+
+<table>
+<tr><th>اشتباه</th><th>درست</th></tr>
+<tr><td>برای final فراموش کنی <code>ε</code> اضافه کنی</td><td>اگر état final است، حتماً در معادله‌اش <code>ε</code> بنویس.</td></tr>
+<tr><td><code>i --a--> j</code> را <code>Xj a</code> بنویسی</td><td>درست: <code>aXj</code>، چون اول حرف خوانده می‌شود.</td></tr>
+<tr><td>زبان اصلی را <code>X1</code> بگیری</td><td>زبان اصلی متغیر حالت initial است؛ معمولاً <code>X0</code>.</td></tr>
+<tr><td>چند transition را با ضرب بگذاری</td><td>چند راه یعنی union: <code>+</code>.</td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2>۱۱) قالب جواب امتحانی</h2>
+
+<div class="ok">
+<span class="ltr">
+Pour chaque état <code>i</code>, on note <code>Xi</code> le langage des mots qui permettent d'atteindre un état final en partant de <code>i</code>. On écrit ensuite une équation pour chaque état en suivant les transitions de l'automate. Si l'état <code>i</code> est final, on ajoute <code>ε</code> dans l'équation de <code>Xi</code>. Le langage reconnu par l'automate est le langage associé à l'état initial, donc <code>X0</code>.
+</span>
+</div>
+</section>
+
+<section class="card">
+<h2>۱۲) سؤال برای تمرین تو</h2>
+
+<p>این را حل کن و عکس بفرست:</p>
+
+<div class="fr">
+On considère l'automate suivant sur <code>A={a,b}</code>. Donner une expression rationnelle pour <code>L(A)</code> en utilisant les équations de langages.
+</div>
+
+<table>
+<tr><th>A</th><th>a</th><th>b</th></tr>
+<tr><td>→ 0</td><td>0</td><td>1</td></tr>
+<tr><td>* 1</td><td>2</td><td>1</td></tr>
+<tr><td>2</td><td>2</td><td>1</td></tr>
+</table>
+
+<svg viewBox="0 0 760 300">
+<path class="edge" d="M40 150 L90 150"/>
+<circle class="state" cx="135" cy="150" r="38"/><text class="label" x="135" y="150">0</text>
+<circle class="state" cx="335" cy="150" r="38"/><circle class="ring" cx="335" cy="150" r="30"/><text class="label" x="335" y="150">1</text>
+<circle class="state" cx="535" cy="150" r="38"/><text class="label" x="535" y="150">2</text>
+<path class="edge" d="M118 115 C75 65,195 65,152 115"/><text class="txt" x="135" y="60">a</text>
+<path class="edge" d="M173 150 L297 150"/><text class="txt" x="235" y="130">b</text>
+<path class="edge" d="M373 150 L497 150"/><text class="txt" x="435" y="130">a</text>
+<path class="edge" d="M497 172 C430 230,380 215,360 175"/><text class="txt" x="435" y="230">b</text>
+<path class="edge" d="M517 115 C475 65,595 65,552 115"/><text class="txt" x="535" y="60">a</text>
+<path class="edge" d="M317 115 C275 65,395 65,352 115"/><text class="txt" x="335" y="60">b</text>
+</svg>
+
+<div class="warn">
+راهنما: اول فقط معادله‌ها را بنویس:
+<p class="ltr center"><code>X0 = ...</code></p>
+<p class="ltr center"><code>X1 = ...</code></p>
+<p class="ltr center"><code>X2 = ...</code></p>
+بعد تلاش کن ساده‌سازی کنی.
+</div>
+</section>
+
+</body>
+</html>
