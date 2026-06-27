@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>LU2IN005 TD2 — Part 7 Hasse Divisibility Complete</title>
+<style>
+  :root{
+    --bg:#f7f7fb;
+    --card:#ffffff;
+    --ink:#151515;
+    --muted:#555;
+    --line:#d9dce8;
+    --accent:#355c7d;
+    --accent2:#6c5b7b;
+    --good:#177245;
+    --warn:#b35c00;
+    --bad:#a12b2b;
+    --code:#f1f4f8;
+    --green:#e9fff1;
+    --blue:#eef4ff;
+    --orange:#fff7ed;
+    --purple:#f4ebff;
+    --pink:#fff0f3;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    padding:28px;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Arial, Helvetica, sans-serif;
+    line-height:1.78;
+  }
+  .page{max-width:1140px;margin:0 auto}
+  h1{
+    margin:0 0 22px;
+    padding:24px 28px;
+    border-radius:18px;
+    color:#fff;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    line-height:1.35;
+    text-align:right;
+  }
+  h2{
+    margin:30px 0 12px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--line);
+    color:#1b3550;
+  }
+  h3{margin:20px 0 8px;color:var(--accent)}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+    margin:18px 0;
+    box-shadow:0 3px 12px rgba(0,0,0,.04);
+  }
+  .goal{background:#eef4fb;border-right:7px solid var(--accent)}
+  .rule{background:#eefaf4;border-right:7px solid var(--good)}
+  .warning{background:#fff7ed;border-right:7px solid var(--warn)}
+  .badbox{background:#fff3f3;border-right:7px solid var(--bad)}
+  .answer{
+    background:#f8fbff;
+    border:1px dashed #8ca6c9;
+    border-radius:12px;
+    padding:12px 14px;
+    margin:12px 0;
+  }
+  .box{
+    direction:ltr;
+    text-align:left;
+    white-space:pre-wrap;
+    background:var(--code);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 14px;
+    overflow:auto;
+    font-size:15px;
+    line-height:1.5;
+    font-family:Consolas, Menlo, Monaco, monospace;
+  }
+  code{
+    direction:ltr;
+    unicode-bidi:isolate;
+    background:var(--code);
+    padding:2px 6px;
+    border-radius:6px;
+    font-family:Consolas, Menlo, Monaco, monospace;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:12px 0;
+    background:#fff;
+    direction:ltr;
+  }
+  th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left}
+  th{background:#eef1f6}
+  .svgbox{
+    direction:ltr;
+    text-align:center;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:12px;
+    margin:14px 0;
+  }
+  svg text{font-family:Arial, Helvetica, sans-serif;font-size:15px;font-weight:700}
+  .edge{stroke:#555;stroke-width:2.4;fill:none}
+  .edgeThin{stroke:#999;stroke-width:1.8;fill:none;stroke-dasharray:6 5}
+  .node{fill:#fff;stroke:#355c7d;stroke-width:2.6}
+  .low{fill:var(--green);stroke:#177245;stroke-width:4}
+  .up{fill:var(--blue);stroke:#355c7d;stroke-width:4}
+  .bound{fill:var(--orange);stroke:#b35c00;stroke-width:3}
+  .both{fill:var(--purple);stroke:#6c5b7b;stroke-width:4}
+  .bad{fill:var(--pink);stroke:#a12b2b;stroke-width:3}
+  .small{font-size:14px;color:var(--muted)}
+  .pill{
+    display:inline-block;
+    direction:ltr;
+    padding:3px 9px;
+    border-radius:999px;
+    background:#eef1f6;
+    margin:2px;
+    font-size:13px;
+  }
+  .steps li{margin:6px 0}
+  @media print{
+    body{background:#fff;padding:12px}
+    .card{box-shadow:none;break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>LU2IN005 — TD2 Part 7<br>Diagramme de Hasse + ordre par divisibilité<br><span style="font-size:21px">هدف سؤال‌ها، چرا این سؤال‌ها می‌آیند، و روش حل</span></h1>
+
+<div class="card goal">
+  <h2>۰. اول معنی واقعی این قسمت</h2>
+  <p>این قسمت قرار نیست اول از min و max شروع کند. اصل این بخش این است که بفهمی یک order را چطور با شکل نشان می‌دهند و مخصوصاً وقتی order با تقسیم‌پذیری است، شکل چه معنی دارد.</p>
+
+  <div class="box">diagramme de Hasse
+x | y
+pgcd
+ppcm</div>
+
+  <p>ایدهٔ اصلی این است: در یک Hasse diagram، جای بالا و پایین معنی دارد. پایین یعنی کوچک‌تر در order، بالا یعنی بزرگ‌تر در order. اگر order از نوع تقسیم‌پذیری باشد، کوچک‌تر یعنی عددی که تقسیم می‌کند.</p>
+
+  <div class="box">In divisibility order:
+small = diviseur
+big = multiple</div>
+</div>
+
+<div class="card rule">
+  <h2>۱. چرا استاد این سؤال‌ها را می‌آورد؟</h2>
+  <p>استاد با این بخش معمولاً می‌خواهد چهار توانایی را امتحان کند:</p>
+
+  <div class="box">1. Lire un diagramme de Hasse.
+2. Dessiner un diagramme de Hasse.
+3. Comprendre l’ordre par divisibilité.
+4. Relier pgcd/ppcm avec inf/sup.</div>
+
+  <p>یعنی سؤال‌ها برای این نیستند که فقط شکل قشنگ بکشی. سؤال‌ها برای این هستند که بفهمی چه کسی پایین است، چه کسی بالا است، چه کسانی قابل مقایسه نیستند، و چرا در تقسیم‌پذیری pgcd همان inf و ppcm همان sup است.</p>
+</div>
+
+<div class="card">
+  <h2>۲. نوع سؤال‌های Part 7</h2>
+
+  <table>
+    <tr>
+      <th>Question type</th>
+      <th>Why they ask it</th>
+      <th>Main action</th>
+    </tr>
+    <tr>
+      <td>Given a graph, read it</td>
+      <td>Check if you understand above/below and paths</td>
+      <td>Find who is above, below, comparable</td>
+    </tr>
+    <tr>
+      <td>Draw a Hasse diagram</td>
+      <td>Check if you can remove reflexive/transitive links</td>
+      <td>Draw only direct links</td>
+    </tr>
+    <tr>
+      <td>Order by divisibility</td>
+      <td>Check if you understand x divides y</td>
+      <td>Put divisors below multiples</td>
+    </tr>
+    <tr>
+      <td>pgcd / ppcm</td>
+      <td>Check if you connect divisibility to bounds</td>
+      <td>pgcd = inf, ppcm = sup</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2>۳. Diagramme de Hasse یعنی چه؟</h2>
+  <p>یک Hasse diagram شکل ساده‌شدهٔ یک order است. در این شکل، فقط رابطه‌های مستقیم را می‌کشیم. رابطه‌هایی که خودشان از راه چند خط معلوم می‌شوند، دیگر مستقیم کشیده نمی‌شوند.</p>
+
+  <div class="box">Hasse diagram = direct links only
+No reflexive links
+No transitive links</div>
+
+  <p>یعنی خط‌هایی مثل یک عنصر به خودش را نمی‌کشیم، و اگر از مسیر پایین به بالا معلوم است، خط اضافی مستقیم نمی‌کشیم.</p>
+
+  <div class="svgbox">
+    <svg width="640" height="310" viewBox="0 0 640 310">
+      <text x="160" y="35" text-anchor="middle" style="font-size:14px;font-weight:700">Correct Hasse</text>
+      <line class="edge" x1="160" y1="70" x2="160" y2="150"/>
+      <line class="edge" x1="160" y1="150" x2="160" y2="230"/>
+      <circle class="up" cx="160" cy="70" r="30"/><text x="160" y="77" text-anchor="middle">6</text>
+      <circle class="node" cx="160" cy="150" r="30"/><text x="160" y="157" text-anchor="middle">2</text>
+      <circle class="low" cx="160" cy="230" r="30"/><text x="160" y="237" text-anchor="middle">1</text>
+
+      <text x="480" y="35" text-anchor="middle" style="font-size:14px;font-weight:700">Wrong: transitive line added</text>
+      <line class="edge" x1="480" y1="70" x2="480" y2="150"/>
+      <line class="edge" x1="480" y1="150" x2="480" y2="230"/>
+      <line class="edgeThin" x1="480" y1="70" x2="480" y2="230"/>
+      <circle class="up" cx="480" cy="70" r="30"/><text x="480" y="77" text-anchor="middle">6</text>
+      <circle class="node" cx="480" cy="150" r="30"/><text x="480" y="157" text-anchor="middle">2</text>
+      <circle class="low" cx="480" cy="230" r="30"/><text x="480" y="237" text-anchor="middle">1</text>
+    </svg>
+  </div>
+
+  <p>در سمت چپ، رابطهٔ ۱ با ۶ از مسیر ۱ به ۲ به ۶ معلوم است. پس خط مستقیم ۱ تا ۶ نباید کشیده شود.</p>
+</div>
+
+<div class="card">
+  <h2>۴. چطور یک Hasse diagram را بخوانیم؟</h2>
+  <p>اگر فلش وجود ندارد ولی گفته شده Hasse diagram، قانون این است: فقط از پایین به بالا حرکت کن. اگر از x بتوانی فقط با حرکت رو به بالا به y برسی، یعنی x پایین‌تر از y است.</p>
+
+  <div class="box">x ≤ y
+means:
+there is an upward path from x to y</div>
+
+  <p>اگر برای رسیدن از یک عنصر به عنصر دیگر مجبور شوی اول بالا بروی و بعد پایین بیایی، آن دو قابل مقایسه نیستند.</p>
+
+  <div class="svgbox">
+    <svg width="520" height="330" viewBox="0 0 520 330">
+      <line class="edge" x1="260" y1="60" x2="170" y2="190"/>
+      <line class="edge" x1="260" y1="60" x2="350" y2="190"/>
+      <circle class="up" cx="260" cy="60" r="32"/><text x="260" y="67" text-anchor="middle">t</text>
+      <circle class="node" cx="170" cy="190" r="32"/><text x="170" y="197" text-anchor="middle">a</text>
+      <circle class="node" cx="350" cy="190" r="32"/><text x="350" y="197" text-anchor="middle">b</text>
+      <text x="260" y="280" text-anchor="middle" style="font-size:13px;font-weight:400">a and b share a common top, but a ≤ b is false and b ≤ a is false.</text>
+    </svg>
+  </div>
+
+  <p>در این شکل، a و b هر دو زیر t هستند، اما a پایین b نیست و b پایین a نیست. چون برای رفتن از a به b باید بالا بروی تا t و بعد پایین بیایی. این مجاز نیست.</p>
+
+  <div class="box">a and b are non comparable.</div>
+</div>
+
+<div class="card">
+  <h2>۵. معنی <code>x | y</code></h2>
+  <p>این علامت یعنی x عدد y را تقسیم می‌کند. یعنی y برابر x ضربدر یک عدد صحیح است.</p>
+
+  <div class="box">x | y
+means:
+x divise y
+
+y = x × k</div>
+
+  <p>مثلاً ۲ عدد ۶ را تقسیم می‌کند، چون ۶ برابر ۲ ضربدر ۳ است.</p>
+
+  <div class="box">2 | 6
+because 6 = 2 × 3</div>
+
+  <p>اما ۴ عدد ۶ را تقسیم نمی‌کند.</p>
+
+  <div class="box">4 ∤ 6</div>
+</div>
+
+<div class="card">
+  <h2>۶. Hasse diagram برای divisibility</h2>
+  <p>در order تقسیم‌پذیری، اگر x عدد y را تقسیم کند، x پایین y است.</p>
+
+  <div class="box">x ≤ y ⇔ x | y</div>
+
+  <p>مثال اصلی:</p>
+
+  <div class="box">E = {1,2,3,6}</div>
+
+  <div class="svgbox">
+    <svg width="420" height="350" viewBox="0 0 420 350">
+      <line class="edge" x1="210" y1="60" x2="135" y2="170"/>
+      <line class="edge" x1="210" y1="60" x2="285" y2="170"/>
+      <line class="edge" x1="135" y1="170" x2="210" y2="280"/>
+      <line class="edge" x1="285" y1="170" x2="210" y2="280"/>
+      <circle class="up" cx="210" cy="60" r="34"/><text x="210" y="67" text-anchor="middle">6</text>
+      <circle class="node" cx="135" cy="170" r="34"/><text x="135" y="177" text-anchor="middle">2</text>
+      <circle class="node" cx="285" cy="170" r="34"/><text x="285" y="177" text-anchor="middle">3</text>
+      <circle class="low" cx="210" cy="280" r="34"/><text x="210" y="287" text-anchor="middle">1</text>
+    </svg>
+  </div>
+
+  <p>۱ پایین همه است چون ۱ همه را تقسیم می‌کند. ۶ بالا است چون ۲ و ۳ و ۱ عدد ۶ را تقسیم می‌کنند.</p>
+
+  <div class="box">1 | 2
+1 | 3
+2 | 6
+3 | 6</div>
+
+  <p>۲ و ۳ قابل مقایسه نیستند، چون هیچ‌کدام دیگری را تقسیم نمی‌کند.</p>
+
+  <div class="box">2 ∤ 3
+3 ∤ 2</div>
+</div>
+
+<div class="card">
+  <h2>۷. چطور Hasse diagram بکشیم؟</h2>
+  <p>برای کشیدن Hasse diagram، باید فقط رابطه‌های مستقیم را نگه داری. این روش را استفاده کن:</p>
+
+  <ol class="steps">
+    <li>همهٔ عناصر مجموعه را بنویس.</li>
+    <li>برای هر دو عدد، چک کن آیا یکی دیگری را تقسیم می‌کند یا نه.</li>
+    <li>عدد تقسیم‌کننده را پایین بگذار و عدد مضرب را بالا بگذار.</li>
+    <li>اگر بین دو عدد یک عدد وسط وجود دارد، خط مستقیم را حذف کن.</li>
+  </ol>
+
+  <div class="box">If x | z and z | y,
+then do not draw direct link x -- y.</div>
+
+  <p>مثال:</p>
+
+  <div class="box">E = {1,2,3,4,6,12}</div>
+
+  <div class="svgbox">
+    <svg width="560" height="420" viewBox="0 0 560 420">
+      <line class="edge" x1="280" y1="60" x2="190" y2="170"/>
+      <line class="edge" x1="280" y1="60" x2="370" y2="170"/>
+      <line class="edge" x1="190" y1="170" x2="190" y2="285"/>
+      <line class="edge" x1="370" y1="170" x2="190" y2="285"/>
+      <line class="edge" x1="370" y1="170" x2="370" y2="285"/>
+      <line class="edge" x1="190" y1="285" x2="280" y2="365"/>
+      <line class="edge" x1="370" y1="285" x2="280" y2="365"/>
+      <circle class="up" cx="280" cy="60" r="34"/><text x="280" y="67" text-anchor="middle">12</text>
+      <circle class="node" cx="190" cy="170" r="34"/><text x="190" y="177" text-anchor="middle">4</text>
+      <circle class="node" cx="370" cy="170" r="34"/><text x="370" y="177" text-anchor="middle">6</text>
+      <circle class="node" cx="190" cy="285" r="34"/><text x="190" y="292" text-anchor="middle">2</text>
+      <circle class="node" cx="370" cy="285" r="34"/><text x="370" y="292" text-anchor="middle">3</text>
+      <circle class="low" cx="280" cy="365" r="30"/><text x="280" y="372" text-anchor="middle">1</text>
+    </svg>
+  </div>
+
+  <p>اینجا خط مستقیم ۱ تا ۴ را نمی‌کشیم، چون ۱ تا ۲ و ۲ تا ۴ داریم. همچنین خط مستقیم ۱ تا ۶ را نمی‌کشیم، چون از راه ۱ تا ۲ تا ۶ یا ۱ تا ۳ تا ۶ معلوم است.</p>
+</div>
+
+<div class="card">
+  <h2>۸. pgcd چیست و چرا به Part 7 مربوط است؟</h2>
+  <p><b>pgcd</b> یعنی بزرگ‌ترین مقسوم‌علیه مشترک. در order تقسیم‌پذیری، پایین یعنی مقسوم‌علیه. پس وقتی دنبال چیزی هستیم که پایین چند عدد باشد، در واقع دنبال مقسوم‌علیه مشترک هستیم.</p>
+
+  <div class="box">pgcd = plus grand commun diviseur</div>
+
+  <p>به همین دلیل در order تقسیم‌پذیری، pgcd همان inf است.</p>
+
+  <div class="box">In divisibility order:
+pgcd = inf</div>
+
+  <p>مثال:</p>
+
+  <div class="box">X = {4,6}
+
+diviseurs de 4 = {1,2,4}
+diviseurs de 6 = {1,2,3,6}
+
+diviseurs communs = {1,2}
+pgcd(4,6) = 2
+inf(X) = 2</div>
+</div>
+
+<div class="card">
+  <h2>۹. ppcm چیست و چرا به Part 7 مربوط است؟</h2>
+  <p><b>ppcm</b> یعنی کوچک‌ترین مضرب مشترک. در order تقسیم‌پذیری، بالا یعنی مضرب. پس وقتی دنبال چیزی هستیم که بالای چند عدد باشد، در واقع دنبال مضرب مشترک هستیم.</p>
+
+  <div class="box">ppcm = plus petit commun multiple</div>
+
+  <p>به همین دلیل در order تقسیم‌پذیری، ppcm همان sup است.</p>
+
+  <div class="box">In divisibility order:
+ppcm = sup</div>
+
+  <p>مثال:</p>
+
+  <div class="box">X = {4,6}
+
+multiples communs:
+12, 24, 36, ...
+
+ppcm(4,6) = 12
+sup(X) = 12</div>
+</div>
+
+<div class="card warning">
+  <h2>۱۰. نکتهٔ مهم: جواب باید داخل E باشد</h2>
+  <p>گاهی pgcd یا ppcm را پیدا می‌کنی، اما باید چک کنی آیا داخل مجموعهٔ بزرگ E هست یا نه. اگر داخل E نباشد، inf یا sup وجود ندارد.</p>
+
+  <div class="box">E = N \ {0,1}
+X = {2,3}
+
+pgcd(2,3) = 1
+but 1 ∉ E
+therefore inf(X) does not exist.</div>
+
+  <p>اما اگر ppcm داخل E باشد، sup وجود دارد.</p>
+
+  <div class="box">ppcm(2,3) = 6
+if 6 ∈ E, then sup(X)=6.</div>
+</div>
+
+<div class="card">
+  <h2>۱۱. سؤال‌ها دقیقاً چطور می‌آیند؟</h2>
+
+  <h3>نوع ۱: از روی شکل بخوان</h3>
+  <p>این نوع سؤال می‌خواهد ببیند آیا می‌فهمی چه کسی بالا، چه کسی پایین، و چه کسی قابل مقایسه نیست.</p>
+
+  <div class="box">Lire le diagramme de Hasse.
+Dire quels éléments sont comparables.</div>
+
+  <h3>نوع ۲: شکل را بکش</h3>
+  <p>این سؤال می‌خواهد ببیند آیا می‌توانی رابطه‌های مستقیم را نگه داری و رابطه‌های اضافیِ transitive را حذف کنی.</p>
+
+  <div class="box">Représenter l’ensemble ordonné par un diagramme de Hasse.</div>
+
+  <h3>نوع ۳: با تقسیم‌پذیری کار کن</h3>
+  <p>اینجا باید اول رابطه را ترجمه کنی: x پایین y است یعنی x عدد y را تقسیم می‌کند.</p>
+
+  <div class="box">x ≤ y ⇔ x | y</div>
+
+  <h3>نوع ۴: pgcd و ppcm را پیدا کن</h3>
+  <p>اینجا معمولاً سؤال به inf و sup وصل می‌شود.</p>
+
+  <div class="box">inf = pgcd
+sup = ppcm</div>
+</div>
+
+<div class="card">
+  <h2>۱۲. مثال کامل Part 7</h2>
+
+  <div class="box">E = {1,2,3,4,6,12}
+X = {4,6}
+x ≤ y ⇔ x | y</div>
+
+  <p>اول order را ترجمه می‌کنیم: پایین یعنی divisor و بالا یعنی multiple.</p>
+
+  <h3>مرحلهٔ ۱: Hasse diagram</h3>
+  <p>شکل کلی E را بالا کشیدیم. از آن می‌بینیم ۴ و ۶ هر دو زیر ۱۲ هستند و هر دو بالای ۲ یا ۳ نیستند؛ ۴ و ۶ با هم قابل مقایسه نیستند.</p>
+
+  <div class="box">4 ∤ 6
+6 ∤ 4
+
+4 and 6 are non comparable.</div>
+
+  <h3>مرحلهٔ ۲: pgcd و inf</h3>
+  <p>برای inf باید مقسوم‌علیه مشترک پیدا کنیم و بزرگ‌ترینش را برداریم.</p>
+
+  <div class="box">diviseurs de 4 = {1,2,4}
+diviseurs de 6 = {1,2,3,6}
+
+diviseurs communs = {1,2}
+pgcd(4,6) = 2
+inf(X) = 2</div>
+
+  <h3>مرحلهٔ ۳: ppcm و sup</h3>
+  <p>برای sup باید مضرب مشترک پیدا کنیم و کوچک‌ترینش را برداریم.</p>
+
+  <div class="box">multiples de 4 dans E = {4,12}
+multiples de 6 dans E = {6,12}
+
+multiples communs = {12}
+ppcm(4,6) = 12
+sup(X) = 12</div>
+
+  <div class="answer">
+    <p><b>جواب نهایی:</b></p>
+    <div class="box">pgcd(4,6) = 2
+ppcm(4,6) = 12
+inf({4,6}) = 2
+sup({4,6}) = 12</div>
+  </div>
+</div>
+
+<div class="card rule">
+  <h2>۱۳. خلاصهٔ نهایی</h2>
+
+  <p>اگر فقط یک چیز از Part 7 حفظ کنی، این باشد:</p>
+
+  <div class="box">Hasse diagram:
+bottom = smaller
+top = bigger
+
+Divisibility order:
+bottom = divisor
+top = multiple
+
+x | y:
+x divides y
+
+pgcd:
+greatest common divisor = inf
+
+ppcm:
+least common multiple = sup</div>
+
+  <p>و برای کشیدن Hasse diagram:</p>
+
+  <div class="box">Draw only direct links.
+Do not draw reflexive links.
+Do not draw transitive links.</div>
+</div>
+
+</div>
+</body>
+</html>
