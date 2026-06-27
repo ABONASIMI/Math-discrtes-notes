@@ -1,0 +1,1910 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TD2 - Min, Max, Majorants, Minorants, Sup, Inf</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5b6475;
+      --paper: #fffdf8;
+      --panel: #ffffff;
+      --line: #d8dee8;
+      --soft: #f4f7fb;
+      --x: #2563eb;
+      --x-bg: #dbeafe;
+      --major: #16a34a;
+      --major-bg: #dcfce7;
+      --minor: #f97316;
+      --minor-bg: #ffedd5;
+      --minimal: #ef4444;
+      --minimal-bg: #fee2e2;
+      --maximal: #9333ea;
+      --maximal-bg: #f3e8ff;
+      --bound: #111827;
+      --gold: #f59e0b;
+      --ok: #0f766e;
+      --warn: #b45309;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8fafc 0%, var(--paper) 190px);
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.58;
+    }
+
+    main {
+      width: min(980px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 30px 0 70px;
+    }
+
+    header {
+      padding: 28px 0 18px;
+      border-bottom: 3px solid var(--ink);
+      margin-bottom: 24px;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.15;
+      letter-spacing: 0;
+      color: #101828;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 5vw, 3.35rem);
+    }
+
+    h2 {
+      margin: 46px 0 16px;
+      font-size: 2rem;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 8px;
+    }
+
+    h3 {
+      margin: 30px 0 12px;
+      font-size: 1.42rem;
+    }
+
+    p {
+      margin: 0 0 13px;
+    }
+
+    a {
+      color: #0f4ab8;
+    }
+
+    code, .math {
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 1.05em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 760px;
+    }
+
+    .tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: #344054;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+
+    .box,
+    .definition,
+    .exam-phrase,
+    .example,
+    .source-note {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin: 16px 0;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .cheat {
+      background: #f8fbff;
+      border: 2px solid #b7cffb;
+    }
+
+    .cheat h2 {
+      margin-top: 0;
+      border-bottom-color: #b7cffb;
+    }
+
+    .cheat-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cheat-list li {
+      padding: 12px 14px;
+      border-left: 6px solid #2f6fed;
+      background: #fff;
+      border-radius: var(--radius);
+    }
+
+    .definition {
+      border-left: 7px solid #2f6fed;
+    }
+
+    .definition.minor {
+      border-left-color: var(--minor);
+      background: #fff9f2;
+    }
+
+    .definition.major {
+      border-left-color: var(--major);
+      background: #f3fff7;
+    }
+
+    .definition.red {
+      border-left-color: var(--minimal);
+      background: #fff7f7;
+    }
+
+    .definition.purple {
+      border-left-color: var(--maximal);
+      background: #fbf7ff;
+    }
+
+    .definition.bound {
+      border-left-color: var(--bound);
+      background: #f8fafc;
+    }
+
+    .definition strong {
+      color: #101828;
+    }
+
+    .definition-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .def-part {
+      padding: 12px 14px;
+      border: 1px solid #dbe4f0;
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .def-part h4,
+    .method-box h4,
+    .answer-box h4,
+    .why-box h4,
+    .mistake-box h4,
+    .role-explain h4 {
+      margin: 0 0 7px;
+      font-size: 1rem;
+      color: #102a56;
+      letter-spacing: 0;
+    }
+
+    .formula-block {
+      display: block;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      background: #f8fafc;
+      border: 1px solid #d8dee8;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 1.08em;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    .symbol-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .symbol-card {
+      padding: 12px;
+      border: 1px solid #dbe4f0;
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .symbol-card strong {
+      display: block;
+      color: #102a56;
+      margin-bottom: 5px;
+    }
+
+    .plain-list,
+    .steps ol,
+    .answer-list {
+      margin: 8px 0 0;
+      padding-left: 1.35rem;
+    }
+
+    .plain-list li,
+    .steps li,
+    .answer-list li {
+      margin: 6px 0;
+    }
+
+    .mini {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .exam-phrase {
+      border-left: 7px solid var(--ok);
+      background: #f0fdfa;
+    }
+
+    .warning {
+      border-left: 7px solid var(--warn);
+      background: #fff7ed;
+    }
+
+    .diff-table,
+    .small-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .diff-table th,
+    .diff-table td,
+    .small-table th,
+    .small-table td {
+      border: 1px solid var(--line);
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .diff-table th,
+    .small-table th {
+      background: #eef4ff;
+      color: #102a56;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 3px solid currentColor;
+      background: #fff;
+    }
+
+    .dot.x { color: var(--x); background: var(--x-bg); }
+    .dot.major { color: var(--major); }
+    .dot.minor { color: var(--minor); }
+    .dot.minimal { color: var(--minimal); }
+    .dot.maximal { color: var(--maximal); }
+    .dot.bound { color: var(--bound); border-width: 4px; }
+    .dot.star { color: var(--gold); border: 0; background: transparent; }
+
+    figure {
+      margin: 20px 0;
+    }
+
+    figcaption {
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .diagram-wrap {
+      background: #fbfdff;
+      border: 1px solid #d7e2f3;
+      border-radius: var(--radius);
+      padding: 12px;
+      overflow-x: auto;
+    }
+
+    .hasse {
+      width: 100%;
+      min-width: 560px;
+      max-width: 850px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .edge {
+      stroke: #7b8798;
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+
+    .edge.light {
+      stroke: #c3ccda;
+      stroke-width: 2.2;
+    }
+
+    .edge.dashed {
+      stroke-dasharray: 8 8;
+    }
+
+    .node-bg {
+      fill: #fff;
+      stroke: #334155;
+      stroke-width: 2.5;
+    }
+
+    .node.x .node-bg {
+      fill: var(--x-bg);
+      stroke: var(--x);
+      stroke-width: 4;
+    }
+
+    .node text {
+      font-family: "Segoe UI", Arial, sans-serif;
+      fill: #0f172a;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .node text.small {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .ring {
+      fill: none;
+      opacity: 0.95;
+    }
+
+    .ring-minor { stroke: var(--minor); stroke-width: 6; }
+    .ring-major { stroke: var(--major); stroke-width: 6; }
+    .ring-minimal { stroke: var(--minimal); stroke-width: 6; }
+    .ring-maximal { stroke: var(--maximal); stroke-width: 6; }
+    .ring-bound { stroke: var(--bound); stroke-width: 8; }
+
+    .star {
+      fill: var(--gold);
+      stroke: #92400e;
+      stroke-width: 0.8;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .svg-label {
+      fill: #475467;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .steps {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-top: 14px;
+    }
+
+    .result {
+      background: #f8fafc;
+      border: 1px solid #d8dee8;
+      border-left: 7px solid #111827;
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    .role-explain,
+    .method-box,
+    .answer-box,
+    .why-box,
+    .mistake-box {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      padding: 12px 14px;
+      margin: 12px 0;
+      background: #fff;
+    }
+
+    .role-explain {
+      border-left: 7px solid #64748b;
+      background: #f8fafc;
+    }
+
+    .method-box {
+      border-left: 7px solid #2563eb;
+      background: #eff6ff;
+    }
+
+    .answer-box {
+      border-left: 7px solid #111827;
+      background: #f8fafc;
+    }
+
+    .why-box {
+      border-left: 7px solid var(--ok);
+      background: #f0fdfa;
+    }
+
+    .mistake-box {
+      border-left: 7px solid var(--warn);
+      background: #fff7ed;
+    }
+
+    details {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin: 12px 0;
+      padding: 12px 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: #102a56;
+    }
+
+    .two-col-note {
+      display: grid;
+      gap: 12px;
+    }
+
+    .kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      border: 1px solid #b9c2d0;
+      border-bottom-width: 2px;
+      border-radius: 5px;
+      background: #fff;
+      font-weight: 800;
+      font-size: 0.9em;
+    }
+
+    .page-break {
+      break-before: page;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        font-size: 14px;
+        line-height: 1.42;
+      }
+
+      main {
+        width: 100%;
+        padding: 0;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      h2 {
+        font-size: 22px;
+        margin-top: 28px;
+      }
+
+      h3 {
+        font-size: 18px;
+      }
+
+      .box,
+      .definition,
+      .exam-phrase,
+      .example,
+      .source-note,
+      details {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .diagram-wrap {
+        overflow: visible;
+      }
+
+      .hasse {
+        min-width: 0;
+      }
+
+      * {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="tagline">LU2IN005 - TD2 - Ensembles ordonnés</div>
+      <h1>Min, max, majorants, minorants, sup, inf</h1>
+      <p class="subtitle">Une leçon complète, simple et orientée examen. Les diagrammes se lisent vers le haut : si on peut monter de <span class="math">x</span> vers <span class="math">y</span>, alors <span class="math">x ⪯ y</span>.</p>
+    </header>
+
+    <section class="box cheat">
+      <h2>Exam Cheat Page</h2>
+      <ul class="cheat-list">
+        <li><strong>Relation d’ordre</strong> = réflexive + antisymétrique + transitive.</li>
+        <li><strong>Comparable</strong> : deux éléments <span class="math">x,y</span> sont comparables si <span class="math">x ⪯ y</span> ou <span class="math">y ⪯ x</span>. Sinon ils sont incomparables.</li>
+        <li><strong>Ordre total</strong> : toutes les paires sont comparables. <strong>Ordre partiel</strong> : il existe au moins deux éléments incomparables.</li>
+        <li><strong>Minorant de X</strong> : élément de <span class="math">E</span> en dessous de tous les éléments de <span class="math">X</span>. Formule : <span class="math">m ∈ E</span> et <span class="math">∀x ∈ X, m ⪯ x</span>.</li>
+        <li><strong>Majorant de X</strong> : élément de <span class="math">E</span> au-dessus de tous les éléments de <span class="math">X</span>. Formule : <span class="math">M ∈ E</span> et <span class="math">∀x ∈ X, x ⪯ M</span>.</li>
+        <li><strong>Élément minimal de X</strong> : élément de <span class="math">X</span> qui n’a aucun élément strictement plus petit que lui dans <span class="math">X</span>.</li>
+        <li><strong>Élément maximal de X</strong> : élément de <span class="math">X</span> qui n’a aucun élément strictement plus grand que lui dans <span class="math">X</span>.</li>
+        <li><strong>Plus petit élément</strong> <span class="math">min(X)</span> : un élément de <span class="math">X</span> qui est minorant de <span class="math">X</span>. Donc il est en dessous de tout <span class="math">X</span>.</li>
+        <li><strong>Plus grand élément</strong> <span class="math">max(X)</span> : un élément de <span class="math">X</span> qui est majorant de <span class="math">X</span>. Donc il est au-dessus de tout <span class="math">X</span>.</li>
+        <li><strong>Infimum</strong> <span class="math">inf(X)</span> : le plus grand des minorants. Il peut être hors de <span class="math">X</span>.</li>
+        <li><strong>Supremum</strong> <span class="math">sup(X)</span> : le plus petit des majorants. Il peut être hors de <span class="math">X</span>.</li>
+        <li><strong>Divisibilité</strong> <span class="math">x | y</span> : les minorants sont les diviseurs communs, les majorants les multiples communs, <span class="math">inf = pgcd</span>, <span class="math">sup = ppcm</span>.</li>
+        <li><strong>Inclusion</strong> <span class="math">(𝒫(E), ⊆)</span> : les minorants sont les sous-ensembles de l’intersection, les majorants les sur-ensembles de l’union, <span class="math">inf = ∩</span>, <span class="math">sup = ∪</span>.</li>
+      </ul>
+    </section>
+
+    <section class="box">
+      <h2>Dictionnaire des symboles TD2</h2>
+      <div class="symbol-grid">
+        <div class="symbol-card"><strong class="math">(E, ⪯)</strong>Un ensemble <span class="math">E</span> muni d’une relation d’ordre <span class="math">⪯</span>.</div>
+        <div class="symbol-card"><strong class="math">X ⊆ E</strong>Une partie <span class="math">X</span> de l’ensemble ambiant <span class="math">E</span>.</div>
+        <div class="symbol-card"><strong class="math">m ∈ Minorants(X)</strong><span class="math">m ∈ E</span> et <span class="math">∀x ∈ X, m ⪯ x</span>.</div>
+        <div class="symbol-card"><strong class="math">M ∈ Majorants(X)</strong><span class="math">M ∈ E</span> et <span class="math">∀x ∈ X, x ⪯ M</span>.</div>
+        <div class="symbol-card"><strong class="math">Minimaux(X)</strong>Éléments de <span class="math">X</span> sans élément strictement plus petit dans <span class="math">X</span>.</div>
+        <div class="symbol-card"><strong class="math">Maximaux(X)</strong>Éléments de <span class="math">X</span> sans élément strictement plus grand dans <span class="math">X</span>.</div>
+        <div class="symbol-card"><strong class="math">min(X)</strong>L’unique élément de <span class="math">X ∩ Minorants(X)</span>, s’il existe.</div>
+        <div class="symbol-card"><strong class="math">max(X)</strong>L’unique élément de <span class="math">X ∩ Majorants(X)</span>, s’il existe.</div>
+        <div class="symbol-card"><strong class="math">inf(X)</strong>Le plus grand élément de <span class="math">Minorants(X)</span>, s’il existe.</div>
+        <div class="symbol-card"><strong class="math">sup(X)</strong>Le plus petit élément de <span class="math">Majorants(X)</span>, s’il existe.</div>
+        <div class="symbol-card"><strong class="math">x | y</strong><span class="math">x</span> divise <span class="math">y</span>, c’est-à-dire <span class="math">∃k ∈ N, y = kx</span>.</div>
+        <div class="symbol-card"><strong class="math">pgcd</strong>Plus grand commun diviseur. Dans l’ordre <span class="math">|</span>, c’est souvent <span class="math">inf</span>.</div>
+        <div class="symbol-card"><strong class="math">ppcm</strong>Plus petit commun multiple. Dans l’ordre <span class="math">|</span>, c’est souvent <span class="math">sup</span>.</div>
+        <div class="symbol-card"><strong class="math">𝒫(E)</strong>Ensemble de toutes les parties de <span class="math">E</span>.</div>
+        <div class="symbol-card"><strong class="math">⊆</strong>Inclusion : <span class="math">A ⊆ B</span> signifie que tout élément de <span class="math">A</span> est dans <span class="math">B</span>.</div>
+        <div class="symbol-card"><strong class="math">∩</strong>Intersection : éléments communs. Dans <span class="math">(𝒫(E),⊆)</span>, donne <span class="math">inf</span>.</div>
+        <div class="symbol-card"><strong class="math">∪</strong>Union : éléments présents dans au moins un ensemble. Dans <span class="math">(𝒫(E),⊆)</span>, donne <span class="math">sup</span>.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Définitions complètes</h2>
+
+      <article class="definition">
+        <h3>Relation d’ordre</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block">Une relation <span class="math">⪯</span> sur <span class="math">E</span> est une relation d’ordre ssi elle est réflexive, antisymétrique et transitive.<br>
+            Réflexive : <span class="math">∀x ∈ E, x ⪯ x</span>.<br>
+            Antisymétrique : <span class="math">∀x,y ∈ E, (x ⪯ y et y ⪯ x) ⇒ x = y</span>.<br>
+            Transitive : <span class="math">∀x,y,z ∈ E, (x ⪯ y et y ⪯ z) ⇒ x ⪯ z</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Un ordre permet de dire « plus petit ou égal » dans un sens général. Ce n’est pas toujours l’ordre habituel des nombres.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p><span class="math">(N, ≤)</span>, <span class="math">(𝒫(E), ⊆)</span> et <span class="math">(N\\{0}, |)</span> sont des ensembles ordonnés.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« Montrons que <span class="math">⪯</span> est une relation d’ordre : elle est réflexive, antisymétrique et transitive. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition">
+        <h3>Comparable et non comparable</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">x</span> et <span class="math">y</span> sont comparables ssi <span class="math">x ⪯ y</span> ou <span class="math">y ⪯ x</span>.<br>
+            <span class="math">x</span> et <span class="math">y</span> sont non comparables ssi <span class="math">x ̸⪯ y</span> et <span class="math">y ̸⪯ x</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Deux éléments sont comparables si l’ordre permet de les ranger l’un par rapport à l’autre.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans <span class="math">(𝒫({1,2}), ⊆)</span>, <span class="math">{1}</span> et <span class="math">{2}</span> ne sont pas comparables.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« Les éléments <span class="math">a</span> et <span class="math">b</span> sont incomparables car <span class="math">a ̸⪯ b</span> et <span class="math">b ̸⪯ a</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition">
+        <h3>Ordre total et ordre partiel</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block">La relation d’ordre <span class="math">⪯</span> sur <span class="math">E</span> est totale ssi <span class="math">∀x,y ∈ E, x ⪯ y ou y ⪯ x</span>.<br>
+            La relation d’ordre <span class="math">⪯</span> sur <span class="math">E</span> est partielle s’il existe au moins deux éléments <span class="math">e1,e2 ∈ E</span> non comparables : <span class="math">e1 ̸⪯ e2</span> et <span class="math">e2 ̸⪯ e1</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Total = on peut toujours comparer deux éléments. Partiel = parfois on ne peut pas comparer.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p><span class="math">(N,≤)</span> est total. <span class="math">(N,|)</span> est partiel car 2 ne divise pas 5 et 5 ne divise pas 2.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« L’ordre n’est pas total : par exemple <span class="math">u</span> et <span class="math">v</span> sont incomparables. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition">
+        <h3>Diagramme de Hasse</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block">Le graphe couvrant d’une relation d’ordre <span class="math">R</span> sur <span class="math">E</span> est le graphe minimal dont la fermeture réflexive et transitive correspond exactement à <span class="math">R</span>.<br>
+            Il s’obtient en supprimant les couples <span class="math">(x,x)</span> de réflexivité et les couples déductibles par transitivité.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Dans un diagramme de Hasse, on dessine seulement les liens directs. Un chemin vers le haut signifie « est inférieur ou égal à ».</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Pour <span class="math">0 ≤ 1 ≤ 2</span>, on dessine <span class="math">0 → 1 → 2</span>, pas l’arête <span class="math">0 → 2</span>, car elle vient de la transitivité.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« On représente l’ordre par son graphe couvrant, sans les arcs de réflexivité ni de transitivité. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition red">
+        <h3>Éléments minimaux</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">x ∈ Minimaux(X) ⇔ x ∈ X et ∀y ∈ X, si y ⪯ x alors y = x.</span><br>
+            Équivalent cours : <span class="math">x ∈ X</span> et il n’existe pas, dans <span class="math">X</span>, un élément strictement plus petit que lui.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Un minimal est dans <span class="math">X</span>. On ne trouve aucun autre élément de <span class="math">X</span> strictement sous lui.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans <span class="math">(𝒫({1,2}),⊆)</span>, pour <span class="math">X={{1},{2}}</span>, les deux éléments sont minimaux.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« Les éléments minimaux de <span class="math">X</span> sont ceux de <span class="math">X</span> qui n’ont aucun élément strictement plus petit dans <span class="math">X</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition purple">
+        <h3>Éléments maximaux</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">x ∈ Maximaux(X) ⇔ x ∈ X et ∀y ∈ X, si x ⪯ y alors y = x.</span><br>
+            Équivalent cours : <span class="math">x ∈ X</span> et il n’existe pas, dans <span class="math">X</span>, un élément strictement plus grand que lui.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Un maximal est dans <span class="math">X</span>. On ne trouve aucun autre élément de <span class="math">X</span> strictement au-dessus de lui.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans <span class="math">(𝒫({1,2}),⊆)</span>, pour <span class="math">X={{1},{2}}</span>, les deux éléments sont maximaux.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« Les éléments maximaux de <span class="math">X</span> sont ceux de <span class="math">X</span> qui n’ont aucun élément strictement plus grand dans <span class="math">X</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition minor">
+        <h3>Minorants</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">m ∈ Minorants(X) ⇔ m ∈ E et ∀x ∈ X, m ⪯ x.</span></span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Un minorant est dans l’ensemble ambiant <span class="math">E</span>, pas forcément dans <span class="math">X</span>. Il est sous tous les éléments de <span class="math">X</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans <span class="math">(N,≤)</span>, les minorants de <span class="math">{2,3}</span> sont <span class="math">0,1,2</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« Soit <span class="math">m ∈ E</span>. <span class="math">m</span> est minorant de <span class="math">X</span> si pour tout <span class="math">x ∈ X</span>, <span class="math">m ⪯ x</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition major">
+        <h3>Majorants</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">M ∈ Majorants(X) ⇔ M ∈ E et ∀x ∈ X, x ⪯ M.</span></span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Un majorant est dans l’ensemble ambiant <span class="math">E</span>, pas forcément dans <span class="math">X</span>. Il est au-dessus de tous les éléments de <span class="math">X</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans <span class="math">(N,≤)</span>, les majorants de <span class="math">{2,3}</span> sont <span class="math">3,4,5,...</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« Soit <span class="math">M ∈ E</span>. <span class="math">M</span> est majorant de <span class="math">X</span> si pour tout <span class="math">x ∈ X</span>, <span class="math">x ⪯ M</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition bound">
+        <h3>Plus petit élément / minimum</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">p = min(X) ⇔ p ∈ X et p ∈ Minorants(X).</span><br>
+            Équivalent cours : le plus petit élément de <span class="math">X</span>, s’il existe, est l’unique élément de <span class="math">X ∩ Minorants(X)</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Le minimum doit être dans <span class="math">X</span> et sous tous les éléments de <span class="math">X</span>. S’il existe, il est unique.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans <span class="math">(N,≤)</span>, <span class="math">min({2,3,4})=2</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« <span class="math">p</span> est le plus petit élément de <span class="math">X</span> car <span class="math">p ∈ X</span> et <span class="math">p</span> est minorant de <span class="math">X</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition bound">
+        <h3>Plus grand élément / maximum</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">g = max(X) ⇔ g ∈ X et g ∈ Majorants(X).</span><br>
+            Équivalent cours : le plus grand élément de <span class="math">X</span>, s’il existe, est l’unique élément de <span class="math">X ∩ Majorants(X)</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Le maximum doit être dans <span class="math">X</span> et au-dessus de tous les éléments de <span class="math">X</span>. S’il existe, il est unique.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans <span class="math">(N,≤)</span>, <span class="math">max({2,3,4})=4</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« <span class="math">g</span> est le plus grand élément de <span class="math">X</span> car <span class="math">g ∈ X</span> et <span class="math">g</span> est majorant de <span class="math">X</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition bound">
+        <h3>Borne inférieure / infimum</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">i = inf(X) ⇔ i ∈ Minorants(X) et ∀m ∈ Minorants(X), m ⪯ i.</span><br>
+            Équivalent cours : la borne inférieure de <span class="math">X</span>, si elle existe, est le plus grand des minorants de <span class="math">X</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p><span class="math">inf(X)</span> est le meilleur minorant : il est en dessous de <span class="math">X</span>, mais le plus haut possible parmi les minorants.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans la divisibilité, <span class="math">inf({6,15,21})=pgcd(6,15,21)=3</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« <span class="math">i</span> est la borne inférieure car <span class="math">i</span> est minorant de <span class="math">X</span> et tout minorant <span class="math">m</span> vérifie <span class="math">m ⪯ i</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition bound">
+        <h3>Borne supérieure / supremum</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">s = sup(X) ⇔ s ∈ Majorants(X) et ∀M ∈ Majorants(X), s ⪯ M.</span><br>
+            Équivalent cours : la borne supérieure de <span class="math">X</span>, si elle existe, est le plus petit des majorants de <span class="math">X</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p><span class="math">sup(X)</span> est le meilleur majorant : il est au-dessus de <span class="math">X</span>, mais le plus bas possible parmi les majorants.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Dans la divisibilité, <span class="math">sup({6,15,21})=ppcm(6,15,21)=210</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« <span class="math">s</span> est la borne supérieure car <span class="math">s</span> est majorant de <span class="math">X</span> et tout majorant <span class="math">M</span> vérifie <span class="math">s ⪯ M</span>. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition">
+        <h3>Divisibilité, pgcd, ppcm</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">x | y ⇔ x</span> divise <span class="math">y ⇔ ∃k ∈ N, y = kx</span>.<br>
+            <span class="math">d = pgcd(a,b) ⇔ d|a et d|b et ∀c, (c|a et c|b) ⇒ c|d</span>.<br>
+            <span class="math">p = ppcm(a,b) ⇔ a|p et b|p et ∀M, (a|M et b|M) ⇒ p|M</span>.<br>
+            Dans <span class="math">(N\\{0},|)</span> : <span class="math">inf({a,b})=pgcd(a,b)</span> et <span class="math">sup({a,b})=ppcm(a,b)</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Pour la divisibilité, « plus petit » veut dire « divise ». Les minorants sont les diviseurs communs ; les majorants sont les multiples communs.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p>Pour <span class="math">{6,15}</span>, <span class="math">pgcd=3</span> et <span class="math">ppcm=30</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« Dans l’ordre de divisibilité, les minorants sont les diviseurs communs et les majorants les multiples communs. »</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="definition">
+        <h3>Inclusion, intersection, union</h3>
+        <div class="definition-grid">
+          <div class="def-part">
+            <h4>1. Définition formelle</h4>
+            <span class="formula-block"><span class="math">𝒫(E)</span> est l’ensemble des parties de <span class="math">E</span>.<br>
+            <span class="math">A ⊆ B ⇔ ∀x, x ∈ A ⇒ x ∈ B</span>.<br>
+            <span class="math">x ∈ A∩B ⇔ x∈A et x∈B</span> ; <span class="math">x ∈ A∪B ⇔ x∈A ou x∈B</span>.<br>
+            Dans <span class="math">(𝒫(E),⊆)</span> : <span class="math">inf({A1,...,An}) = A1 ∩ ... ∩ An</span> et <span class="math">sup({A1,...,An}) = A1 ∪ ... ∪ An</span>.</span>
+          </div>
+          <div class="def-part">
+            <h4>2. Explication simple</h4>
+            <p>Pour l’inclusion, « plus petit » veut dire « contenu dans ». L’intersection est le plus grand ensemble contenu dans tous ; l’union est le plus petit ensemble qui contient tous.</p>
+          </div>
+          <div class="def-part">
+            <h4>3. Petit exemple</h4>
+            <p><span class="math">{1,2} ∩ {2,3} = {2}</span> et <span class="math">{1,2} ∪ {2,3} = {1,2,3}</span>.</p>
+          </div>
+          <div class="def-part">
+            <h4>4. Phrase examen</h4>
+            <p>« Dans <span class="math">(𝒫(E),⊆)</span>, la borne inférieure est l’intersection et la borne supérieure est l’union. »</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <h2>Idée principale en mots simples</h2>
+      <div class="box">
+        <p>Imagine que l’ordre est une montagne.</p>
+        <ul class="plain-list">
+          <li>Les <strong>minorants</strong> sont les positions qui voient tout <span class="math">X</span> au-dessus d’elles.</li>
+          <li>Les <strong>majorants</strong> sont les positions qui voient tout <span class="math">X</span> en dessous d’elles.</li>
+          <li>Les <strong>minimaux</strong> sont les éléments de <span class="math">X</span> qui n’ont rien de <span class="math">X</span> strictement en dessous.</li>
+          <li>Les <strong>maximaux</strong> sont les éléments de <span class="math">X</span> qui n’ont rien de <span class="math">X</span> strictement au-dessus.</li>
+          <li>Le <strong>plus petit</strong> doit battre tout le monde vers le bas : il est dans <span class="math">X</span> et sous tout <span class="math">X</span>.</li>
+          <li>Le <strong>plus grand</strong> doit battre tout le monde vers le haut : il est dans <span class="math">X</span> et au-dessus de tout <span class="math">X</span>.</li>
+          <li><span class="math">inf(X)</span> et <span class="math">sup(X)</span> regardent d’abord hors de <span class="math">X</span> : ils cherchent parmi les minorants/majorants de <span class="math">X</span> dans tout <span class="math">E</span>.</li>
+        </ul>
+      </div>
+
+      <div class="exam-phrase">
+        <h3>Phrases courtes à copier en examen</h3>
+        <p>« Les minorants de <span class="math">X</span> dans <span class="math">E</span> sont les éléments <span class="math">m ∈ E</span> tels que <span class="math">m ⪯ x</span> pour tout <span class="math">x ∈ X</span>. »</p>
+        <p>« Les majorants de <span class="math">X</span> dans <span class="math">E</span> sont les éléments <span class="math">M ∈ E</span> tels que <span class="math">x ⪯ M</span> pour tout <span class="math">x ∈ X</span>. »</p>
+        <p>« Il n’y a pas de plus petit élément car les éléments minimaux sont incomparables. »</p>
+        <p>« <span class="math">b</span> est la borne supérieure car <span class="math">b</span> est un majorant et tout majorant <span class="math">M</span> vérifie <span class="math">b ⪯ M</span>. »</p>
+        <p>« <span class="math">a</span> est la borne inférieure car <span class="math">a</span> est un minorant et tout minorant <span class="math">m</span> vérifie <span class="math">m ⪯ a</span>. »</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Mots faciles à confondre</h2>
+
+      <table class="diff-table">
+        <thead>
+          <tr>
+            <th>Mot</th>
+            <th>Appartient à <span class="math">X</span> ?</th>
+            <th>Compare avec quoi ?</th>
+            <th>Idée rapide</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Minorant</strong></td>
+            <td>Pas forcément</td>
+            <td>Avec tous les éléments de <span class="math">X</span></td>
+            <td>Il est sous tout <span class="math">X</span>.</td>
+          </tr>
+          <tr>
+            <td><strong>Minimal</strong></td>
+            <td>Oui</td>
+            <td>Seulement avec les éléments de <span class="math">X</span></td>
+            <td>Dans <span class="math">X</span>, rien n’est strictement dessous.</td>
+          </tr>
+          <tr>
+            <td><strong>Majorant</strong></td>
+            <td>Pas forcément</td>
+            <td>Avec tous les éléments de <span class="math">X</span></td>
+            <td>Il est au-dessus de tout <span class="math">X</span>.</td>
+          </tr>
+          <tr>
+            <td><strong>Maximal</strong></td>
+            <td>Oui</td>
+            <td>Seulement avec les éléments de <span class="math">X</span></td>
+            <td>Dans <span class="math">X</span>, rien n’est strictement au-dessus.</td>
+          </tr>
+          <tr>
+            <td><strong>Plus petit</strong></td>
+            <td>Oui</td>
+            <td>Avec tous les éléments de <span class="math">X</span></td>
+            <td>Il est unique s’il existe. Il est minimal, mais l’inverse est faux.</td>
+          </tr>
+          <tr>
+            <td><strong>Plus grand</strong></td>
+            <td>Oui</td>
+            <td>Avec tous les éléments de <span class="math">X</span></td>
+            <td>Il est unique s’il existe. Il est maximal, mais l’inverse est faux.</td>
+          </tr>
+          <tr>
+            <td><strong>Inf</strong></td>
+            <td>Pas forcément</td>
+            <td>Avec les minorants</td>
+            <td>Le meilleur minorant : le plus haut parmi ceux du bas.</td>
+          </tr>
+          <tr>
+            <td><strong>Sup</strong></td>
+            <td>Pas forcément</td>
+            <td>Avec les majorants</td>
+            <td>Le meilleur majorant : le plus bas parmi ceux du haut.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box warning">
+        <h3>Règles anti-piège</h3>
+        <p>Si <span class="math">min(X)</span> existe, alors <span class="math">inf(X) = min(X)</span>. Mais <span class="math">inf(X)</span> peut exister sans que <span class="math">min(X)</span> existe.</p>
+        <p>Si <span class="math">max(X)</span> existe, alors <span class="math">sup(X) = max(X)</span>. Mais <span class="math">sup(X)</span> peut exister sans que <span class="math">max(X)</span> existe.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ordres du TD2</h2>
+
+      <article class="box">
+        <h3>Divisibility order: <span class="math">x | y</span></h3>
+        <p>On travaille souvent dans <span class="math">N\\{0}</span> ou <span class="math">N\\{0,1}</span>. On écrit <span class="math">x | y</span> si <span class="math">x</span> divise <span class="math">y</span>, c’est-à-dire s’il existe <span class="math">k ∈ N</span> tel que <span class="math">y = kx</span>.</p>
+        <ul class="plain-list">
+          <li>Minorants de <span class="math">{a,b,c}</span> = diviseurs communs.</li>
+          <li>Majorants de <span class="math">{a,b,c}</span> = multiples communs.</li>
+          <li><span class="math">inf({a,b,c}) = pgcd(a,b,c)</span>, si le pgcd appartient à l’ensemble ambiant.</li>
+          <li><span class="math">sup({a,b,c}) = ppcm(a,b,c)</span>.</li>
+        </ul>
+      </article>
+
+      <article class="box">
+        <h3>Inclusion order: <span class="math">𝒫(E), ⊆</span></h3>
+        <p>Dans l’ordre par inclusion, <span class="math">A ⊆ B</span> signifie que <span class="math">A</span> est plus petit que <span class="math">B</span>.</p>
+        <ul class="plain-list">
+          <li>Minorants de <span class="math">{A1,...,An}</span> = ensembles inclus dans tous les <span class="math">Ai</span>.</li>
+          <li>Majorants de <span class="math">{A1,...,An}</span> = ensembles contenant tous les <span class="math">Ai</span>.</li>
+          <li><span class="math">inf({A1,...,An}) = A1 ∩ ... ∩ An</span>.</li>
+          <li><span class="math">sup({A1,...,An}) = A1 ∪ ... ∪ An</span>.</li>
+        </ul>
+      </article>
+
+      <article class="box">
+        <h3>Prefix, subword, lexicographic orders</h3>
+        <table class="small-table">
+          <thead>
+            <tr>
+              <th>Ordre</th>
+              <th>Définition courte</th>
+              <th>Total ou partiel ?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Préfixe</strong></td>
+              <td><span class="math">u ⪯ v</span> si <span class="math">v = uw</span> pour un mot <span class="math">w</span>. Exemple : <span class="math">ab ⪯ abba</span>.</td>
+              <td>Partiel sur <span class="math">A*</span> si l’alphabet a au moins deux lettres : <span class="math">a</span> et <span class="math">b</span> sont incomparables.</td>
+            </tr>
+            <tr>
+              <td><strong>Sous-mot</strong></td>
+              <td><span class="math">u ⪯ v</span> si on obtient <span class="math">u</span> en supprimant des lettres de <span class="math">v</span> sans changer l’ordre. Exemple : <span class="math">ab ⪯ cabd</span>.</td>
+              <td>Partiel : plusieurs mots ne se contiennent pas comme sous-mots.</td>
+            </tr>
+            <tr>
+              <td><strong>Lexicographique</strong></td>
+              <td>On compare d’abord la première position différente, avec un ordre total sur l’alphabet.</td>
+              <td>Total sur des mots comparables alphabétiquement, mais sur <span class="math">A*</span> il n’est pas bien fondé : si <span class="math">a &lt; b</span>, alors <span class="math">b ≻ ab ≻ aab ≻ ...</span>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section>
+      <h2>Exemples graphiques corrigés</h2>
+
+      <div class="status-row" aria-label="legend">
+        <span class="pill"><span class="dot x"></span> éléments de X</span>
+        <span class="pill"><span class="dot major"></span> majorants</span>
+        <span class="pill"><span class="dot minor"></span> minorants</span>
+        <span class="pill"><span class="dot minimal"></span> minimaux</span>
+        <span class="pill"><span class="dot maximal"></span> maximaux</span>
+        <span class="pill"><span class="dot bound"></span> inf / sup</span>
+        <span class="pill"><span class="dot star">★</span> plus petit / plus grand</span>
+      </div>
+      <p class="mini">Si un élément a plusieurs rôles, il garde plusieurs cercles autour de lui. Par exemple, un élément peut être à la fois dans <span class="math">X</span>, minorant, minimal, <span class="math">inf(X)</span> et <span class="math">min(X)</span>.</p>
+
+      <article class="example">
+        <h3>Example 1 - Everything exists</h3>
+        <p>Ordre en chaîne : <span class="math">0 ⪯ 1 ⪯ 2 ⪯ 3 ⪯ 4</span>. On prend <span class="math">X = {1,2,3}</span>.</p>
+
+        <figure>
+          <div class="diagram-wrap">
+            <svg class="hasse" viewBox="0 0 720 430" role="img" aria-label="Hasse chain example">
+              <line class="edge" x1="360" y1="370" x2="360" y2="295"></line>
+              <line class="edge" x1="360" y1="295" x2="360" y2="220"></line>
+              <line class="edge" x1="360" y1="220" x2="360" y2="145"></line>
+              <line class="edge" x1="360" y1="145" x2="360" y2="70"></line>
+
+              <g class="node" transform="translate(360 370)">
+                <circle class="ring ring-minor" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>0</text>
+              </g>
+              <g class="node x" transform="translate(360 295)">
+                <circle class="ring ring-minor" r="33"></circle>
+                <circle class="ring ring-minimal" r="40"></circle>
+                <circle class="ring ring-bound" r="47"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>1</text>
+                <text class="star" x="42" y="-26">★</text>
+              </g>
+              <g class="node x" transform="translate(360 220)">
+                <circle class="node-bg" r="24"></circle>
+                <text>2</text>
+              </g>
+              <g class="node x" transform="translate(360 145)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="ring ring-maximal" r="40"></circle>
+                <circle class="ring ring-bound" r="47"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>3</text>
+                <text class="star" x="42" y="-26">★</text>
+              </g>
+              <g class="node" transform="translate(360 70)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>4</text>
+              </g>
+
+              <text class="svg-label" x="454" y="292">min = inf</text>
+              <text class="svg-label" x="454" y="142">max = sup</text>
+            </svg>
+          </div>
+          <figcaption>Le diagramme se lit vers le haut : 0 est le plus bas, 4 le plus haut.</figcaption>
+        </figure>
+
+        <div class="role-explain">
+          <h4>Lecture des rôles sur le graphe</h4>
+          <p><span class="math">1</span> a plusieurs rôles : il est dans <span class="math">X</span> (bleu), minorant (orange), minimal (rouge), <span class="math">inf(X)</span> (bord noir) et <span class="math">min(X)</span> (étoile). <span class="math">3</span> est dans <span class="math">X</span> (bleu), majorant (vert), maximal (violet), <span class="math">sup(X)</span> (bord noir) et <span class="math">max(X)</span> (étoile).</p>
+        </div>
+
+        <div class="steps">
+          <ol>
+            <li><strong>Step 1: What is E?</strong> <span class="math">E={0,1,2,3,4}</span> avec l’ordre en chaîne.</li>
+            <li><strong>Step 2: What is X?</strong> <span class="math">X={1,2,3}</span>.</li>
+            <li><strong>Step 3: Which elements are in X?</strong> Les éléments bleus : <span class="math">1,2,3</span>.</li>
+            <li><strong>Step 4: Which elements are below all X = minorants?</strong> <span class="math">{0,1}</span>.</li>
+            <li><strong>Step 5: Which elements are above all X = majorants?</strong> <span class="math">{3,4}</span>.</li>
+            <li><strong>Step 6: Which elements of X have nothing below inside X = minimaux?</strong> <span class="math">{1}</span>.</li>
+            <li><strong>Step 7: Which elements of X have nothing above inside X = maximaux?</strong> <span class="math">{3}</span>.</li>
+            <li><strong>Step 8: Is there min(X)? Why?</strong> Oui, <span class="math">min(X)=1</span>, car <span class="math">1 ∈ X</span> et <span class="math">1</span> est minorant de <span class="math">X</span>.</li>
+            <li><strong>Step 9: Is there max(X)? Why?</strong> Oui, <span class="math">max(X)=3</span>, car <span class="math">3 ∈ X</span> et <span class="math">3</span> est majorant de <span class="math">X</span>.</li>
+            <li><strong>Step 10: What are inf(X) and sup(X)? Why?</strong> <span class="math">inf(X)=1</span>, plus grand minorant ; <span class="math">sup(X)=3</span>, plus petit majorant.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="example">
+        <h3>Example 2 - Several minimals/maximals, no plus petit/plus grand</h3>
+        <p>On prend <span class="math">X = {a,b,c,d}</span> dans le diagramme suivant.</p>
+
+        <figure>
+          <div class="diagram-wrap">
+            <svg class="hasse" viewBox="0 0 720 450" role="img" aria-label="Several minimal and maximal elements">
+              <line class="edge" x1="360" y1="380" x2="240" y2="280"></line>
+              <line class="edge" x1="360" y1="380" x2="480" y2="280"></line>
+              <line class="edge" x1="240" y1="280" x2="240" y2="155"></line>
+              <line class="edge" x1="240" y1="280" x2="480" y2="155"></line>
+              <line class="edge" x1="480" y1="280" x2="240" y2="155"></line>
+              <line class="edge" x1="480" y1="280" x2="480" y2="155"></line>
+              <line class="edge" x1="240" y1="155" x2="360" y2="60"></line>
+              <line class="edge" x1="480" y1="155" x2="360" y2="60"></line>
+
+              <g class="node" transform="translate(360 380)">
+                <circle class="ring ring-minor" r="33"></circle>
+                <circle class="ring ring-bound" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>0</text>
+              </g>
+              <g class="node x" transform="translate(240 280)">
+                <circle class="ring ring-minimal" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>a</text>
+              </g>
+              <g class="node x" transform="translate(480 280)">
+                <circle class="ring ring-minimal" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>b</text>
+              </g>
+              <g class="node x" transform="translate(240 155)">
+                <circle class="ring ring-maximal" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>c</text>
+              </g>
+              <g class="node x" transform="translate(480 155)">
+                <circle class="ring ring-maximal" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>d</text>
+              </g>
+              <g class="node" transform="translate(360 60)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="ring ring-bound" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>1</text>
+              </g>
+              <text class="svg-label" x="405" y="380">inf</text>
+              <text class="svg-label" x="405" y="60">sup</text>
+            </svg>
+          </div>
+          <figcaption>Les deux éléments du bas de X sont incomparables ; les deux éléments du haut aussi.</figcaption>
+        </figure>
+
+        <div class="role-explain">
+          <h4>Lecture des rôles sur le graphe</h4>
+          <p><span class="math">a</span> et <span class="math">b</span> sont dans <span class="math">X</span> et minimaux : cercle bleu + rouge. <span class="math">c</span> et <span class="math">d</span> sont dans <span class="math">X</span> et maximaux : cercle bleu + violet. <span class="math">0</span> est <span class="math">inf(X)</span> mais pas dans <span class="math">X</span>. <span class="math">1</span> est <span class="math">sup(X)</span> mais pas dans <span class="math">X</span>.</p>
+        </div>
+
+        <div class="steps">
+          <ol>
+            <li><strong>Step 1: What is E?</strong> <span class="math">E={0,a,b,c,d,1}</span> avec l’ordre du diagramme.</li>
+            <li><strong>Step 2: What is X?</strong> <span class="math">X={a,b,c,d}</span>.</li>
+            <li><strong>Step 3: Which elements are in X?</strong> Les éléments bleus : <span class="math">a,b,c,d</span>.</li>
+            <li><strong>Step 4: Which elements are below all X = minorants?</strong> <span class="math">{0}</span>.</li>
+            <li><strong>Step 5: Which elements are above all X = majorants?</strong> <span class="math">{1}</span>.</li>
+            <li><strong>Step 6: Which elements of X have nothing below inside X = minimaux?</strong> <span class="math">{a,b}</span>.</li>
+            <li><strong>Step 7: Which elements of X have nothing above inside X = maximaux?</strong> <span class="math">{c,d}</span>.</li>
+            <li><strong>Step 8: Is there min(X)? Why?</strong> Non, car <span class="math">a</span> et <span class="math">b</span> sont deux minimaux incomparables ; aucun élément de <span class="math">X</span> n’est sous tout <span class="math">X</span>.</li>
+            <li><strong>Step 9: Is there max(X)? Why?</strong> Non, car <span class="math">c</span> et <span class="math">d</span> sont deux maximaux incomparables ; aucun élément de <span class="math">X</span> n’est au-dessus de tout <span class="math">X</span>.</li>
+            <li><strong>Step 10: What are inf(X) and sup(X)? Why?</strong> <span class="math">inf(X)=0</span>, seul minorant donc plus grand minorant ; <span class="math">sup(X)=1</span>, seul majorant donc plus petit majorant.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="example">
+        <h3>Example 3 - Sup and inf exist, but no plus petit/plus grand</h3>
+        <p>On prend <span class="math">X = {a,b}</span>. Les bornes existent dans <span class="math">E</span>, mais elles ne sont pas dans <span class="math">X</span>.</p>
+
+        <figure>
+          <div class="diagram-wrap">
+            <svg class="hasse" viewBox="0 0 720 400" role="img" aria-label="Diamond with infimum and supremum outside X">
+              <line class="edge" x1="360" y1="330" x2="250" y2="200"></line>
+              <line class="edge" x1="360" y1="330" x2="470" y2="200"></line>
+              <line class="edge" x1="250" y1="200" x2="360" y2="70"></line>
+              <line class="edge" x1="470" y1="200" x2="360" y2="70"></line>
+
+              <g class="node" transform="translate(360 330)">
+                <circle class="ring ring-minor" r="33"></circle>
+                <circle class="ring ring-bound" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>0</text>
+              </g>
+              <g class="node x" transform="translate(250 200)">
+                <circle class="ring ring-minimal" r="33"></circle>
+                <circle class="ring ring-maximal" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>a</text>
+              </g>
+              <g class="node x" transform="translate(470 200)">
+                <circle class="ring ring-minimal" r="33"></circle>
+                <circle class="ring ring-maximal" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>b</text>
+              </g>
+              <g class="node" transform="translate(360 70)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="ring ring-bound" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>1</text>
+              </g>
+              <text class="svg-label" x="402" y="330">inf</text>
+              <text class="svg-label" x="402" y="70">sup</text>
+            </svg>
+          </div>
+          <figcaption>Ici <span class="math">a</span> et <span class="math">b</span> sont incomparables.</figcaption>
+        </figure>
+
+        <div class="role-explain">
+          <h4>Lecture des rôles sur le graphe</h4>
+          <p><span class="math">a</span> et <span class="math">b</span> ont chacun deux rôles dans <span class="math">X</span> : minimaux et maximaux, donc ils portent les cercles rouge et violet. <span class="math">0</span> est la borne inférieure, <span class="math">1</span> est la borne supérieure, mais aucun des deux n’est dans <span class="math">X</span>.</p>
+        </div>
+
+        <div class="steps">
+          <ol>
+            <li><strong>Step 1: What is E?</strong> <span class="math">E={0,a,b,1}</span> avec l’ordre en losange.</li>
+            <li><strong>Step 2: What is X?</strong> <span class="math">X={a,b}</span>.</li>
+            <li><strong>Step 3: Which elements are in X?</strong> Les éléments bleus : <span class="math">a,b</span>.</li>
+            <li><strong>Step 4: Which elements are below all X = minorants?</strong> <span class="math">{0}</span>.</li>
+            <li><strong>Step 5: Which elements are above all X = majorants?</strong> <span class="math">{1}</span>.</li>
+            <li><strong>Step 6: Which elements of X have nothing below inside X = minimaux?</strong> <span class="math">{a,b}</span>.</li>
+            <li><strong>Step 7: Which elements of X have nothing above inside X = maximaux?</strong> <span class="math">{a,b}</span>.</li>
+            <li><strong>Step 8: Is there min(X)? Why?</strong> Non, car ni <span class="math">a ⪯ b</span> ni <span class="math">b ⪯ a</span>.</li>
+            <li><strong>Step 9: Is there max(X)? Why?</strong> Non, pour la même raison : <span class="math">a</span> et <span class="math">b</span> sont incomparables.</li>
+            <li><strong>Step 10: What are inf(X) and sup(X)? Why?</strong> <span class="math">inf(X)=0</span> et <span class="math">sup(X)=1</span>. Les bornes existent dans <span class="math">E</span>, même si elles ne sont pas dans <span class="math">X</span>.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="example">
+        <h3>Example 4 - Divisibility order: <span class="math">X={6,15,21}</span></h3>
+        <p>Dans <span class="math">(N\\{0}, |)</span>, être plus petit signifie « diviser ». Donc les minorants sont les diviseurs communs et les majorants sont les multiples communs.</p>
+
+        <figure>
+          <div class="diagram-wrap">
+            <svg class="hasse" viewBox="0 0 760 500" role="img" aria-label="Divisibility order for 6 15 21">
+              <line class="edge" x1="380" y1="430" x2="380" y2="345"></line>
+              <line class="edge" x1="380" y1="345" x2="220" y2="240"></line>
+              <line class="edge" x1="380" y1="345" x2="380" y2="240"></line>
+              <line class="edge" x1="380" y1="345" x2="540" y2="240"></line>
+              <line class="edge" x1="220" y1="240" x2="380" y2="120"></line>
+              <line class="edge" x1="380" y1="240" x2="380" y2="120"></line>
+              <line class="edge" x1="540" y1="240" x2="380" y2="120"></line>
+              <line class="edge dashed" x1="380" y1="120" x2="380" y2="50"></line>
+
+              <g class="node" transform="translate(380 430)">
+                <circle class="ring ring-minor" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>1</text>
+              </g>
+              <g class="node" transform="translate(380 345)">
+                <circle class="ring ring-minor" r="33"></circle>
+                <circle class="ring ring-bound" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>3</text>
+              </g>
+              <g class="node x" transform="translate(220 240)">
+                <circle class="ring ring-minimal" r="33"></circle>
+                <circle class="ring ring-maximal" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>6</text>
+              </g>
+              <g class="node x" transform="translate(380 240)">
+                <circle class="ring ring-minimal" r="33"></circle>
+                <circle class="ring ring-maximal" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>15</text>
+              </g>
+              <g class="node x" transform="translate(540 240)">
+                <circle class="ring ring-minimal" r="33"></circle>
+                <circle class="ring ring-maximal" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>21</text>
+              </g>
+              <g class="node" transform="translate(380 120)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="ring ring-bound" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>210</text>
+              </g>
+              <g class="node" transform="translate(380 50)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text class="small">420</text>
+              </g>
+              <text class="svg-label" x="430" y="346">pgcd = inf</text>
+              <text class="svg-label" x="438" y="120">ppcm = sup</text>
+              <text class="svg-label" x="430" y="50">puis 630, 840, ...</text>
+            </svg>
+          </div>
+          <figcaption>Les vrais majorants sont tous les multiples de 210 ; le dessin montre le début.</figcaption>
+        </figure>
+
+        <div class="role-explain">
+          <h4>Lecture des rôles sur le graphe</h4>
+          <p><span class="math">6,15,21</span> sont bleus car ils appartiennent à <span class="math">X</span>. Ils sont aussi tous minimaux et maximaux dans <span class="math">X</span>, car aucun ne divise un autre. <span class="math">3</span> porte le bord noir de <span class="math">inf(X)</span> et un cercle orange de minorant ; <span class="math">210</span> porte le bord noir de <span class="math">sup(X)</span> et un cercle vert de majorant.</p>
+        </div>
+
+        <div class="steps">
+          <ol>
+            <li><strong>Step 1: What is E?</strong> <span class="math">E=N\\{0}</span> muni de l’ordre <span class="math">|</span>.</li>
+            <li><strong>Step 2: What is X?</strong> <span class="math">X={6,15,21}</span>.</li>
+            <li><strong>Step 3: Which elements are in X?</strong> Les éléments bleus : <span class="math">6,15,21</span>.</li>
+            <li><strong>Step 4: Which elements are below all X = minorants?</strong> Les diviseurs communs : <span class="math">{1,3}</span>.</li>
+            <li><strong>Step 5: Which elements are above all X = majorants?</strong> Les multiples communs : <span class="math">{210,420,630,...}</span>.</li>
+            <li><strong>Step 6: Which elements of X have nothing below inside X = minimaux?</strong> <span class="math">{6,15,21}</span>, car aucun des trois ne divise un autre élément de <span class="math">X</span>.</li>
+            <li><strong>Step 7: Which elements of X have nothing above inside X = maximaux?</strong> <span class="math">{6,15,21}</span>, car aucun des trois n’est divisé par un autre élément de <span class="math">X</span>.</li>
+            <li><strong>Step 8: Is there min(X)? Why?</strong> Non : il faudrait un élément de <span class="math">X</span> qui divise les trois, et aucun de <span class="math">6,15,21</span> ne le fait.</li>
+            <li><strong>Step 9: Is there max(X)? Why?</strong> Non : il faudrait un élément de <span class="math">X</span> multiple des trois, et aucun de <span class="math">6,15,21</span> ne le fait.</li>
+            <li><strong>Step 10: What are inf(X) and sup(X)? Why?</strong> <span class="math">inf(X)=pgcd(6,15,21)=3</span>, plus grand diviseur commun ; <span class="math">sup(X)=ppcm(6,15,21)=210</span>, plus petit multiple commun.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="example">
+        <h3>Example 5 - Inclusion order: intersection and union</h3>
+        <p>Dans <span class="math">(𝒫({1,2,3}), ⊆)</span>, on prend <span class="math">X = {{1,2},{2,3}}</span>.</p>
+
+        <figure>
+          <div class="diagram-wrap">
+            <svg class="hasse" viewBox="0 0 820 500" role="img" aria-label="Inclusion lattice for power set of 123">
+              <line class="edge" x1="410" y1="430" x2="230" y2="320"></line>
+              <line class="edge" x1="410" y1="430" x2="410" y2="320"></line>
+              <line class="edge" x1="410" y1="430" x2="590" y2="320"></line>
+              <line class="edge" x1="230" y1="320" x2="230" y2="190"></line>
+              <line class="edge" x1="230" y1="320" x2="410" y2="190"></line>
+              <line class="edge" x1="410" y1="320" x2="230" y2="190"></line>
+              <line class="edge" x1="410" y1="320" x2="590" y2="190"></line>
+              <line class="edge" x1="590" y1="320" x2="410" y2="190"></line>
+              <line class="edge" x1="590" y1="320" x2="590" y2="190"></line>
+              <line class="edge" x1="230" y1="190" x2="410" y2="70"></line>
+              <line class="edge" x1="410" y1="190" x2="410" y2="70"></line>
+              <line class="edge" x1="590" y1="190" x2="410" y2="70"></line>
+
+              <g class="node" transform="translate(410 430)">
+                <circle class="ring ring-minor" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text>∅</text>
+              </g>
+              <g class="node" transform="translate(230 320)">
+                <circle class="node-bg" r="30"></circle>
+                <text class="small">{1}</text>
+              </g>
+              <g class="node" transform="translate(410 320)">
+                <circle class="ring ring-minor" r="38"></circle>
+                <circle class="ring ring-bound" r="45"></circle>
+                <circle class="node-bg" r="30"></circle>
+                <text class="small">{2}</text>
+              </g>
+              <g class="node" transform="translate(590 320)">
+                <circle class="node-bg" r="30"></circle>
+                <text class="small">{3}</text>
+              </g>
+              <g class="node x" transform="translate(230 190)">
+                <circle class="ring ring-minimal" r="38"></circle>
+                <circle class="ring ring-maximal" r="45"></circle>
+                <circle class="node-bg" r="30"></circle>
+                <text class="small">{1,2}</text>
+              </g>
+              <g class="node" transform="translate(410 190)">
+                <circle class="node-bg" r="30"></circle>
+                <text class="small">{1,3}</text>
+              </g>
+              <g class="node x" transform="translate(590 190)">
+                <circle class="ring ring-minimal" r="38"></circle>
+                <circle class="ring ring-maximal" r="45"></circle>
+                <circle class="node-bg" r="30"></circle>
+                <text class="small">{2,3}</text>
+              </g>
+              <g class="node" transform="translate(410 70)">
+                <circle class="ring ring-major" r="43"></circle>
+                <circle class="ring ring-bound" r="51"></circle>
+                <circle class="node-bg" r="34"></circle>
+                <text class="small">{1,2,3}</text>
+              </g>
+              <text class="svg-label" x="455" y="320">inf = ∩</text>
+              <text class="svg-label" x="470" y="70">sup = ∪</text>
+            </svg>
+          </div>
+          <figcaption>Intersection en bas, union en haut.</figcaption>
+        </figure>
+
+        <div class="role-explain">
+          <h4>Lecture des rôles sur le graphe</h4>
+          <p><span class="math">{1,2}</span> et <span class="math">{2,3}</span> sont bleus car ils forment <span class="math">X</span>. Ils sont tous les deux minimaux et maximaux dans <span class="math">X</span>. <span class="math">{2}</span> est le meilleur minorant, donc <span class="math">inf(X)</span>. <span class="math">{1,2,3}</span> est le meilleur majorant, donc <span class="math">sup(X)</span>.</p>
+        </div>
+
+        <div class="steps">
+          <ol>
+            <li><strong>Step 1: What is E?</strong> <span class="math">E=𝒫({1,2,3})</span> muni de l’ordre <span class="math">⊆</span>.</li>
+            <li><strong>Step 2: What is X?</strong> <span class="math">X={{1,2},{2,3}}</span>.</li>
+            <li><strong>Step 3: Which elements are in X?</strong> Les éléments bleus : <span class="math">{1,2}</span> et <span class="math">{2,3}</span>.</li>
+            <li><strong>Step 4: Which elements are below all X = minorants?</strong> Les ensembles inclus dans les deux : <span class="math">∅</span> et <span class="math">{2}</span>.</li>
+            <li><strong>Step 5: Which elements are above all X = majorants?</strong> Les ensembles contenant les deux : <span class="math">{1,2,3}</span>.</li>
+            <li><strong>Step 6: Which elements of X have nothing below inside X = minimaux?</strong> <span class="math">{{1,2},{2,3}}</span>, car ils sont incomparables.</li>
+            <li><strong>Step 7: Which elements of X have nothing above inside X = maximaux?</strong> <span class="math">{{1,2},{2,3}}</span>, pour la même raison.</li>
+            <li><strong>Step 8: Is there min(X)? Why?</strong> Non, car aucun des deux ensembles de <span class="math">X</span> n’est inclus dans l’autre.</li>
+            <li><strong>Step 9: Is there max(X)? Why?</strong> Non, car aucun des deux ensembles de <span class="math">X</span> ne contient l’autre.</li>
+            <li><strong>Step 10: What are inf(X) and sup(X)? Why?</strong> <span class="math">inf(X)={1,2}∩{2,3}={2}</span> ; <span class="math">sup(X)={1,2}∪{2,3}={1,2,3}</span>.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="example">
+        <h3>Example 6 - TD2 Exercise 1 style</h3>
+        <p>Dans le TD2, on a <span class="math">W={1,2,3,4,5,6,7,8}</span> avec le diagramme ci-dessous et <span class="math">V={4,5,6}</span>.</p>
+
+        <figure>
+          <div class="diagram-wrap">
+            <svg class="hasse" viewBox="0 0 820 540" role="img" aria-label="TD2 exercise 1 Hasse diagram">
+              <line class="edge" x1="500" y1="460" x2="390" y2="365"></line>
+              <line class="edge" x1="500" y1="460" x2="610" y2="365"></line>
+              <line class="edge" x1="390" y1="365" x2="280" y2="265"></line>
+              <line class="edge" x1="390" y1="365" x2="500" y2="265"></line>
+              <line class="edge" x1="610" y1="365" x2="500" y2="265"></line>
+              <line class="edge" x1="280" y1="265" x2="390" y2="165"></line>
+              <line class="edge" x1="500" y1="265" x2="390" y2="165"></line>
+              <line class="edge" x1="390" y1="165" x2="280" y2="70"></line>
+              <line class="edge" x1="390" y1="165" x2="500" y2="70"></line>
+
+              <g class="node" transform="translate(280 70)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>1</text>
+              </g>
+              <g class="node" transform="translate(500 70)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>2</text>
+              </g>
+              <g class="node" transform="translate(390 165)">
+                <circle class="ring ring-major" r="33"></circle>
+                <circle class="ring ring-bound" r="40"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>3</text>
+              </g>
+              <g class="node x" transform="translate(280 265)">
+                <circle class="ring ring-maximal" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>4</text>
+              </g>
+              <g class="node x" transform="translate(500 265)">
+                <circle class="ring ring-maximal" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>5</text>
+              </g>
+              <g class="node x" transform="translate(390 365)">
+                <circle class="ring ring-minor" r="33"></circle>
+                <circle class="ring ring-minimal" r="40"></circle>
+                <circle class="ring ring-bound" r="47"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>6</text>
+                <text class="star" x="42" y="-26">★</text>
+              </g>
+              <g class="node" transform="translate(610 365)">
+                <circle class="node-bg" r="24"></circle>
+                <text>7</text>
+              </g>
+              <g class="node" transform="translate(500 460)">
+                <circle class="ring ring-minor" r="33"></circle>
+                <circle class="node-bg" r="24"></circle>
+                <text>8</text>
+              </g>
+              <text class="svg-label" x="435" y="165">sup(V)</text>
+              <text class="svg-label" x="438" y="365">inf(V) = min(V)</text>
+            </svg>
+          </div>
+          <figcaption>Reproduction du type de diagramme du TD2 : les arcs montent vers les éléments plus grands.</figcaption>
+        </figure>
+
+        <div class="role-explain">
+          <h4>Lecture des rôles sur le graphe</h4>
+          <p><span class="math">4,5,6</span> sont bleus car ils appartiennent à <span class="math">V</span>. <span class="math">6</span> a plusieurs rôles : il est dans <span class="math">V</span>, minorant, minimal, <span class="math">inf(V)</span> et <span class="math">min(V)</span>. <span class="math">3</span> est majorant et <span class="math">sup(V)</span>, mais pas dans <span class="math">V</span>. <span class="math">4</span> et <span class="math">5</span> sont maximaux.</p>
+        </div>
+
+        <div class="steps">
+          <ol>
+            <li><strong>Step 1: What is E?</strong> Ici <span class="math">E=W={1,2,3,4,5,6,7,8}</span> avec l’ordre du TD2.</li>
+            <li><strong>Step 2: What is X?</strong> Ici le TD l’appelle <span class="math">V={4,5,6}</span>.</li>
+            <li><strong>Step 3: Which elements are in X?</strong> Les éléments bleus : <span class="math">4,5,6</span>.</li>
+            <li><strong>Step 4: Which elements are below all X = minorants?</strong> <span class="math">{6,8}</span>, car on peut monter de 6 vers 4 et 5, et de 8 vers 6,4,5.</li>
+            <li><strong>Step 5: Which elements are above all X = majorants?</strong> <span class="math">{1,2,3}</span>, car chaque élément de <span class="math">V</span> peut monter vers eux.</li>
+            <li><strong>Step 6: Which elements of X have nothing below inside X = minimaux?</strong> <span class="math">{6}</span>.</li>
+            <li><strong>Step 7: Which elements of X have nothing above inside X = maximaux?</strong> <span class="math">{4,5}</span>.</li>
+            <li><strong>Step 8: Is there min(X)? Why?</strong> Oui, <span class="math">min(V)=6</span>, car <span class="math">6 ∈ V</span> et <span class="math">6</span> est minorant de <span class="math">V</span>.</li>
+            <li><strong>Step 9: Is there max(X)? Why?</strong> Non, car <span class="math">4</span> et <span class="math">5</span> sont deux maximaux incomparables.</li>
+            <li><strong>Step 10: What are inf(X) and sup(X)? Why?</strong> <span class="math">inf(V)=6</span>, plus grand minorant ; <span class="math">sup(V)=3</span>, plus petit majorant.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="example">
+        <h3>Example 7 - Annale style: product order on <span class="math">N×N</span></h3>
+        <p>Inspiré de l’examen 2026 : ordre produit <span class="math">(a1,b1) ⪯ (a2,b2)</span> si <span class="math">a1 ≤ a2</span> et <span class="math">b1 ≤ b2</span>. On prend <span class="math">A={(1,2),(2,1),(2,2),(3,1),(1,3)}</span>.</p>
+
+        <figure>
+          <div class="diagram-wrap">
+            <svg class="hasse" viewBox="0 0 640 470" role="img" aria-label="Product order on N times N">
+              <line class="edge light" x1="80" y1="380" x2="210" y2="380"></line>
+              <line class="edge light" x1="210" y1="380" x2="340" y2="380"></line>
+              <line class="edge light" x1="340" y1="380" x2="470" y2="380"></line>
+              <line class="edge light" x1="80" y1="290" x2="210" y2="290"></line>
+              <line class="edge light" x1="210" y1="290" x2="340" y2="290"></line>
+              <line class="edge light" x1="340" y1="290" x2="470" y2="290"></line>
+              <line class="edge light" x1="80" y1="200" x2="210" y2="200"></line>
+              <line class="edge light" x1="210" y1="200" x2="340" y2="200"></line>
+              <line class="edge light" x1="340" y1="200" x2="470" y2="200"></line>
+              <line class="edge light" x1="80" y1="110" x2="210" y2="110"></line>
+              <line class="edge light" x1="210" y1="110" x2="340" y2="110"></line>
+              <line class="edge light" x1="340" y1="110" x2="470" y2="110"></line>
+
+              <line class="edge light" x1="80" y1="380" x2="80" y2="290"></line>
+              <line class="edge light" x1="80" y1="290" x2="80" y2="200"></line>
+              <line class="edge light" x1="80" y1="200" x2="80" y2="110"></line>
+              <line class="edge light" x1="210" y1="380" x2="210" y2="290"></line>
+              <line class="edge light" x1="210" y1="290" x2="210" y2="200"></line>
+              <line class="edge light" x1="210" y1="200" x2="210" y2="110"></line>
+              <line class="edge light" x1="340" y1="380" x2="340" y2="290"></line>
+              <line class="edge light" x1="340" y1="290" x2="340" y2="200"></line>
+              <line class="edge light" x1="340" y1="200" x2="340" y2="110"></line>
+              <line class="edge light" x1="470" y1="380" x2="470" y2="290"></line>
+              <line class="edge light" x1="470" y1="290" x2="470" y2="200"></line>
+              <line class="edge light" x1="470" y1="200" x2="470" y2="110"></line>
+
+              <g class="node" transform="translate(80 380)">
+                <circle class="ring ring-minor" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(0,0)</text>
+              </g>
+              <g class="node" transform="translate(210 380)">
+                <circle class="ring ring-minor" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(1,0)</text>
+              </g>
+              <g class="node" transform="translate(340 380)">
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(2,0)</text>
+              </g>
+              <g class="node" transform="translate(470 380)">
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(3,0)</text>
+              </g>
+
+              <g class="node" transform="translate(80 290)">
+                <circle class="ring ring-minor" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(0,1)</text>
+              </g>
+              <g class="node" transform="translate(210 290)">
+                <circle class="ring ring-minor" r="35"></circle>
+                <circle class="ring ring-bound" r="43"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(1,1)</text>
+              </g>
+              <g class="node x" transform="translate(340 290)">
+                <circle class="ring ring-minimal" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(2,1)</text>
+              </g>
+              <g class="node x" transform="translate(470 290)">
+                <circle class="ring ring-maximal" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(3,1)</text>
+              </g>
+
+              <g class="node" transform="translate(80 200)">
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(0,2)</text>
+              </g>
+              <g class="node x" transform="translate(210 200)">
+                <circle class="ring ring-minimal" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(1,2)</text>
+              </g>
+              <g class="node x" transform="translate(340 200)">
+                <circle class="ring ring-maximal" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(2,2)</text>
+              </g>
+              <g class="node" transform="translate(470 200)">
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(3,2)</text>
+              </g>
+
+              <g class="node" transform="translate(80 110)">
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(0,3)</text>
+              </g>
+              <g class="node x" transform="translate(210 110)">
+                <circle class="ring ring-maximal" r="35"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(1,3)</text>
+              </g>
+              <g class="node" transform="translate(340 110)">
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(2,3)</text>
+              </g>
+              <g class="node" transform="translate(470 110)">
+                <circle class="ring ring-major" r="35"></circle>
+                <circle class="ring ring-bound" r="43"></circle>
+                <circle class="node-bg" r="28"></circle>
+                <text class="small">(3,3)</text>
+              </g>
+
+              <text class="svg-label" x="505" y="110">sup, puis tous (a,b) avec a≥3,b≥3</text>
+              <text class="svg-label" x="250" y="290">inf</text>
+            </svg>
+          </div>
+          <figcaption>Le dessin montre la fenêtre <span class="math">{0,1,2,3}×{0,1,2,3}</span> ; les majorants continuent au-delà.</figcaption>
+        </figure>
+
+        <div class="role-explain">
+          <h4>Lecture des rôles sur le graphe</h4>
+          <p>Les points bleus sont les couples de <span class="math">A</span>. Les points <span class="math">(1,2)</span> et <span class="math">(2,1)</span> sont minimaux. Les points <span class="math">(2,2)</span>, <span class="math">(3,1)</span> et <span class="math">(1,3)</span> sont maximaux. <span class="math">(1,1)</span> est la borne inférieure : il est sous tous les points de <span class="math">A</span>, mais n’est pas dans <span class="math">A</span>. <span class="math">(3,3)</span> est la borne supérieure.</p>
+        </div>
+
+        <div class="steps">
+          <ol>
+            <li><strong>Step 1: What is E?</strong> <span class="math">E=N×N</span> muni de l’ordre produit : <span class="math">(a1,b1) ⪯ (a2,b2) ⇔ a1≤a2 et b1≤b2</span>.</li>
+            <li><strong>Step 2: What is X?</strong> Ici <span class="math">X=A={(1,2),(2,1),(2,2),(3,1),(1,3)}</span>.</li>
+            <li><strong>Step 3: Which elements are in X?</strong> Les cinq points bleus du dessin.</li>
+            <li><strong>Step 4: Which elements are below all X = minorants?</strong> Il faut être sous toutes les coordonnées : <span class="math">{(0,0),(1,0),(0,1),(1,1)}</span>.</li>
+            <li><strong>Step 5: Which elements are above all X = majorants?</strong> Il faut <span class="math">a≥3</span> et <span class="math">b≥3</span>, donc <span class="math">{(a,b)∈N×N | a≥3 et b≥3}</span>.</li>
+            <li><strong>Step 6: Which elements of X have nothing below inside X = minimaux?</strong> <span class="math">{(1,2),(2,1)}</span>.</li>
+            <li><strong>Step 7: Which elements of X have nothing above inside X = maximaux?</strong> <span class="math">{(2,2),(3,1),(1,3)}</span>.</li>
+            <li><strong>Step 8: Is there min(X)? Why?</strong> Non : <span class="math">(1,1)</span> serait sous tout <span class="math">A</span>, mais <span class="math">(1,1)∉A</span>. Les minimaux de <span class="math">A</span> sont deux éléments incomparables.</li>
+            <li><strong>Step 9: Is there max(X)? Why?</strong> Non : <span class="math">(3,3)</span> serait au-dessus de tout <span class="math">A</span>, mais <span class="math">(3,3)∉A</span>. Les maximaux ne se comparent pas tous.</li>
+            <li><strong>Step 10: What are inf(X) and sup(X)? Why?</strong> <span class="math">inf(A)=(1,1)</span>, plus grand minorant ; <span class="math">sup(A)=(3,3)</span>, plus petit majorant.</li>
+          </ol>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <h2>Autres modèles TD2 et annales</h2>
+
+      <article class="box">
+        <h3>TD2 divisibility discussion</h3>
+        <p>Le TD2 demande, dans <span class="math">(N\\{0}, |)</span>, si toute paire admet une borne inférieure et une borne supérieure. Pour deux entiers positifs <span class="math">a,b</span> :</p>
+        <ul class="plain-list">
+          <li><span class="math">inf({a,b}) = pgcd(a,b)</span> ;</li>
+          <li><span class="math">sup({a,b}) = ppcm(a,b)</span>.</li>
+        </ul>
+        <p>Donc oui dans <span class="math">N\\{0}</span>. Mais dans <span class="math">N\\{0,1}</span>, attention : si le seul diviseur commun est 1, alors il n’y a pas de minorant dans l’ensemble ambiant.</p>
+      </article>
+
+      <article class="box">
+        <h3>Annale 2023 style</h3>
+        <p>Dans <span class="math">E=N\\{0,1}</span> avec l’ordre de divisibilité, pour <span class="math">A={2,3,4,5,6,7,8,9}</span> :</p>
+        <ul class="plain-list">
+          <li>Majorants = multiples communs de tous les éléments. Il suffit de regarder les contraintes maximales pour la divisibilité : <span class="math">5,6,7,8,9</span>.</li>
+          <li><span class="math">sup(A)=ppcm(5,6,7,8,9)=2520</span>.</li>
+          <li>Il n’y a pas de minorant dans <span class="math">E</span>, car <span class="math">1</span> est exclu.</li>
+          <li>Pas de borne inférieure, pas de plus petit élément, pas de plus grand élément.</li>
+          <li>Minimaux : <span class="math">{2,3,5,7}</span>. Maximaux : <span class="math">{5,6,7,8,9}</span>.</li>
+        </ul>
+      </article>
+
+      <article class="box">
+        <h3>Partiel 2025 definition style</h3>
+        <p>Une question fréquente en examen est : « Donner la définition des majorants d’un ensemble <span class="math">X⊆E</span> ainsi que de sa borne supérieure. »</p>
+        <p>Modèle de réponse :</p>
+        <p class="math">Maj(X) = {m ∈ E | ∀x ∈ X, x ⪯ m}.</p>
+        <p>La borne supérieure de <span class="math">X</span> est le plus petit élément de <span class="math">Maj(X)</span>, c’est-à-dire un élément <span class="math">s ∈ Maj(X)</span> tel que pour tout <span class="math">m ∈ Maj(X)</span>, <span class="math">s ⪯ m</span>.</p>
+      </article>
+    </section>
+
+    <section>
+      <h2>Questions type examen avec réponses</h2>
+
+      <details open>
+        <summary>Question 1 - Style TD2 divisibilité</summary>
+        <p><strong>Énoncé type TD/annales.</strong> On se place dans <span class="math">F=N\\{0}</span> ordonné par la relation « <span class="math">x</span> divise <span class="math">y</span> ». Soit <span class="math">X={8,12}</span>. Donner les minorants, les majorants, la borne supérieure, la borne inférieure, le plus petit et le plus grand élément, les éléments maximaux et minimaux s’ils existent.</p>
+        <div class="method-box">
+          <h4>Méthode rapide</h4>
+          <p>Dans l’ordre <span class="math">|</span>, traduire tout en divisibilité : minorants = diviseurs communs, majorants = multiples communs, <span class="math">inf=pgcd</span>, <span class="math">sup=ppcm</span>.</p>
+        </div>
+        <div class="answer-box">
+          <h4>Réponse complète</h4>
+          <p>Minorants : <span class="math">{1,2,4}</span>. Majorants : <span class="math">{24,48,72,...}</span>. Éléments minimaux : <span class="math">{8,12}</span>. Éléments maximaux : <span class="math">{8,12}</span>. Pas de plus petit élément et pas de plus grand élément. <span class="math">inf(X)=pgcd(8,12)=4</span>. <span class="math">sup(X)=ppcm(8,12)=24</span>.</p>
+        </div>
+        <div class="why-box">
+          <h4>Pourquoi c’est correct</h4>
+          <p>Les diviseurs communs de 8 et 12 sont exactement <span class="math">1,2,4</span>, et le plus grand pour l’ordre <span class="math">|</span> est <span class="math">4</span>. Les multiples communs sont les multiples de <span class="math">24</span>, et le plus petit pour <span class="math">|</span> est <span class="math">24</span>. Ni <span class="math">8|12</span> ni <span class="math">12|8</span>, donc 8 et 12 sont incomparables dans <span class="math">X</span>.</p>
+        </div>
+        <div class="mistake-box">
+          <h4>Erreurs fréquentes</h4>
+          <p>Ne pas utiliser l’ordre habituel <span class="math">≤</span>. Ici <span class="math">4</span> est plus petit que <span class="math">8</span> au sens « divise », mais <span class="math">4∉X</span>, donc ce n’est pas <span class="math">min(X)</span>.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Question 2 - Style TD2 inclusion</summary>
+        <p><strong>Énoncé type TD/annales.</strong> Soit <span class="math">E=𝒫({1,2,3})</span>, ordonné par l’inclusion. Pour la partie <span class="math">X={{1},{2}}</span>, donner l’ensemble des majorants et l’ensemble des minorants. Donner, lorsqu’ils existent, la borne inférieure, la borne supérieure, le plus petit élément, le plus grand élément, les éléments minimaux et les éléments maximaux.</p>
+        <div class="method-box">
+          <h4>Méthode rapide</h4>
+          <p>Pour <span class="math">⊆</span>, penser « intersection en bas, union en haut ». Les minorants sont les sous-ensembles de l’intersection ; les majorants sont les ensembles qui contiennent l’union.</p>
+        </div>
+        <div class="answer-box">
+          <h4>Réponse complète</h4>
+          <p><span class="math">{1}∩{2}=∅</span>, donc les minorants sont les sous-ensembles de <span class="math">∅</span> : <span class="math">{∅}</span>. <span class="math">{1}∪{2}={1,2}</span>, donc les majorants dans <span class="math">𝒫({1,2,3})</span> sont <span class="math">{ {1,2}, {1,2,3} }</span>. <span class="math">inf(X)=∅</span> et <span class="math">sup(X)={1,2}</span>. Pas de plus petit ni de plus grand élément dans <span class="math">X</span>. Minimaux : <span class="math">{{1},{2}}</span>. Maximaux : <span class="math">{{1},{2}}</span>.</p>
+        </div>
+        <div class="why-box">
+          <h4>Pourquoi c’est correct</h4>
+          <p>Un minorant doit être inclus dans <span class="math">{1}</span> et dans <span class="math">{2}</span>, donc il est inclus dans leur intersection. Un majorant doit contenir les deux ensembles, donc il contient leur union. Les deux éléments de <span class="math">X</span> sont incomparables.</p>
+        </div>
+        <div class="mistake-box">
+          <h4>Erreurs fréquentes</h4>
+          <p>Ne pas confondre l’ensemble <span class="math">∅</span> avec « n’existe pas ». Ici <span class="math">inf(X)=∅</span> existe vraiment.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Question 3 - Style annale définition</summary>
+        <p><strong>Énoncé type annales.</strong> Soit <span class="math">E</span> un ensemble muni d’une relation d’ordre <span class="math">⪯</span>. Soit <span class="math">X</span> une partie de <span class="math">E</span>. Donner la définition d’un élément maximal de <span class="math">X</span> et la définition d’un majorant de <span class="math">X</span>.</p>
+        <div class="method-box">
+          <h4>Méthode rapide</h4>
+          <p>Maximal : il doit appartenir à <span class="math">X</span> et on compare seulement avec <span class="math">X</span>. Majorant : il appartient à <span class="math">E</span> et il est au-dessus de tout <span class="math">X</span>.</p>
+        </div>
+        <div class="answer-box">
+          <h4>Réponse complète</h4>
+          <p><span class="math">x ∈ Maximaux(X) ⇔ x ∈ X et ∀y ∈ X, si x ⪯ y alors y = x.</span></p>
+          <p><span class="math">M ∈ Majorants(X) ⇔ M ∈ E et ∀x ∈ X, x ⪯ M.</span></p>
+        </div>
+        <div class="why-box">
+          <h4>Pourquoi c’est correct</h4>
+          <p>La première formule dit qu’il n’existe pas dans <span class="math">X</span> d’élément strictement plus grand que <span class="math">x</span>. La deuxième dit que <span class="math">M</span> est au-dessus de tous les éléments de <span class="math">X</span>.</p>
+        </div>
+        <div class="mistake-box">
+          <h4>Erreurs fréquentes</h4>
+          <p>Ne pas écrire qu’un majorant doit être dans <span class="math">X</span>. Il doit être dans <span class="math">E</span>. Ne pas écrire qu’un maximal est forcément un plus grand élément.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Question 4 - Style TD2 préfixe</summary>
+        <p><strong>Énoncé type TD2.</strong> Définir la relation « est un préfixe de » sur <span class="math">A*</span>. S’agit-il d’une relation d’ordre ? Si oui, s’agit-il d’un ordre total ou d’un ordre partiel ?</p>
+        <div class="method-box">
+          <h4>Méthode rapide</h4>
+          <p>Définir : <span class="math">u</span> préfixe de <span class="math">v</span> ssi <span class="math">v=uw</span>. Puis vérifier réflexive, antisymétrique, transitive. Pour total/partiel, chercher deux mots incomparables.</p>
+        </div>
+        <div class="answer-box">
+          <h4>Réponse complète</h4>
+          <p>On définit <span class="math">u ⪯ v ⇔ ∃w ∈ A*, v=uw</span>. C’est une relation d’ordre : <span class="math">u=uε</span> donc réflexive ; si <span class="math">u</span> est préfixe de <span class="math">v</span> et <span class="math">v</span> préfixe de <span class="math">u</span>, alors ils ont même longueur donc <span class="math">u=v</span> ; si <span class="math">v=uw</span> et <span class="math">t=vr</span>, alors <span class="math">t=u(wr)</span>, donc transitive. Si <span class="math">A</span> contient au moins deux lettres <span class="math">a,b</span>, l’ordre est partiel car <span class="math">a</span> et <span class="math">b</span> sont incomparables.</p>
+        </div>
+        <div class="why-box">
+          <h4>Pourquoi c’est correct</h4>
+          <p>La définition utilise la concaténation des mots. L’exemple <span class="math">a,b</span> suffit pour montrer que l’ordre n’est pas total quand l’alphabet a deux lettres.</p>
+        </div>
+        <div class="mistake-box">
+          <h4>Erreurs fréquentes</h4>
+          <p>Ne pas confondre préfixe et sous-mot : <span class="math">ab</span> est un sous-mot de <span class="math">cab</span>, mais pas un préfixe.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Question 5 - Style annale ordre produit</summary>
+        <p><strong>Énoncé type annales.</strong> On considère <span class="math">E=N×N</span> muni de l’ordre produit : <span class="math">(a1,b1) ⪯ (a2,b2)</span> si <span class="math">a1≤a2</span> et <span class="math">b1≤b2</span>. Pour <span class="math">A={(1,2),(2,1),(2,2),(3,1),(1,3)}</span>, donner les minorants, les éléments minimaux, la borne inférieure et le plus petit élément s’ils existent.</p>
+        <div class="method-box">
+          <h4>Méthode rapide</h4>
+          <p>Dans l’ordre produit, un minorant doit avoir chaque coordonnée plus petite que toutes les coordonnées correspondantes des éléments de <span class="math">A</span>.</p>
+        </div>
+        <div class="answer-box">
+          <h4>Réponse complète</h4>
+          <p>Les minorants sont <span class="math">{(0,0),(1,0),(0,1),(1,1)}</span>. La borne inférieure est <span class="math">(1,1)</span>. Les éléments minimaux de <span class="math">A</span> sont <span class="math">(1,2)</span> et <span class="math">(2,1)</span>. Il n’y a pas de plus petit élément.</p>
+        </div>
+        <div class="why-box">
+          <h4>Pourquoi c’est correct</h4>
+          <p>Pour être minorant, il faut <span class="math">a≤1</span> et <span class="math">b≤1</span>, car les plus petites premières et deuxièmes coordonnées présentes dans <span class="math">A</span> valent 1. Le plus grand de ces minorants est <span class="math">(1,1)</span>. Mais <span class="math">(1,1)∉A</span>, donc ce n’est pas un plus petit élément de <span class="math">A</span>.</p>
+        </div>
+        <div class="mistake-box">
+          <h4>Erreurs fréquentes</h4>
+          <p>Ne pas répondre <span class="math">(1,1)</span> comme plus petit élément : il est <span class="math">inf(A)</span>, mais il n’appartient pas à <span class="math">A</span>.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Question 6 - Style Hasse / TD2</summary>
+        <p><strong>Énoncé type TD2.</strong> On donne un diagramme de Hasse d’un ensemble ordonné <span class="math">E</span> et une partie <span class="math">X</span>. Expliquer comment trouver les majorants, minorants, éléments minimaux, maximaux, <span class="math">inf(X)</span> et <span class="math">sup(X)</span>.</p>
+        <div class="method-box">
+          <h4>Méthode rapide</h4>
+          <p>Lire le diagramme vers le haut. Minorants = éléments d’où on peut monter vers tout <span class="math">X</span>. Majorants = éléments atteignables en montant depuis tout <span class="math">X</span>. Puis chercher les meilleurs : plus haut minorant pour <span class="math">inf</span>, plus bas majorant pour <span class="math">sup</span>.</p>
+        </div>
+        <div class="answer-box">
+          <h4>Réponse complète</h4>
+          <p>Pour chaque candidat <span class="math">e∈E</span>, vérifier les chemins : <span class="math">e</span> est minorant si <span class="math">e ⪯ x</span> pour tout <span class="math">x∈X</span> ; <span class="math">e</span> est majorant si <span class="math">x ⪯ e</span> pour tout <span class="math">x∈X</span>. Les minimaux/maximaux se cherchent seulement dans <span class="math">X</span>. La borne inférieure est le plus grand minorant ; la borne supérieure est le plus petit majorant.</p>
+        </div>
+        <div class="why-box">
+          <h4>Pourquoi c’est correct</h4>
+          <p>Dans un graphe couvrant, un chemin représente une relation de l’ordre complet, car on retrouve les relations manquantes par transitivité.</p>
+        </div>
+        <div class="mistake-box">
+          <h4>Erreurs fréquentes</h4>
+          <p>Ne pas limiter les minorants/majorants aux éléments de <span class="math">X</span>. Ils se cherchent dans tout <span class="math">E</span>. En revanche, minimaux/maximaux se cherchent uniquement dans <span class="math">X</span>.</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="source-note">
+      <h2>Sources utilisées dans votre dossier</h2>
+      <p>Cette leçon utilise les documents LU2IN005 demandés : TD2 étudiant, recettes ensembles ordonnés, cours 2, chapitre 2 sur les relations d’ordre, et les corrigés d’annales pertinents de 2021, 2023, 2024, 2025 et 2026. Les modèles repris ici sont surtout le TD2 exercice 1, les exercices TD2 sur divisibilité/inclusion, l’exercice d’examen 2026 sur l’ordre produit, l’exercice d’examen 2023 sur la divisibilité, et le style de définition du partiel 2025.</p>
+    </section>
+
+    <section class="box cheat">
+      <h2>Fast Exam Method</h2>
+      <p>When I see a TD2 order question, I should answer in this order:</p>
+      <ol class="plain-list">
+        <li><strong>Check if relation is an order</strong>: reflexive, antisymmetric, transitive.</li>
+        <li><strong>Check if total</strong>: every two elements comparable.</li>
+        <li><strong>For subset X</strong>: minorants, majorants, minimal elements, maximal elements, plus petit, plus grand, inf, sup.</li>
+        <li><strong>For divisibility order</strong>: minorants = common divisors, majorants = common multiples, inf = pgcd, sup = ppcm.</li>
+        <li><strong>For inclusion order</strong>: inf = intersection, sup = union.</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>
