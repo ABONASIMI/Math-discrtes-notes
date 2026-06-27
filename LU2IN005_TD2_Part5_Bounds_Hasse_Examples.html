@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LU2IN005 TD2 — Part 5 Bounds</title>
+<style>
+  :root{--bg:#f7f7fb;--card:#fff;--ink:#171717;--muted:#555;--line:#d8d8e2;--accent:#355c7d;--accent2:#6c5b7b;--good:#177245;--warn:#b35c00;--code:#f1f4f8;}
+  *{box-sizing:border-box} body{margin:0;padding:30px;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}.page{max-width:980px;margin:auto}
+  h1,h2,h3{line-height:1.2} h1{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:22px 26px;border-radius:18px;margin:0 0 22px} h2{margin-top:28px;padding-bottom:7px;border-bottom:2px solid var(--line)} h3{margin-top:22px;color:var(--accent)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin:18px 0;box-shadow:0 3px 12px rgba(0,0,0,.04)} .goal{border-left:7px solid var(--accent);background:#eef4fb}.rule{border-left:7px solid var(--good);background:#eefaf4}.warning{border-left:7px solid var(--warn);background:#fff7ed}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:13px 15px;overflow:auto;direction:ltr;text-align:left;font-size:15px} code{background:var(--code);padding:2px 6px;border-radius:6px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;background:white;border-radius:12px;overflow:hidden} th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:top} th{background:#eef1f6;text-align:left}
+  .svgbox{background:white;border:1px solid var(--line);border-radius:16px;padding:10px;margin:12px 0;text-align:center} svg text{font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700}.node{fill:#fff;stroke:#355c7d;stroke-width:2}.xnode{fill:#fff1d6;stroke:#b35c00;stroke-width:3}.infnode{fill:#e9fff1;stroke:#177245;stroke-width:3}.supnode{fill:#eef4ff;stroke:#355c7d;stroke-width:3}.edge{stroke:#555;stroke-width:2}.small{color:var(--muted);font-size:14px}.answer{background:#f8fbff;border:1px dashed #8ca6c9;border-radius:12px;padding:12px 14px;margin:10px 0}
+</style>
+</head>
+<body><div class="page">
+<h1>LU2IN005 — TD2 Part 5: Bounds<br><span style="font-size:22px">minorant / majorant / inf / sup</span></h1>
+<div class="card goal"><h2>0. Real goal first</h2><p>In this part, you have a big ordered set <code>E</code> and a subset <code>X ⊆ E</code>.</p><pre>E = big set
+X = subset of E
+
+Bounds are searched in E, not only inside X.</pre><table><tr><th>Concept</th><th>Where must the answer be?</th><th>Goal</th></tr><tr><td><code>min(X)</code>, <code>max(X)</code></td><td>Inside <code>X</code></td><td>Element of X below/above all X</td></tr><tr><td><code>minorant</code>, <code>majorant</code></td><td>Inside <code>E</code></td><td>Element of E below/above all X</td></tr><tr><td><code>inf(X)</code>, <code>sup(X)</code></td><td>Inside <code>E</code></td><td>Best lower/upper bound</td></tr></table></div>
+<div class="card"><h2>1. Definitions</h2><h3>minorant = lower bound</h3><pre>m est un minorant de X
+⇔ m ∈ E et ∀x ∈ X, m ≤ x</pre><p><b>Real meaning:</b> <code>m</code> is below every element of <code>X</code>.</p><h3>majorant = upper bound</h3><pre>M est un majorant de X
+⇔ M ∈ E et ∀x ∈ X, x ≤ M</pre><p><b>Real meaning:</b> <code>M</code> is above every element of <code>X</code>.</p><h3>inf(X)</h3><pre>inf(X) = le plus grand des minorants de X</pre><h3>sup(X)</h3><pre>sup(X) = le plus petit des majorants de X</pre></div>
+<div class="card rule"><h2>2. Universal algorithm</h2><pre>To find minorants:
+1. Take every element e in E.
+2. Test: e ≤ every element of X?
+3. If yes, e is a minorant.
+
+To find majorants:
+1. Take every element e in E.
+2. Test: every element of X ≤ e?
+3. If yes, e is a majorant.
+
+inf(X) = biggest minorant
+sup(X) = smallest majorant</pre></div>
+<div class="card"><h2>3. Example A — normal order</h2><pre>E = {0,1,2,3,4,5}
+X = {2,3}
+order = normal ≤</pre><div class="svgbox"><svg width="240" height="420" viewBox="0 0 240 420"><line class="edge" x1="120" y1="60" x2="120" y2="360"/><circle class="supnode" cx="120" cy="60" r="22"/><text x="120" y="66" text-anchor="middle">5</text><circle class="supnode" cx="120" cy="120" r="22"/><text x="120" y="126" text-anchor="middle">4</text><circle class="xnode supnode" cx="120" cy="180" r="24"/><text x="120" y="186" text-anchor="middle">3</text><circle class="xnode infnode" cx="120" cy="240" r="24"/><text x="120" y="246" text-anchor="middle">2</text><circle class="infnode" cx="120" cy="300" r="22"/><text x="120" y="306" text-anchor="middle">1</text><circle class="infnode" cx="120" cy="360" r="22"/><text x="120" y="366" text-anchor="middle">0</text></svg><div class="small">Yellow border = elements of X. Green = lower bounds. Blue = upper bounds.</div></div><pre>minorants(X) = {0,1,2}
+majorants(X) = {3,4,5}
+inf(X) = 2
+sup(X) = 3</pre></div>
+<div class="card"><h2>4. Example B — divisibility order</h2><pre>E = {1,2,3,6}
+X = {2,3}
+x ≤ y ⇔ x divise y</pre><p>In divisibility order:</p><pre>lower = divisor
+upper = multiple</pre><div class="svgbox"><svg width="360" height="280" viewBox="0 0 360 280"><line class="edge" x1="180" y1="60" x2="100" y2="150"/><line class="edge" x1="180" y1="60" x2="260" y2="150"/><line class="edge" x1="100" y1="150" x2="180" y2="240"/><line class="edge" x1="260" y1="150" x2="180" y2="240"/><circle class="supnode" cx="180" cy="60" r="25"/><text x="180" y="66" text-anchor="middle">6</text><circle class="xnode" cx="100" cy="150" r="25"/><text x="100" y="156" text-anchor="middle">2</text><circle class="xnode" cx="260" cy="150" r="25"/><text x="260" y="156" text-anchor="middle">3</text><circle class="infnode" cx="180" cy="240" r="25"/><text x="180" y="246" text-anchor="middle">1</text></svg><div class="small">1 divides all → lower bound. 6 is divisible by all → upper bound.</div></div><pre>minorants(X) = {1}
+majorants(X) = {6}
+inf(X) = 1
+sup(X) = 6</pre><div class="warning"><b>Shortcut:</b><pre>minorants = common divisors
+majorants = common multiples inside E
+inf = pgcd if it belongs to E
+sup = ppcm if it belongs to E</pre></div></div>
+<div class="card"><h2>5. Example C — bigger divisibility example</h2><pre>E = {1,2,3,4,6,12}
+X = {4,6}
+x ≤ y ⇔ x divise y</pre><div class="svgbox"><svg width="480" height="350" viewBox="0 0 480 350"><line class="edge" x1="240" y1="50" x2="150" y2="145"/><line class="edge" x1="240" y1="50" x2="330" y2="145"/><line class="edge" x1="150" y1="145" x2="80" y2="240"/><line class="edge" x1="150" y1="145" x2="240" y2="240"/><line class="edge" x1="330" y1="145" x2="240" y2="240"/><line class="edge" x1="80" y1="240" x2="240" y2="310"/><line class="edge" x1="240" y1="240" x2="240" y2="310"/><circle class="supnode" cx="240" cy="50" r="26"/><text x="240" y="56" text-anchor="middle">12</text><circle class="xnode" cx="150" cy="145" r="26"/><text x="150" y="151" text-anchor="middle">4</text><circle class="xnode" cx="330" cy="145" r="26"/><text x="330" y="151" text-anchor="middle">6</text><circle cx="80" cy="240" r="24" class="node"/><text x="80" y="246" text-anchor="middle">2</text><circle cx="240" cy="240" r="24" class="node"/><text x="240" y="246" text-anchor="middle">3</text><circle class="infnode" cx="240" cy="310" r="24"/><text x="240" y="316" text-anchor="middle">1</text></svg></div><pre>divisors of 4 in E = {1,2,4}
+divisors of 6 in E = {1,2,3,6}
+minorants(X) = common divisors = {1,2}
+
+multiples of 4 in E = {4,12}
+multiples of 6 in E = {6,12}
+majorants(X) = common multiples = {12}
+
+inf(X) = 2
+sup(X) = 12</pre></div>
+<div class="card"><h2>6. Example D — product order</h2><pre>E = ℕ × ℕ
+X = {(1,2), (2,1)}
+(a,b) ≤ (c,d) ⇔ a ≤ c et b ≤ d</pre><p>In product order, compare both coordinates at the same time.</p><pre>minorants:
+(a,b) ≤ (1,2) and (a,b) ≤ (2,1)
+So a ≤ 1 and b ≤ 1
+If ℕ contains 0:
+minorants = {(0,0),(0,1),(1,0),(1,1)}
+inf(X) = (1,1)
+
+majorants:
+(1,2) ≤ (a,b) and (2,1) ≤ (a,b)
+So a ≥ 2 and b ≥ 2
+sup(X) = (2,2)</pre></div>
+<div class="card"><h2>7. TD2 Hasse diagram style</h2><pre>V = {4,5,6}</pre><div class="svgbox"><svg width="520" height="420" viewBox="0 0 520 420"><line class="edge" x1="190" y1="120" x2="260" y2="190"/><line class="edge" x1="330" y1="120" x2="260" y2="190"/><line class="edge" x1="260" y1="190" x2="190" y2="260"/><line class="edge" x1="260" y1="190" x2="330" y2="260"/><line class="edge" x1="190" y1="260" x2="260" y2="330"/><line class="edge" x1="330" y1="260" x2="260" y2="330"/><circle class="supnode" cx="190" cy="120" r="24"/><text x="190" y="126" text-anchor="middle">1</text><circle class="supnode" cx="330" cy="120" r="24"/><text x="330" y="126" text-anchor="middle">2</text><circle class="supnode" cx="260" cy="190" r="24"/><text x="260" y="196" text-anchor="middle">3</text><circle class="xnode" cx="190" cy="260" r="24"/><text x="190" y="266" text-anchor="middle">4</text><circle class="xnode" cx="330" cy="260" r="24"/><text x="330" y="266" text-anchor="middle">5</text><circle class="xnode infnode" cx="260" cy="330" r="25"/><text x="260" y="336" text-anchor="middle">6</text><circle class="infnode" cx="260" cy="390" r="24"/><text x="260" y="396" text-anchor="middle">8</text><line class="edge" x1="260" y1="390" x2="260" y2="330"/><text x="260" y="45" text-anchor="middle" style="font-size:14px;font-weight:400">Top direction = greater</text></svg></div><pre>majorants(V) = elements above 4, 5, and 6
+Above 4: {4,3,1,2}
+Above 5: {5,3,1,2}
+Above 6: {6,4,5,3,1,2}
+majorants(V) = {3,1,2}
+
+minorants(V) = elements below 4, 5, and 6
+Below 4: {4,6,8}
+Below 5: {5,6,8}
+Below 6: {6,8}
+minorants(V) = {6,8}
+
+inf(V) = 6
+sup(V) = 3</pre></div>
+<div class="card warning"><h2>8. Common mistakes</h2><table><tr><th>Mistake</th><th>Correct idea</th></tr><tr><td>Bounds must be inside X</td><td>No. Bounds must be inside E.</td></tr><tr><td>inf = min always</td><td>No. inf can exist even when min does not.</td></tr><tr><td>sup = max always</td><td>No. sup can exist even when max does not.</td></tr><tr><td>Use normal order every time</td><td>No. First translate the relation.</td></tr></table></div>
+<div class="card rule"><h2>9. Memory sheet</h2><pre>minorant = below all X
+majorant = above all X
+inf(X) = biggest minorant
+sup(X) = smallest majorant
+
+min(X) = element inside X below all X
+max(X) = element inside X above all X
+
+Bounds can be outside X, but must be inside E.</pre><table><tr><th>Relation</th><th>minorant means</th><th>majorant means</th></tr><tr><td>normal ≤</td><td>number ≤ all X</td><td>number ≥ all X</td></tr><tr><td>x divides y</td><td>common divisor</td><td>common multiple</td></tr><tr><td>product order</td><td>coordinate-wise lower</td><td>coordinate-wise upper</td></tr><tr><td>inclusion ⊆</td><td>subset of all sets in X</td><td>set containing all sets in X</td></tr></table></div>
+<div class="card"><h2>10. Mini practice</h2><pre>E = {1,2,3,4,6,12}
+X = {2,4,6}
+x ≤ y ⇔ x divise y
+
+Find:
+minorants(X)
+majorants(X)
+inf(X)
+sup(X)</pre><details><summary><b>Show correction</b></summary><pre>minorants = common divisors of 2,4,6 inside E
+common = {1,2}
+
+majorants = common multiples of 2,4,6 inside E
+common = {12}
+
+inf(X) = 2
+sup(X) = 12</pre></details></div>
+</div></body></html>
