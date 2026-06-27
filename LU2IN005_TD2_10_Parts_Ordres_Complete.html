@@ -1,0 +1,859 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><title>LU2IN005 TD2 - 10 Parts Ordres</title><style>
+@page { size: A4; margin: 12mm; }
+*{box-sizing:border-box}
+body{font-family:"DejaVu Sans","Noto Naskh Arabic","Arial",sans-serif;line-height:1.55;background:#f6f7fb;color:#111;margin:0;padding:0;direction:rtl;font-size:14.5px}
+.container{max-width:1100px;margin:0 auto;padding:22px}
+h1,h2,h3{line-height:1.3;margin:0 0 10px;color:#102033}
+h1{font-size:28px;text-align:center;margin-top:8px}
+h2{font-size:23px;border-bottom:3px solid #dbe4ff;padding-bottom:8px;margin-top:30px;break-before:auto}
+h3{font-size:18px;margin-top:18px;color:#183a5a}
+h4{font-size:16px;margin:0 0 8px;color:#3c295f}
+.part{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:18px;margin:18px 0;box-shadow:0 2px 8px rgba(15,23,42,.05);break-inside:avoid-page}
+.excard{background:#fbfdff;border:1px solid #d8e2f0;border-radius:12px;padding:12px;margin:12px 0;break-inside:avoid-page}
+.note{background:#fff7d6;border:1px solid #f3d36b;border-radius:10px;padding:10px;margin:10px 0}
+.good{background:#eafaf1;border:1px solid #b7ebc6;border-radius:10px;padding:10px;margin:10px 0}
+.warn{background:#fff0f0;border:1px solid #f0b7b7;border-radius:10px;padding:10px;margin:10px 0}
+.frlabel{direction:ltr;text-align:left;font-weight:bold;color:#334155;margin-top:6px;margin-bottom:4px;font-size:13px}
+pre.fr, pre.math{direction:ltr;text-align:left;white-space:pre-wrap;background:#f1f5f9;border:1px solid #d8dee9;border-radius:10px;padding:10px;font-family:"DejaVu Sans Mono","Consolas",monospace;font-size:12.2px;line-height:1.45;overflow-wrap:anywhere}
+pre.sol{background:#eefaf1;border-color:#bfebc7}
+code{direction:ltr;unicode-bidi:embed;background:#eef2ff;padding:1px 4px;border-radius:4px}
+ul,ol{padding-right:22px}
+.toc{background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:16px 0}
+.toc li{margin:3px 0}.small{font-size:12px;color:#475569}
+.pagebreak{break-before:page}
+table{width:100%;border-collapse:collapse;background:white;margin:10px 0;direction:rtl}
+th,td{border:1px solid #dbe2ea;padding:8px;vertical-align:top}th{background:#edf2ff}
+@media print{body{background:white}.container{padding:0}.part,.toc,.excard{box-shadow:none}.pagebreak{break-before:page}}
+</style></head><body><div class="container">
+<h1>LU2IN005 - TD2 Relations d’ordre</h1><h1>درس کامل ۱۰ بخشی + TD2 + Annales</h1><div class="note">این فایل برای گرفتن نمره در امتحان دوم شانس ساخته شده است: اول علامت‌ها و تعریف‌ها، بعد روش حل، بعد تمرین‌های TD2 و نمونه‌های annales مربوط به همین بخش.</div>
+<div class="toc"><h2>فهرست ۱۰ بخش</h2><ol><li>معنی مجموعهٔ مرتب: <code>(E, ≤)</code> و <code>(E, ⪯)</code></li><li>علامت <code>≤</code> و معنی کوچک‌تر مساوی</li><li>علامت <code>&lt;</code> و معنی strict</li><li>علامت‌های عمومی order: <code>≼</code> و <code>⪯</code></li><li>علامت <code>⊑</code> و order روی توابع/زیرمجموعه‌ها/کلمات</li><li>جمله‌های <code>x ≤ y</code>، <code>x &lt; y</code>، <code>x ⪯ y</code>، <code>x ≺ y</code></li><li>تعریف relation d’ordre: réflexive + antisymétrique + transitive</li><li>ordre total / partiel / comparable / diagramme de Hasse</li><li>minimal, maximal, minorant, majorant, minimum, maximum</li><li>inf, sup, bien fondé, lexicographique, isomorphisme + همه تمرین‌های TD2/annales</li></ol></div>
+<section class="part"><h2>بخش ۱ - معنی <code>(E, ≤)</code> و <code>(E, ⪯)</code></h2><p>وقتی در صورت سؤال می‌بینی:</p><pre class="math">(E, ≤)</pre><p>یعنی مجموعهٔ <code>E</code> را با یک رابطهٔ ترتیب بررسی می‌کنیم. اگر علامت <code>≤</code> باشد، معمولاً order معمولی است. اگر علامت <code>⪯</code> باشد، یعنی order عمومی است و خود سؤال معنی آن را تعریف می‌کند.</p><pre class="fr">Soit (E, ⪯) un ensemble ordonné.</pre><p>ترجمه: فرض کنیم <code>E</code> یک مجموعه است و <code>⪯</code> روی آن یک رابطهٔ order است.</p><div class="good">در امتحان، هر وقت این جمله را دیدی، دیگر لازم نیست ثابت کنی order است؛ سؤال از قبل گفته ordered است.</div></section>
+<section class="part"><h2>بخش ۲ - علامت <code>≤</code></h2><p><code>≤</code> یعنی کوچک‌تر یا مساوی. مساوی بودن هم قبول است.</p><pre class="math">2 ≤ 5   vrai
+3 ≤ 3   vrai
+5 ≤ 2   faux</pre><p>در TD2، اگر روی اعداد باشد، از propriétés طبیعی استفاده می‌کنیم: réflexive, antisymétrique, transitive.</p></section>
+<section class="part"><h2>بخش ۳ - علامت <code>&lt;</code></h2><p><code>&lt;</code> یعنی strict: کوچک‌تر واقعی، نه مساوی.</p><pre class="math">2 < 5   vrai
+3 < 3   faux</pre><p>فرق با <code>≤</code>:</p><pre class="math">x < y  ⇔  x ≤ y et x ≠ y</pre><p>در order عمومی هم نسخهٔ strict داریم:</p><pre class="math">x ≺ y  ⇔  x ⪯ y et x ≠ y</pre></section>
+<section class="part"><h2>بخش ۴ - علامت‌های عمومی <code>≼</code> و <code>⪯</code></h2><p>این دو علامت تقریباً همان معنی را دارند: یک relation d’ordre عمومی. معنی دقیق را خود سؤال می‌گوید.</p><pre class="math">x ⪯ y</pre><p>یعنی: x نسبت به order سؤال، پایین‌تر یا مساوی y است.</p><pre class="fr">n | m si et seulement si n est un diviseur de m.</pre><p>اینجا <code>n | m</code> نقش order دارد: n پایین‌تر از m است اگر n عدد m را تقسیم کند.</p></section>
+<section class="part"><h2>بخش ۵ - علامت <code>⊑</code></h2><p><code>⊑</code> هم یک علامت order است، ولی بیشتر وقتی می‌آید که order روی توابع، کلمات، یا ساختارها تعریف شده باشد.</p><pre class="fr">f ⊑ g ssi pour tout n ∈ N, f(n) ≤ g(n)</pre><p>این یعنی تابع f از تابع g کوچک‌تر است اگر برای همهٔ n مقدار f(n) از g(n) کوچک‌تر مساوی باشد.</p><div class="note">در annale 2024 دقیقاً چنین سؤالی آمده است.</div></section>
+<section class="part"><h2>بخش ۶ - جمله‌های <code>x ≤ y</code>، <code>x &lt; y</code>، <code>x ⪯ y</code>، <code>x ≺ y</code></h2><table><tr><th>علامت</th><th>معنی فارسی</th><th>فرانسوی امتحانی</th></tr><tr><td><code>x ≤ y</code></td><td>x کوچک‌تر یا مساوی y است</td><td>x est inférieur ou égal à y</td></tr><tr><td><code>x &lt; y</code></td><td>x واقعاً کوچک‌تر از y است</td><td>x est strictement inférieur à y</td></tr><tr><td><code>x ⪯ y</code></td><td>x طبق order سؤال پایین‌تر یا مساوی y است</td><td>x est inférieur ou égal à y pour cet ordre</td></tr><tr><td><code>x ≺ y</code></td><td>x طبق order سؤال strict پایین‌تر از y است</td><td>x est strictement inférieur à y pour cet ordre</td></tr></table></section>
+<section class="part pagebreak"><h2>بخش ۷ - relation d’ordre یعنی چه؟</h2><p>یک رابطه order است اگر دقیقاً این ۳ شرط را داشته باشد:</p><pre class="math">relation d’ordre = réflexive + antisymétrique + transitive</pre><h3>۱) réflexive</h3><pre class="math">∀x ∈ E, x ⪯ x</pre><p>هر عنصر با خودش رابطه دارد.</p><h3>۲) antisymétrique</h3><pre class="math">∀x,y ∈ E, (x ⪯ y et y ⪯ x) ⇒ x = y</pre><p>دو عنصر متفاوت نمی‌توانند همزمان از دو طرف پایین‌تر از هم باشند.</p><h3>۳) transitive</h3><pre class="math">∀x,y,z ∈ E, (x ⪯ y et y ⪯ z) ⇒ x ⪯ z</pre><p>اگر x پایین‌تر از y و y پایین‌تر از z باشد، پس x پایین‌تر از z است.</p><div class="good">قالب جواب امتحان: برای نشان دادن order، همیشه سه پاراگراف بنویس: Réflexivité / Antisymétrie / Transitivité / Conclusion.</div>
+<div class="excard"><h4>TD2 - Exercice 3</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 3
+On définit la relation ⊆ IN × IN par (a, b)  (c, d) ssi a + b &lt; c + d ou (a, b) = (c, d).
+      1. Montrer que  est une relation d’ordre.
+      2. Cet ordre est-il total ? bien fondé ? Justifier les réponses.
+      3. Soit l’ensemble A = {(0, 2), (2, 1), (1, 2), (2, 2)}. Déterminer, s’ils existent, les minorants, les
+         majorants, les éléments minimaux, les éléments maximaux, la borne inférieure, la borne su-
+         périeure, le minimum, le maximum de A.
+      4. Même question pour B = {(0, 1), (1, 0), (1, 1), (1, 2), (2, 1), (3, 0)}.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">1) La relation est un ordre :
+- réflexive : (a,b) = (a,b).
+- antisymétrique : si a+b &lt; c+d et c+d &lt; a+b impossible; donc si les deux sens sont vrais, les couples sont égaux.
+- transitive : si x ≼ y et y ≼ z, alors soit égalités, soit somme(x) &lt; somme(y) &lt; somme(z), donc x ≼ z.
+
+2) Pas total : (0,2) et (1,1) ont même somme mais ne sont pas égaux, donc incomparables. Bien fondé : une descente stricte fait strictement baisser a+b, impossible infiniment dans N.
+
+3) A = {(0,2),(2,1),(1,2),(2,2)}
+minorants = {(0,0),(1,0),(0,1),(0,2)}
+majorants = {(2,2)} ∪ {(p,q) ∈ N×N | p+q &gt; 4}
+élements minimaux = {(0,2)}
+élements maximaux = {(2,2)}
+inf = (0,2), sup = (2,2), minimum = (0,2), maximum = (2,2).
+
+4) B = {(0,1),(1,0),(1,1),(1,2),(2,1),(3,0)}
+minorants = {(0,0)}
+majorants = {(p,q) ∈ N×N | p+q &gt; 3}
+élements minimaux = {(0,1),(1,0)}
+élements maximaux = {(1,2),(2,1),(3,0)}
+inf = (0,0), sup = n’existe pas, minimum = n’existe pas, maximum = n’existe pas.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 4</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 4
+Soit E = {2, 3, 4, . . .} = IN \ {0, 1}, ordonné par la relation «x divise y».
+      1. Vérifier que cette relation est une relation d’ordre.
+      2. Déterminer les éléments minimaux de E
+      3. Déterminer les éléments maximaux de E.
+
+
+
+                                                                   1
+Licence Informatique – Sorbonne Université   UE LU2IN005 – Mathématiques discrètes    Année 202(n)/202(n + 1) [n = 4]</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">La relation “x divise y” est un ordre sur E = N \ {0,1}.
+- réflexive : x divise x.
+- antisymétrique : si x|y et y|x avec x,y positifs, alors x=y.
+- transitive : si x|y et y|z, alors x|z.
+Éléments minimaux : les nombres premiers.
+Éléments maximaux : aucun, car pour tout x ∈ E, x divise 2x et x ≠ 2x.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 13</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 13
+On considère un ensemble E muni d’une opération binaire notée t telle que t est commutative,
+associative et idempotente (c’est-à-dire pour tout x ∈ E, x t x = x). On définit la relation  sur E
+par : x  y ssi x t y = y.
+      1. Montrer que  est une relation d’ordre.
+      2. Montrer que toute paire d’éléments admet une borne supérieure.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">1) x ⪯ y ssi x ⊔ y = y.
+Réflexive : x ⊔ x = x par idempotence.
+Antisymétrique : si x⊔y=y et y⊔x=x, par commutativité x⊔y=y⊔x, donc y=x.
+Transitive : si x⊔y=y et y⊔z=z, alors x⊔z = x⊔(y⊔z) = (x⊔y)⊔z = y⊔z = z.
+
+2) Pour {x,y}, la borne supérieure est x ⊔ y.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 15</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 15
+Soit E un ensemble. On considère l’ensemble ℘(E) des parties de E et X un sous-ensemble de E.
+      1. La relation ≤X définie sur ℘(E) par :
+
+                                                   A1 ≤X A2 ssi A1 ∩ X ⊆ A2 ∩ X
+
+          est-elle une relation d’ordre ? Pourquoi ?
+      2. Montrer que la relation ≡X définie sur ℘(E) par :
+
+                                                   A1 ≡X A2 ssi A1 ∩ X = A2 ∩ X
+
+          est une relation d’équivalence.
+      3. On considère l’ensemble des classes d’équivalence de ℘(E) pour la relation ≡X et on définit
+         sur cet ensemble la relation X par :
+
+                                                   [A1 ]≡X X [A2 ]≡X ssi A1 ≤X A2
+
+          Montrer que X est une relation d’ordre.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">1) ≤X n’est pas forcément antisymétrique sur P(E). Exemple : E={1,2}, X={1}, A={1}, B={1,2}. Alors A∩X=B∩X={1}, donc A≤X B et B≤X A, mais A≠B. Ce n’est pas un ordre.
+2) ≡X est une équivalence : réflexive, symétrique, transitive par égalité de A∩X.
+3) Sur les classes d’équivalence, la relation devient un ordre car l’antisymétrie est vraie au niveau des classes : si [A]≤[B] et [B]≤[A], alors A∩X=B∩X, donc [A]=[B].</pre></div>
+</section>
+<section class="part pagebreak"><h2>بخش ۸ - ordre total / ordre partiel / comparable / Hasse</h2><h3>ordre total</h3><pre class="math">∀x,y ∈ E, x ⪯ y ou y ⪯ x</pre><p>هر دو عنصر قابل مقایسه‌اند.</p><h3>ordre partiel</h3><p>بعضی عناصر قابل مقایسه نیستند.</p><pre class="math">x et y incomparables ⇔ non(x ⪯ y) et non(y ⪯ x)</pre><h3>Diagramme de Hasse</h3><p>در Hasse diagram، loop و فلش‌های transitivité را نمی‌کشیم. فقط رابطهٔ مستقیم را نشان می‌دهیم.</p>
+<div class="excard"><h4>TD2 - Exercice 7</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 7
+Soit A = {a, b, c} un ensemble ordonné comme l’indique le diagramme suivant :
+                                                      b −→ a ←− c
+Soit A l’ensemble de tous les sous-ensembles non-vides et totalement ordonnés de A ; A est partiel-
+lement ordonné par inclusion. Représenter graphiquement l’ordre de A.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">Les sous-ensembles non vides totalement ordonnés de A sont :
+{a}, {b}, {c}, {a,b}, {a,c}.
+Ordre par inclusion :
+{a} ⊆ {a,b} et {b} ⊆ {a,b};
+{a} ⊆ {a,c} et {c} ⊆ {a,c}.
+Maximaux : {a,b}, {a,c}. Minimaux : {a}, {b}, {c}.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 8</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 8
+      1. Définir la relation “est un préfixe de” sur A∗ . S’agit-il d’une relation d’ordre ? si oui, s’agit-il
+         d’un ordre total ou d’un ordre partiel ?
+      2. En supposant que A est muni d’un ordre total A , définir l’ordre lexicographique sur A∗ .
+         S’agit-il d’un ordre total ou d’un ordre partiel ?
+      3. Soit A = {a, b} tel que a A b. Montrer que l’ordre lexicographique défini à la question
+         précédente n’est pas un ordre bien fondé.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">1) u est préfixe de v ssi ∃w ∈ A*, v = uw. C’est un ordre partiel, pas total. Exemple : ab et ba sont incomparables.
+
+2) Ordre lexicographique : on compare les mots de gauche à droite avec l’ordre total sur A; si un mot est préfixe de l’autre, le plus court est avant. C’est un ordre total.
+
+3) Si A={a,b} et a &lt; b, alors b &gt; ab &gt; aab &gt; aaab &gt; ... est une suite infinie strictement décroissante. Donc l’ordre lexicographique sur A* n’est pas bien fondé.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 9</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 9 Les ordres suivants sont-ils bien fondés ?
+   1. sur A2 , l’ordre lexicographique (A alphabet totalement ordonné).
+   2. sur IN m ≤ n ssi m divise n.
+   3. sur l’ensemble des diviseurs d’un entier donné, la relation du 2.
+   4. sur A∗ , l’ordre préfixe.
+   5. sur A∗ , l’ordre u ≤ v ssi u est un sous-mot de v.
+   6. sur A∗ , l’ordre lexicographique (A alphabet totalement ordonné).
+   7. sur A∗ / ≡, l’ordre des longueurs u ≤ v ssi |u| ≤ |v| (où ≡ est défini par u ≡ v si et seulement
+      si |u| = |v|).</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">Tous ces ordres sont bien fondés sauf l’ordre lexicographique sur A*.
+1 oui; 2 oui; 3 oui; 4 oui; 5 oui; 6 non; 7 oui.
+Pour 6, contre-exemple si a &lt; b : b &gt; ab &gt; aab &gt; aaab &gt; ...</pre></div>
+<div class="excard"><h4>TD2 - Exercice 17</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 17
+
+      1. On définit ≤lex ⊆ N×N par (n, m) ≤lex (n0 , m0 ) si et seulement si n &lt; n0 ou (n = n0 et m ≤ m0 ),
+          où ≤ est l’ordre usuel sur les entiers naturels.
+        (a) L’ordre ≤lex est-il un ordre total ou partiel ? Justifier.
+        (b) Pour la partie A = {1, 2, 3} × {0, 2} de N × N, représenter (A, ≤lex ) par un graphe (sans
+             les arcs de transitivité ni de réflexivité).
+         (c) Donner l’ensemble des minorants et des majorants de A dans N × N. S’ils existent, donner
+             la borne inférieure, la borne supérieure, le plus petit élément et le plus grand élément.
+             Donner les éléments minimaux et les éléments maximaux.
+      2. Soit X ⊆ N × N un sous-ensemble non vide de N × N.
+         (a) Montrer que l’ensemble X1 = {n ∈ N | il existe m ∈ N tel que (n, m) ∈ X} admet un
+             élément minimal n1 pour l’ordre usuel ≤ sur les entiers naturels.
+         (b) Montrer que Xn1 = {m ∈ N | (n1 , m) ∈ X} admet un élément minimal m1 pour l’ordre
+             usuel ≤ sur les entiers naturels.
+         (c) En déduire que l’ordre ≤lex est bien fondé.
+      3. On définit la fonction suivante :
+          def foo(m,n):
+              if (m != n):
+                  if (m &gt; n):
+                      return foo(m-n,n)
+                  else:
+                      return foo(m,n-m)
+              else:
+                  return (m,n)
+
+                                                               4
+Licence Informatique – Sorbonne Université   UE LU2IN005 – Mathématiques discrètes   Année 202(n)/202(n + 1) [n = 4]
+
+
+
+
+          On veut montrer la propriété
+          P(m, n) : « L’appel à foo(m,n) termine. » pour tout (m, n) ∈ (N\{0})×(N\{0}). Démontrer
+          la propriété P par induction bien fondée avec un ordre bien choisi.
+
+
+
+
+                                                               5</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">1a) ≤lex sur N×N est un ordre total.
+1b) A={1,2,3}×{0,2} est une chaîne lexicographique : (1,0)&lt;(1,2)&lt;(2,0)&lt;(2,2)&lt;(3,0)&lt;(3,2).
+1c) minorants = {(0,n)|n∈N} ∪ {(1,0)}. majorants = {(3,n)|n≥2} ∪ {(m,n)|m&gt;3}. inf=(1,0). sup=(3,2). plus petit=(1,0). plus grand=(3,2). minimaux={(1,0)}. maximaux={(3,2)}.
+2) Pour X non vide, prendre n1 minimal dans les premières coordonnées, puis m1 minimal parmi les secondes coordonnées avec n1. Alors (n1,m1) est minimal dans X. Donc ≤lex est bien fondé.
+3) Pour foo(m,n), choisir l’ordre lexicographique sur (m+n, max(m,n)) ou plus simplement l’ordre usuel sur m+n : chaque appel récursif diminue strictement m+n car (m-n)+n=m si m&gt;n et m+(n-m)=n si n&gt;m. Donc terminaison par induction bien fondée sur N.</pre></div>
+</section>
+<section class="part pagebreak"><h2>بخش ۹ - minimal / maximal / minorant / majorant / minimum / maximum</h2><p>این بخش بیشترین امتیاز آسان را می‌دهد.</p><table><tr><th>کلمه</th><th>تعریف سریع</th><th>نکته</th></tr><tr><td>élément minimal</td><td>عضوی از X که در X پایین‌تر ندارد</td><td>حتماً داخل X است</td></tr><tr><td>élément maximal</td><td>عضوی از X که در X بالاتر ندارد</td><td>حتماً داخل X است</td></tr><tr><td>minorant</td><td>عضوی از E که پایین همهٔ X است</td><td>لازم نیست داخل X باشد</td></tr><tr><td>majorant</td><td>عضوی از E که بالای همهٔ X است</td><td>لازم نیست داخل X باشد</td></tr><tr><td>plus petit élément</td><td>عضوی از X که پایین همهٔ X است</td><td>minimum</td></tr><tr><td>plus grand élément</td><td>عضوی از X که بالای همهٔ X است</td><td>maximum</td></tr></table><pre class="math">x minimal de X ⇔ x ∈ X et ∀y∈X, y ⪯ x ⇒ y=x
+m minorant de X ⇔ m ∈ E et ∀x∈X, m ⪯ x</pre>
+<div class="excard"><h4>TD2 - Exercice 1</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 1 [Majorants, minorants, borne supérieure, borne inférieure]
+Soit W = {1, 2, 3, 4, 5, 6, 7, 8} un ensemble ordonné selon le diagramme suivant :
+
+                                                        1              2
+
+                                                               3
+
+                                                        4              5
+
+                                                               6            7
+
+                                                                       8
+
+On considère le sous-ensemble V = {4, 5, 6} de W .
+      1. Trouver l’ensemble des majorants de V .
+      2. Trouver l’ensemble des minorants de V .
+      3. Est-ce que sup(V ) existe ?
+      4. Est-ce que inf(V ) existe ?</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">majorants(V) = {1, 2, 3}
+minorants(V) = {6, 8}
+sup(V) = 3
+inf(V) = 6</pre></div>
+<div class="excard"><h4>TD2 - Exercice 2</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 2
+Soit R la relation définie sur l’ensemble E = {(1, 3), (3, 1), (3, 5), (5, 3), (5, 7), (7, 5), (7, 7)} par :
+
+                                (m1 , m2 ) R (n1 , n2 ) si et seulement si m1 ≤ n1 et m2 ≤ n2
+
+Pour l’ensemble A = {(3, 5), (5, 3), (5, 7), (7, 5)} donner, s’ils existent, les éléments maximaux, les
+éléments minimaux, les majorants, les minorants, le plus grand élément, le plus petit élément, la
+borne inférieure et la borne supérieure.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">éléments maximaux = {(5,7), (7,5)}
+éléments minimaux = {(3,5), (5,3)}
+majorants = {(7,7)}
+minorants = {(1,3), (3,1)}
+plus grand élément = n’existe pas
+plus petit élément = n’existe pas
+borne inférieure = n’existe pas
+borne supérieure = (7,7)</pre></div>
+<div class="excard"><h4>TD2 - Exercice 5</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 5
+On se place dans F = IN \ {0} ordonné par la relation «x divise y».
+      1. Existe-t-il une borne supérieure et une borne inférieure pour tout sous-ensemble de 2 éléments ?
+      2. Soient les ensembles A = {6, 15, 21} et B = {1, 6, 14, 21}. Donner les minorants et majorants
+         de A (resp. B). A (resp. B) possède-t-il un plus petit élément ? un plus grand élément ?
+      3. Soit A = {3, 6, 12, 15}. Donner les majorants, minorants, la borne supérieure, la borne infé-
+         rieure, le plus petit et le plus grand élément, les éléments maximaux, minimaux s’ils existent.
+         Discuter.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">1) Pour tout {a,b}, inf({a,b}) = pgcd(a,b), sup({a,b}) = ppcm(a,b).
+
+2) A = {6,15,21}
+minorants = {1,3}
+majorants = multiples de 210
+plus petit élément = n’existe pas
+plus grand élément = n’existe pas
+
+B = {1,6,14,21}
+minorants = {1}
+majorants = multiples de 42
+plus petit élément = 1
+plus grand élément = n’existe pas
+
+3) A = {3,6,12,15}
+minorants = {1,3}
+majorants = multiples de 60
+inf = 3
+sup = 60
+plus petit élément = 3
+plus grand élément = n’existe pas
+élements minimaux = {3}
+élements maximaux = {12,15}</pre></div>
+<div class="excard"><h4>TD2 - Exercice 6</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 6
+Donner un exemple d’ensemble ordonné qui a exactement un élément maximal mais qui n’a pas de
+plus grand élément.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">Exemple : E = N* ∪ {a}.
+Ordre : ordre usuel sur N*, et seulement a ≤ a, avec a incomparable avec tous les entiers.
+Alors a est l’unique élément maximal si on prend une chaîne infinie 1 &lt; 2 &lt; 3 &lt; ... sans maximal, mais il n’est pas plus grand élément, car les entiers ne sont pas ≤ a.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 11</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 11
+Soit E un ensemble muni d’une relation d’ordre  et soit A une partie de E.
+
+                                                               2
+Licence Informatique – Sorbonne Université        UE LU2IN005 – Mathématiques discrètes                     Année 202(n)/202(n + 1) [n = 4]
+
+
+
+
+      1. Montrer que si A admet un plus grand élément alors cet élément est l’unique élément maximal.
+         La réciproque est-elle vraie ? Justifier.
+      2. On suppose que la relation d’ordre  est totale. Montrer qu’alors, si A admet un élément
+         maximal, cet élément est unique. Montrer de plus que dans ce cas, cet élément maximal est
+         le plus grand élément de A.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">1) Si A admet un plus grand élément M, alors pour tout x ∈ A, x ⪯ M. Donc aucun élément différent ne peut être strictement au-dessus de M; M est maximal. S’il y avait un autre maximal y, comme y ⪯ M, maximalité de y donne y=M. Donc unique maximal.
+Réciproque fausse en ordre partiel : on peut avoir un unique maximal mais pas de plus grand élément dans un ensemble infini avec une chaîne sans maximal et un élément maximal incomparable.
+
+2) Si l’ordre est total et A admet un maximal m, alors pour tout x ∈ A, on a x ⪯ m ou m ⪯ x. Le cas m ⪯ x implique x=m par maximalité. Donc toujours x ⪯ m : m est le plus grand élément. Il est donc unique.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 12</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 12
+Soit E un ensemble muni d’une relation d’ordre ≤. Montrer que si cette relation est totale, alors
+pour tout x, y ∈ E : (x ≤ y et x 6= y) ssi y 6≤ x.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">Si l’ordre est total :
+(x ≤ y et x ≠ y) ⇒ y ̸≤ x par antisymétrie.
+Réciproquement, si y ̸≤ x, comme l’ordre est total, on doit avoir x ≤ y. Et x ≠ y, sinon y ≤ x serait vrai.
+Donc (x ≤ y et x ≠ y) ssi y ̸≤ x.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 16</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 16
+
+
+
+                                                                      3
+Licence Informatique – Sorbonne Université   UE LU2IN005 – Mathématiques discrètes   Année 202(n)/202(n + 1) [n = 4]
+
+
+
+
+      1. On note ℘(IN) l’ensemble des sous-ensembles de IN. On considère les deux ensembles ordonnés
+         (℘(IN), ⊆) et (IN, ≤), où ⊆ est la relation d’inclusion d’ensembles, et ≤ est la relationPd’ordre
+         usuelle sur les entiers naturels. On définit une application f : ℘(IN) → IN par f (X) = x∈X x,
+         pour tout X ∈ ℘(IN). L’application f est-elle monotone ?
+      2. Soit le sous-ensemble E = ℘({1, 2, 3}) de ℘(IN), ordonné par la relation d’inclusion d’en-
+         sembles.
+        (a) Représenter la relation d’ordre par un graphe (sans les arcs de réflexivité ni de transitivité).
+        (b) Pour la partie A = E \ {1, 2, 3}, donner l’ensemble des majorants et l’ensemble des mi-
+            norants. Donner, lorsqu’ils existent, la borne inférieure, la borne supérieure, le plus petit
+            élément et le plus grand élément. S’ils n’existent pas, indiquer « n’existe pas ». Donner les
+            éléments minimaux et les éléments maximaux.
+      3. Soient (E, 1 ) et (F, 2 ) deux ensembles ordonnés, et soit f : E → F une application mono-
+         tone. Soit A une partie de E. On note f (A) = {f (x) | x ∈ A}.
+        (a) Montrer que si A admet un plus grand élément M , alors f (M ) est le plus grand élément
+            de f (A).
+        (b) Peut-on affirmer que si A admet une borne supérieure B, alors f (B) est la borne supérieure
+            de f (A) ? On pourra s’inspirer de l’application f définie à la question 1, et de la partie A
+            définie à la question 2.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">1) f:P(N)→N, f(X)=Σx∈X x n’est pas bien définie sur tous les sous-ensembles infinis de N si on reste dans N. Sur les parties finies, elle est monotone : X⊆Y ⇒ somme(X)≤somme(Y).
+2a) P({1,2,3}) par inclusion est le cube des parties : ∅ en bas, singletons, paires, {1,2,3} en haut.
+2b) Si A = E \ {{1,2,3}}, alors majorants de A dans E = {{1,2,3}} seulement. minorants = {∅}. inf=∅, sup={1,2,3}; plus petit=∅; plus grand n’existe pas dans A; minimaux={∅}; maximaux={{1,2},{1,3},{2,3}}.
+3a) Si M est le plus grand de A et f monotone, alors pour tout x∈A, x⪯M donc f(x)⪯f(M); f(M) est plus grand de f(A).
+3b) Non. Une fonction monotone ne préserve pas toujours les bornes supérieures.</pre></div>
+</section>
+<section class="part pagebreak"><h2>بخش ۱۰ - inf / sup / bien fondé / isomorphisme + Annales</h2><h3>inf و sup</h3><pre class="math">inf(X) = le plus grand des minorants de X
+sup(X) = le plus petit des majorants de X</pre><p>روش حل: اول همهٔ minorant/majorant را پیدا کن، بعد بزرگ‌ترین minorant یا کوچک‌ترین majorant را انتخاب کن.</p><h3>ordre bien fondé</h3><pre class="math">ordre bien fondé ⇔ il n’existe pas de suite infinie strictement décroissante
+⇔ toute partie non vide admet un élément minimal</pre><p>اگر order روی N باشد یا با یک مقدار طبیعی کم شود، معمولاً bien fondé است.</p><h3>isomorphisme d’ensembles ordonnés</h3><pre class="math">(E1,⪯1) ≅ (E2,⪯2)
+ssi il existe une bijection f:E1→E2 telle que
+x ⪯1 y ⇔ f(x) ⪯2 f(y)</pre>
+<div class="excard"><h4>TD2 - Exercice 10</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 10
+Montrer que les ensembles ordonnés ℘({a, b, c}) muni de la relation d’inclusion et {1, 2, 3, 6, 7, 14, 21, 42}
+muni de la relation de division (dans IN) sont isomorphes.</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">Isomorphisme : envoyer chaque sous-ensemble vers le produit des nombres premiers associés.
+Choix : a ↦ 2, b ↦ 3, c ↦ 7.
+∅ ↦ 1
+{a} ↦ 2
+{b} ↦ 3
+{c} ↦ 7
+{a,b} ↦ 6
+{a,c} ↦ 14
+{b,c} ↦ 21
+{a,b,c} ↦ 42
+Alors X ⊆ Y ssi f(X) divise f(Y), donc les deux ensembles ordonnés sont isomorphes.</pre></div>
+<div class="excard"><h4>TD2 - Exercice 14</h4><div class="frlabel">Énoncé exact du TD</div><pre class="fr">Exercice 14
+Soit E un ensemble. On considère l’ensemble ℘(E) des parties de E, muni de la relation d’ordre
+partiel ⊆. Montrer que pour tout n ≥ 2 :
+                                                              n
+                                                              T                                       n
+                                                                                                      S
+                             inf({A1 , A2 , · · · , An }) =         Ai et sup({A1 , · · · , An }) =         Ai
+                                                              i=1                                     i=1</pre><div class="frlabel">Correction / méthode</div><pre class="fr sol">Dans (P(E),⊆), les minorants de {A1,...,An} sont les ensembles inclus dans tous les Ai. Le plus grand est l’intersection.
+Donc inf({A1,...,An}) = ⋂ Ai.
+Les majorants sont les ensembles qui contiennent tous les Ai. Le plus petit est l’union.
+Donc sup({A1,...,An}) = ⋃ Ai.</pre></div>
+<h3>Annales exactes liées à TD2</h3>
+<div class="excard"><h4>Annale Examen 2026 - Exercice 1-2 ordre</h4><pre class="fr">Exercice 1 (Total : 3 points)
+   (1) (1 point) Soit E un ensemble muni d’une relation d’ordre ⪯. Soit X une partie de E. Donner
+       la définition d’un élément maximal de X et la définition d’un majorant de X.
+
+          Solution: chapitre 2, slide 10 puis 12
+
+    (2) (1 point) Donner la définition d’un ensemble défini inductivement.
+
+          Solution: chapitre 4, slide 2
+
+    (3) (1 point) Soit A un alphabet. L’ensemble AB des arbres binaires étiquetés par A est défini
+               Base :          ∅ ∈ AB
+        par :
+               Induction : si g, d ∈ AB, alors pour tout a ∈ A, (a, g, d) ∈ AB.
+        Donner la définition inductive de la hauteur d’un arbre de AB.
+
+          Solution: chapitre 4 slide 7
+
+
+Exercice 2 (Total : 4 points)
+   On considère l’ensemble E = N × N muni de l’ordre produit de l’ordre naturel sur N : (a1 , b1 ) ⪯
+   (a2 , b2 ) si a1 ≤ a2 et b1 ≤ b2 .
+    (1) (2 points) Donner les minorants, les éléments minimaux, la borne inférieure et le plus petit
+          élément (s’ils existent) de la partie A = {(1, 2), (2, 1), (2, 2), (3, 1), (1, 3)}.
+
+          Solution: Les minorants de A sont : M in(A) = {(0, 0), (1, 0), (0, 1), (1, 1)} donc la borne
+          inférieure de A est (1, 1) et A n’a pas de plus petit élément. Les éléments minimaux de A
+          sont (1, 2) et (2, 1).
+
+    (2) (2 points) On considère le sous-ensemble F de E défini par : (a, b) ∈ F ssi 1 ≤ a2 + b2 ≤ 5
+        et muni de la même relation d’ordre que E. Donner explicitement tous les éléments de F
+        et représenter cette relation d’ordre sur F par un graphe (sans les arcs de réflexivité et de
+        transitivité).
+
+          Solution: F = {(0, 1), (1, 0), (1, 1), (0, 2), (2, 0), (1, 2), (2, 1)}.
+           (0, 2)   (1, 2)
+
+
+           (0, 1)   (1, 1)    (2, 1)
+
+
+                    (1, 0)    (2, 0)</pre></div>
+<div class="excard"><h4>Annale Partiel 2026 - ordre bien fonde</h4><pre class="fr">Exercice 1 (Total : 5 points)
+   Soit E un ensemble muni d’une relation d’ordre ⪯.
+    (1) (1 point) Soit X une partie de E. Donner la définition d’un élément minimal de X et la
+        définition d’un minorant de X.
+
+          Solution: chapitre 2, slide 9 puis 11
+
+    (2) (1 point) Donner la définition d’un ordre bien fondé.
+
+          Solution: chapitre 2, slide 18
+
+    (3) (1 point) Démontrer que l’ordre ⪯ sur E est bien fondé si et seulement si toute partie non vide
+        de E admet au moins un élément minimal.
+
+          Solution: chapitre 2, slide 19
+
+    (4) (1 point) Démontrer que si ⪯ est bien fondé sur E et si P est une propriété sur E alors :
+        Si pour tout x de E, si (pour tout y ≺ x, P(y) vraie) alors P(x) vraie,
+        alors P est vraie pour tout élément de E.
+
+          Solution: chapitre 2, slide 21
+
+    (5) (1 point) L’ensemble R+ des nombres réels positifs ou nuls muni de l’ordre naturel est-il bien
+        fondé ? Justifier.
+
+          Solution: Non, il suffit de prendre la suite (1/(n + 1))n∈N qui est infinie et strictement
+          décroissante.</pre></div>
+<div class="excard"><h4>Annale Partiel 2022 - ordre lexicographique</h4><pre class="fr">Exercice 2 (Total : 27 points)
+   (1) (3 points) Soit P une propriété sur les éléments d’un ensemble ordonné (E, ) muni d’un
+       ordre bien fondé . Énoncer le principe d’induction bien fondée.
+
+          Solution:
+          Si (pour tout x ∈ E, (si pour tout y ≺ x, P (y)), alors P (x))) alors pour tout e ∈ E, P (e).
+
+    (2) On définit ≤lex ⊆ N × N par (n, m) ≤lex (n0 , m0 ) si et seulement si n &lt; n0 ou (n = n0 et
+        m ≤ m0 ), où ≤ est l’ordre usuel sur les entiers naturels.
+         a. (2 points) L’ordre ≤lex est-il un ordre total ou partiel ? Justifier.
+
+              Solution: C’est un ordre total. En effet, soient (m, n) et (m0 , n0 ) ∈ N × N.
+              Comme l’ordre usuel sur N est un ordre total, on a m &lt; m0 , m0 &lt; m ou m = m0 :
+                  — Dans le premier cas, on a m &lt; m0 donc (m, n) ≤lex (m0 , n0 ).
+                  — Dans le second cas, on a m0 &lt; m donc (m0 , n0 ) ≤lex (m, n).
+                  — Dans le troisième cas m = m0 , on doit comparer n et n0
+                        — Soit n &lt; n0 et (m, n) ≤lex (m0 , n0 ).
+                        — Soit n &gt; n0 et (m0 , n0 ) ≤lex (m, n).
+                        — Soit enfin n = n0 et alors (m, n) = (m0 , n0 ).
+              Donc pour tout (m, n) et (m0 , n0 ) ∈ N × N, on a soit (m, n) ≤lex (m0 , n0 ), soit
+              (m0 , n0 ) ≤lex (m, n).
+
+         b. (1 point) Pour la partie A = {1, 2, 3} × {0, 2} de N × N, représenter (A, ≤lex ) par un
+            graphe (sans les arcs de transitivité ni de réflexivité).
+
+              Solution:
+
+               (1,0)       (1,2)       (2,0)       (2,2)       (3,0)       (3,2)
+
+          c. (4 points) Donner l’ensemble des minorants et des majorants de A dans N × N. S’ils
+             existent, donner la borne inférieure, la borne supérieure, le plus petit élément et le plus
+             grand élément. Donner les éléments minimaux et les éléments maximaux.
+
+              Solution: L’ensemble des minorants de A est Min(A) = {(0, n) | n ∈ N} ∪ {(1, 0)},
+              et l’ensemble des majorants de A est Maj(A) = {(3, n) | n ≥ 2} ∪ {(m, n) | m &gt;
+              3, n ∈ N}. La borne inférieure, qui est aussi le plus petit élément est (1, 0) et la borne
+              supérieure qui est aussi le plus grand élément est (3, 2). Le seul élément minimal est
+              (1, 0) et le seul élément maximal est (3, 2).
+
+    (3) Soit X ⊆ N × N un sous-ensemble non vide de N × N.
+
+
+
+                                                 Page 2
+     a. (3 points) Montrer que l’ensemble X1 = {n ∈ N | il existe m ∈ N tel que (n, m) ∈ X}
+        admet un élément minimal n1 pour l’ordre usuel ≤ sur les entiers naturels.
+
+          Solution: Comme X est non vide, il contient au moins un élément (n0 , m0 ), donc
+          n0 ∈ X1 et X1 est non vide. Or, X1 ⊆ N, et l’ordre usuel sur les entiers naturels étant
+          bien fondé, toute partie non vide de N admet un élément minimal. Donc X1 admet
+          un élément minimal n1 .
+
+     b. (3 points) Montrer que Xn1 = {m ∈ N | (n1 , m) ∈ X} admet un élément minimal m1
+        pour l’ordre usuel ≤ sur les entiers naturels.
+
+          Solution: On sait que n1 ∈ X1 donc il existe m ∈ N tel que (n1 , m) ∈ X. Donc Xn1
+          est non vide, et admet donc un élément minimal m1 car l’ordre usuel sur les entiers
+          naturels est bien fondé.
+
+     c. (5 points) En déduire que l’ordre ≤lex est bien fondé.
+
+          Solution: Soit X ⊆ N × N un sous-ensemble non vide de N × N. On montre que
+          (n1 , m1 ) tel que défini dans les questions précédentes est un élément minimal de X :
+          supposons qu’il existe (n, m) ∈ X tel que (n, m) ≤lex (n1 , m1 ). Alors par définition de
+          ≤lex , on a soit n &lt; n1 , soit n = n1 et m ≤ m1 . Dans le premier cas, comme (n, m) ∈ X,
+          n ∈ X1 et n &lt; n1 est en contradiction avec le fait que n1 est un élément minimal de X1 .
+          Donc n = n1 et m ≤ m1 . On observe alors que m ∈ Xn1 . Comme m1 est un élément
+          minimal de Xn1 , on en déduit, par définition d’un élément minimal, que m = m1 .
+          Donc, pour tout (n, m) ∈ X tel que (n, m) ≤lex (n1 , m1 ) on a (n, m) = (n1 , m1 ) et
+          (n1 , m1 ) est un élément minimal de X.
+          On a donc montré que toute partie non vide de N × N admet un élément minimal
+          pour l’ordre ≤lex , cet ordre est donc bien fondé sur N × N.
+
+(4) (6 points) On définit la fonction suivante :
+
+
+
+
+                                            Page 3
+         def foo (m , n ):
+             if ( m != n ):
+                  if ( m &gt; n ):
+                         return foo (m -n , n )
+                  else :
+                         return foo (m ,n - m )
+             else :
+                  return (m , n )
+        On veut montrer la propriété
+        P(m, n) :  L’appel à foo(m,n) termine.  pour tout (m, n) ∈ (N \ {0}) × (N \ {0}).
+        Démontrer la propriété P par induction bien fondée avec un ordre bien choisi.
+
+          Solution: On utilise l’ordre ≤lex . Soit (m, n) ∈ (N\{0})×(N\{0}), et supposons P(m0 , n0 )
+          vraie pour tout (m0 , n0 ) lex (m, n).
+          Si m = n, alors foo(m,n) se termine immédiatement.
+          Si m &gt; n, alors la terminaison de foo(m,n) dépend de la terminaison de foo(m-n,n).
+          Comme n &gt; 0, m − n &lt; m, et comme m 6= n, alors m − n ∈ N \ {0}. Donc (m − n, n) lex
+          (m, n), et par hypothèse d’induction, P(m − n, n) est vraie et foo(m-n,n) termine.
+          Enfin si m &lt; n, alors la terminaison de foo(m,n) dépend de la terminaison de foo(m,n-m).
+          À nouveau, comme m &gt; 0, n − m &lt; n et comme m 6= n, alors m − n ∈ N \ {0}. Donc
+          (m, n−m) lex (m, n) et par hypothèse d’induction, foo(m,n-m) termine. Donc foo(m,n)
+          termine.
+          On a montré que pour tout (m, n) ∈ (N \ {0}) × (N \ {0}), si foo(m’,n’) termine pour
+          tout (m0 , n0 ) lex (m, n), alors foo(m,n) termine. Par le principe d’induction bien fondée,
+          foo(m,n) termine pour tout (m, n) ∈ (N \ {0}) × (N \ {0}).</pre></div>
+<div class="excard"><h4>Annale Partiel 2024 - fonctions et ordre pointwise</h4><pre class="fr">Exercice 1 (Total : 111/2 points)
+   On note F l’ensemble des applications de N dans N et on définit la relation ⊑ sur les éléments de F
+   par :
+                                  f ⊑ g ssi pour tout n ∈ N f (n) ≤ g(n)
+    (1) (11/2 points) Montrer que ⊑ est une relation d’ordre.
+    (2) (1 point) La relation ⊑ est-elle totale ? partielle ? Justifier votre réponse.
+    (3) Soit A = {f1 , f2 , f3 , f4 } la partie de F contenant les fonctions définies par :
+                                                    
+                                                     1 si n = 0               
+                     f1 (n) = n                                                    2n     si n ≥ 1
+                                           f3 (n) =    0 si n = 1     f4 (n) =
+                     f2 (n) = n + 1                                                n + 1 sinon
+                                                       n sinon
+                                                    
+
+         a. (1/2 point) Représenter la relation d’ordre ⊑ sur A sans les arcs de réflexivité ni de transi-
+             tivité.
+         b. (2 points) Quels sont les éléments minimaux et les éléments maximaux de A ? A admet-il
+             un plus grand élément ? un plus petit élément ? Justifier vos réponses.
+    (4) (2 points) Montrer que toute paire de fonctions admet une borne supérieure (i.e. sup({f, g})
+        existe pour toutes fonctions f et g).
+    (5) Soit I = {fk | k ∈ N} ⊆ F où pour tout entier k, l’application fk est définie par :
+                                                       
+                                                           n si n ≤ k
+                                              fk (n) =
+                                                           k sinon
+
+          a. (11/2 points) Les applications de I sont-elles injectives ? surjectives ? bijectives ? Justifier
+             vos réponses.
+          b. (1 point) Est-ce que l’ensemble I est totalement ordonné par la relation ⊑ ? Justifier votre
+             réponse.
+          c. (2 points) L’ensemble I admet-il un plus petit élément et un plus grand élément pour la
+             relation ⊑ ? Justifier vos réponses.
+
+      Solution:
+       (1) ⊑ est réflexive puisque pour toute application f ∈ F et tout entier n, f (n) ≤ f (n) et donc
+           f ⊑ f . Soit f, g ∈ F telles que f ⊑ g et g ⊑ f . Par définition, pour tout entier n on a
+           f (n) ≤ g(n) et g(n) ≤ f (n) et donc f (n) = g(n) (puisque ≤ est une relation d’ordre sur les
+           entiers). On a donc f = g et ⊑ est antisymétrique. Soit f, g, h ∈ F telles que f ⊑ g et g ⊑ h.
+           Par définition, pour tout entier n on a f (n) ≤ g(n) et g(n) ≤ h(n) et donc f (n) ≤ g(n)
+           (puisque ≤ est une relation d’ordre sur les entiers). On a donc f ⊑ h et ⊑ est transitive.
+       (2) ⊑ est une relation partielle. Par exemple, pour les fonctions :
+                                           
+                                            1 si n = 0
+                                   f (n) =    0 si n = 1        et    g(n) = n
+                                              n sinon
+                                           
+
+           ni f ⊑ g (car f (0) = 1 ̸≤ g(0) = 0), ni g ⊑ f (car g(1) = 1 ̸≤ f (1) = 0).
+                     f4                            éléments minimaux : {f3 , f1 }
+                                                   pas de plus petit élément
+                     f2                            éléments maximaux : {f4 }
+                                                   plus grand élément : f4
+           f                   f1
+       (3) 3
+       (4) — sup({f, g}) : n 7→ max(f (n), g(n))
+              sup({f, g}) est un majorant de {f, g} puisque pour tout n ∈ N, on a sup({f, g})(n) =
+              max(f (n), g(n)) ≥ f (n) et sup({f, g})(n) = max(f (n), g(n)) ≥ g(n).
+              Soit h un majorant de {f, g}, montrons que sup({f, g}) ⊑ h. Puisque h majore {f, g},
+              pour tout entier n on a f (n) ≤ h(n) et g(n) ≤ h(n) et donc max(f (n), g(n)) ≤ h(n) ce
+              qui permet de conclure.
+       (5) a. Les applications fk ne sont ni injectives (si n1 ̸= n2 et n1 &gt; k et n2 &gt; k, alors
+               fk (n1 ) = fk (n2 ) = k), ni surjectives (l’entier k + 1 n’est l’image d’aucun entier par fk ),
+               et ne sont donc pas bijectives.
+            b. L’ensemble I est totalement ordonné par ⊑. En effet, pour toute paire d’entiers naturels
+               k1 , k2 telle que k1 ≤ k2 , on a fk1 ⊑ fk2 puisque pour tout entier n ∈ N, soit n ≤ k1 ≤ k2
+               et fk1 (n) = fk2 (n) = n, soit k1 &lt; n ≤ k2 et fk1 (n) = k1 ≤ fk2 (n) = n, soit k1 ≤ k2 &lt; n
+               et fk1 (n) = k1 ≤ fk2 (n) = k2 . Puisque ≤ est une relation d’ordre totale sur N, I est
+               donc totalement ordonné par ⊑.
+            c. I admet f0 pour plus petit élément puisque pour tout entier n on a f0 (n) = 0 ≤ fk (n)
+               quel que soit k. I n’admet pas de plus grand élément puisque pour tout entier k, on a
+               toujours fk ⊏ fk+1 .</pre></div>
+<div class="excard"><h4>Annale Examen 2021 - bien fonde iff minimal</h4><pre class="fr">(2) (11/2 points) Soit E un ensemble et  une relation d’ordre sur E. Montrer que 
+         est un ordre bien fondé si et seulement si toute partie non vide de E admet un
+         élément minimal.
+
+           Solution:
+           — (⇒) Par l’absurde. Soit X une partie non vide de E. Si X n’admet pas
+              d’élément minimal alors pour tout x ∈ X il existe y ∈ X tel que y ≺ x.
+              Puisque X 6= ∅ on peut choisir un élément x0 ∈ X et il existe donc x1 ∈ X
+              tel que x1 ≺ x0 . x1 n’est pas minimal et on peut ainsi construire ¡¡de proche
+              en proche¿¿ une suite infinie strictement décroissante, et  n’est donc pas
+              bien fondée ce qui contredit l’hypothèse.
+           — (⇐) On montre que toute suite strictement décroissante est finie. Si toute
+              partie non vide de E admet un élément minimal, alors c’est en particulier
+              le cas pour toute suite strictement décroissante. Soit p ∈ N l’indice de cet
+              élément minimal, tous les éléments d’indice inférieur à p lui sont supérieurs
+              et, puisque la suite est strictement décroissante, p est le plus grand indice
+              de la suite qui est donc finie.
+
+
+
+
+                                          Page 1 sur 8</pre></div>
+</section>
+<section class="part pagebreak"><h2>Appendice - TD2 complet exact du fichier</h2><p>این بخش متن کامل TD2 را برای تمرین و مقایسه نگه می‌دارد.</p>
+<pre class="fr">Licence Informatique – Sorbonne Université      UE LU2IN005 – Mathématiques discrètes       Année 202(n)/202(n + 1) [n = 4]
+
+
+
+
+                         TD2 : Ensembles ordonnés, Relations d’ordre
+Exercice 1 [Majorants, minorants, borne supérieure, borne inférieure]
+Soit W = {1, 2, 3, 4, 5, 6, 7, 8} un ensemble ordonné selon le diagramme suivant :
+
+                                                        1              2
+
+                                                               3
+
+                                                        4              5
+
+                                                               6            7
+
+                                                                       8
+
+On considère le sous-ensemble V = {4, 5, 6} de W .
+      1. Trouver l’ensemble des majorants de V .
+      2. Trouver l’ensemble des minorants de V .
+      3. Est-ce que sup(V ) existe ?
+      4. Est-ce que inf(V ) existe ?
+
+Exercice 2
+Soit R la relation définie sur l’ensemble E = {(1, 3), (3, 1), (3, 5), (5, 3), (5, 7), (7, 5), (7, 7)} par :
+
+                                (m1 , m2 ) R (n1 , n2 ) si et seulement si m1 ≤ n1 et m2 ≤ n2
+
+Pour l’ensemble A = {(3, 5), (5, 3), (5, 7), (7, 5)} donner, s’ils existent, les éléments maximaux, les
+éléments minimaux, les majorants, les minorants, le plus grand élément, le plus petit élément, la
+borne inférieure et la borne supérieure.
+
+Exercice 3
+On définit la relation ⊆ IN × IN par (a, b)  (c, d) ssi a + b &lt; c + d ou (a, b) = (c, d).
+      1. Montrer que  est une relation d’ordre.
+      2. Cet ordre est-il total ? bien fondé ? Justifier les réponses.
+      3. Soit l’ensemble A = {(0, 2), (2, 1), (1, 2), (2, 2)}. Déterminer, s’ils existent, les minorants, les
+         majorants, les éléments minimaux, les éléments maximaux, la borne inférieure, la borne su-
+         périeure, le minimum, le maximum de A.
+      4. Même question pour B = {(0, 1), (1, 0), (1, 1), (1, 2), (2, 1), (3, 0)}.
+
+Exercice 4
+Soit E = {2, 3, 4, . . .} = IN \ {0, 1}, ordonné par la relation «x divise y».
+      1. Vérifier que cette relation est une relation d’ordre.
+      2. Déterminer les éléments minimaux de E
+      3. Déterminer les éléments maximaux de E.
+
+
+
+                                                                   1
+Licence Informatique – Sorbonne Université   UE LU2IN005 – Mathématiques discrètes    Année 202(n)/202(n + 1) [n = 4]
+
+
+
+
+Exercice 5
+On se place dans F = IN \ {0} ordonné par la relation «x divise y».
+      1. Existe-t-il une borne supérieure et une borne inférieure pour tout sous-ensemble de 2 éléments ?
+      2. Soient les ensembles A = {6, 15, 21} et B = {1, 6, 14, 21}. Donner les minorants et majorants
+         de A (resp. B). A (resp. B) possède-t-il un plus petit élément ? un plus grand élément ?
+      3. Soit A = {3, 6, 12, 15}. Donner les majorants, minorants, la borne supérieure, la borne infé-
+         rieure, le plus petit et le plus grand élément, les éléments maximaux, minimaux s’ils existent.
+         Discuter.
+
+Exercice 6
+Donner un exemple d’ensemble ordonné qui a exactement un élément maximal mais qui n’a pas de
+plus grand élément.
+
+Exercice 7
+Soit A = {a, b, c} un ensemble ordonné comme l’indique le diagramme suivant :
+                                                      b −→ a ←− c
+Soit A l’ensemble de tous les sous-ensembles non-vides et totalement ordonnés de A ; A est partiel-
+lement ordonné par inclusion. Représenter graphiquement l’ordre de A.
+
+Exercice 8
+      1. Définir la relation “est un préfixe de” sur A∗ . S’agit-il d’une relation d’ordre ? si oui, s’agit-il
+         d’un ordre total ou d’un ordre partiel ?
+      2. En supposant que A est muni d’un ordre total A , définir l’ordre lexicographique sur A∗ .
+         S’agit-il d’un ordre total ou d’un ordre partiel ?
+      3. Soit A = {a, b} tel que a A b. Montrer que l’ordre lexicographique défini à la question
+         précédente n’est pas un ordre bien fondé.
+
+Exercice 9 Les ordres suivants sont-ils bien fondés ?
+   1. sur A2 , l’ordre lexicographique (A alphabet totalement ordonné).
+   2. sur IN m ≤ n ssi m divise n.
+   3. sur l’ensemble des diviseurs d’un entier donné, la relation du 2.
+   4. sur A∗ , l’ordre préfixe.
+   5. sur A∗ , l’ordre u ≤ v ssi u est un sous-mot de v.
+   6. sur A∗ , l’ordre lexicographique (A alphabet totalement ordonné).
+   7. sur A∗ / ≡, l’ordre des longueurs u ≤ v ssi |u| ≤ |v| (où ≡ est défini par u ≡ v si et seulement
+      si |u| = |v|).
+
+Exercice 10
+Montrer que les ensembles ordonnés ℘({a, b, c}) muni de la relation d’inclusion et {1, 2, 3, 6, 7, 14, 21, 42}
+muni de la relation de division (dans IN) sont isomorphes.
+
+Exercice 11
+Soit E un ensemble muni d’une relation d’ordre  et soit A une partie de E.
+
+                                                               2
+Licence Informatique – Sorbonne Université        UE LU2IN005 – Mathématiques discrètes                     Année 202(n)/202(n + 1) [n = 4]
+
+
+
+
+      1. Montrer que si A admet un plus grand élément alors cet élément est l’unique élément maximal.
+         La réciproque est-elle vraie ? Justifier.
+      2. On suppose que la relation d’ordre  est totale. Montrer qu’alors, si A admet un élément
+         maximal, cet élément est unique. Montrer de plus que dans ce cas, cet élément maximal est
+         le plus grand élément de A.
+
+Exercice 12
+Soit E un ensemble muni d’une relation d’ordre ≤. Montrer que si cette relation est totale, alors
+pour tout x, y ∈ E : (x ≤ y et x 6= y) ssi y 6≤ x.
+
+Exercice 13
+On considère un ensemble E muni d’une opération binaire notée t telle que t est commutative,
+associative et idempotente (c’est-à-dire pour tout x ∈ E, x t x = x). On définit la relation  sur E
+par : x  y ssi x t y = y.
+      1. Montrer que  est une relation d’ordre.
+      2. Montrer que toute paire d’éléments admet une borne supérieure.
+
+Exercice 14
+Soit E un ensemble. On considère l’ensemble ℘(E) des parties de E, muni de la relation d’ordre
+partiel ⊆. Montrer que pour tout n ≥ 2 :
+                                                              n
+                                                              T                                       n
+                                                                                                      S
+                             inf({A1 , A2 , · · · , An }) =         Ai et sup({A1 , · · · , An }) =         Ai
+                                                              i=1                                     i=1
+
+
+
+Exercice 15
+Soit E un ensemble. On considère l’ensemble ℘(E) des parties de E et X un sous-ensemble de E.
+      1. La relation ≤X définie sur ℘(E) par :
+
+                                                   A1 ≤X A2 ssi A1 ∩ X ⊆ A2 ∩ X
+
+          est-elle une relation d’ordre ? Pourquoi ?
+      2. Montrer que la relation ≡X définie sur ℘(E) par :
+
+                                                   A1 ≡X A2 ssi A1 ∩ X = A2 ∩ X
+
+          est une relation d’équivalence.
+      3. On considère l’ensemble des classes d’équivalence de ℘(E) pour la relation ≡X et on définit
+         sur cet ensemble la relation X par :
+
+                                                   [A1 ]≡X X [A2 ]≡X ssi A1 ≤X A2
+
+          Montrer que X est une relation d’ordre.
+
+Exercice 16
+
+
+
+                                                                      3
+Licence Informatique – Sorbonne Université   UE LU2IN005 – Mathématiques discrètes   Année 202(n)/202(n + 1) [n = 4]
+
+
+
+
+      1. On note ℘(IN) l’ensemble des sous-ensembles de IN. On considère les deux ensembles ordonnés
+         (℘(IN), ⊆) et (IN, ≤), où ⊆ est la relation d’inclusion d’ensembles, et ≤ est la relationPd’ordre
+         usuelle sur les entiers naturels. On définit une application f : ℘(IN) → IN par f (X) = x∈X x,
+         pour tout X ∈ ℘(IN). L’application f est-elle monotone ?
+      2. Soit le sous-ensemble E = ℘({1, 2, 3}) de ℘(IN), ordonné par la relation d’inclusion d’en-
+         sembles.
+        (a) Représenter la relation d’ordre par un graphe (sans les arcs de réflexivité ni de transitivité).
+        (b) Pour la partie A = E \ {1, 2, 3}, donner l’ensemble des majorants et l’ensemble des mi-
+            norants. Donner, lorsqu’ils existent, la borne inférieure, la borne supérieure, le plus petit
+            élément et le plus grand élément. S’ils n’existent pas, indiquer « n’existe pas ». Donner les
+            éléments minimaux et les éléments maximaux.
+      3. Soient (E, 1 ) et (F, 2 ) deux ensembles ordonnés, et soit f : E → F une application mono-
+         tone. Soit A une partie de E. On note f (A) = {f (x) | x ∈ A}.
+        (a) Montrer que si A admet un plus grand élément M , alors f (M ) est le plus grand élément
+            de f (A).
+        (b) Peut-on affirmer que si A admet une borne supérieure B, alors f (B) est la borne supérieure
+            de f (A) ? On pourra s’inspirer de l’application f définie à la question 1, et de la partie A
+            définie à la question 2.
+
+Exercice 17
+
+      1. On définit ≤lex ⊆ N×N par (n, m) ≤lex (n0 , m0 ) si et seulement si n &lt; n0 ou (n = n0 et m ≤ m0 ),
+          où ≤ est l’ordre usuel sur les entiers naturels.
+        (a) L’ordre ≤lex est-il un ordre total ou partiel ? Justifier.
+        (b) Pour la partie A = {1, 2, 3} × {0, 2} de N × N, représenter (A, ≤lex ) par un graphe (sans
+             les arcs de transitivité ni de réflexivité).
+         (c) Donner l’ensemble des minorants et des majorants de A dans N × N. S’ils existent, donner
+             la borne inférieure, la borne supérieure, le plus petit élément et le plus grand élément.
+             Donner les éléments minimaux et les éléments maximaux.
+      2. Soit X ⊆ N × N un sous-ensemble non vide de N × N.
+         (a) Montrer que l’ensemble X1 = {n ∈ N | il existe m ∈ N tel que (n, m) ∈ X} admet un
+             élément minimal n1 pour l’ordre usuel ≤ sur les entiers naturels.
+         (b) Montrer que Xn1 = {m ∈ N | (n1 , m) ∈ X} admet un élément minimal m1 pour l’ordre
+             usuel ≤ sur les entiers naturels.
+         (c) En déduire que l’ordre ≤lex est bien fondé.
+      3. On définit la fonction suivante :
+          def foo(m,n):
+              if (m != n):
+                  if (m &gt; n):
+                      return foo(m-n,n)
+                  else:
+                      return foo(m,n-m)
+              else:
+                  return (m,n)
+
+                                                               4
+Licence Informatique – Sorbonne Université   UE LU2IN005 – Mathématiques discrètes   Année 202(n)/202(n + 1) [n = 4]
+
+
+
+
+          On veut montrer la propriété
+          P(m, n) : « L’appel à foo(m,n) termine. » pour tout (m, n) ∈ (N\{0})×(N\{0}). Démontrer
+          la propriété P par induction bien fondée avec un ordre bien choisi.
+
+
+
+
+                                                               5
+</pre></section>
+<section class="part pagebreak"><h2>صفحهٔ حفظی آخر قبل امتحان</h2><pre class="math">Relation d’ordre = réflexive + antisymétrique + transitive
+Ordre total = tous les couples sont comparables
+x ≺ y = x ⪯ y et x ≠ y
+minimal/maximal ∈ X
+minorant/majorant ∈ E
+minimum = élément de X qui est minorant de X
+maximum = élément de X qui est majorant de X
+inf = plus grand des minorants
+sup = plus petit des majorants
+bien fondé = pas de suite infinie strictement décroissante
+bien fondé ⇔ toute partie non vide admet un élément minimal
+ordre produit: (a,b) ⪯ (c,d) ⇔ a≤c et b≤d
+ordre lex: comparer d’abord la première coordonnée, puis la deuxième
+ordre divise: a ⪯ b ⇔ a | b
+P(E), ⊆: inf = intersection, sup = union</pre></section>
+</div></body></html>
