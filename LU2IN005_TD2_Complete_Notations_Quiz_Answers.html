@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>LU2IN005 TD2 — Complete Notations + Quiz Answers</title>
+<style>
+:root{--bg:#f7f7fb;--card:#fff;--ink:#151515;--line:#d9dce8;--accent:#355c7d;--accent2:#6c5b7b;--code:#f1f4f8;--good:#177245;--warn:#b35c00}
+*{box-sizing:border-box} body{margin:0;padding:28px;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.75}
+.page{max-width:1120px;margin:0 auto} h1{margin:0 0 22px;padding:24px 28px;border-radius:18px;color:white;background:linear-gradient(135deg,var(--accent),var(--accent2));line-height:1.35}
+h2{margin:30px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);color:#1b3550} h3{color:var(--accent);margin-top:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin:18px 0;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+.goal{background:#eef4fb;border-right:7px solid var(--accent)} .rule{background:#eefaf4;border-right:7px solid var(--good)} .warning{background:#fff7ed;border-right:7px solid var(--warn)}
+.box{direction:ltr;text-align:left;white-space:pre-wrap;background:var(--code);border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow:auto;font-size:15px;line-height:1.5;font-family:Consolas,Menlo,Monaco,monospace}
+code{direction:ltr;unicode-bidi:isolate;background:var(--code);padding:2px 6px;border-radius:6px;font-family:Consolas,Menlo,Monaco,monospace}
+table{width:100%;border-collapse:collapse;background:white;margin:12px 0;direction:ltr} th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top} th{background:#eef1f6}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.mini{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fafbff}
+@media(max-width:900px){.grid{grid-template-columns:1fr}} @media print{body{background:white;padding:12px}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>LU2IN005 — TD2 Complete Revision<br>همهٔ notationهایی که خواندیم + Quiz با جواب</h1>
+
+<div class="card goal">
+<h2>روش استفاده</h2>
+<p>این فایل تمام notationهای TD2 را که با هم خواندیم خلاصه می‌کند. فارسی بیرون از باکس است، و داخل باکس فقط فرمول، notation، یا جمله‌های فرانسوی/ریاضی است تا جهت متن خراب نشود.</p>
+<div class="box">Main goal:
+1. Recognize the type of order.
+2. Translate the order.
+3. Apply the right tool.</div>
+</div>
+
+<div class="card">
+<h2>1. Ordered set / order symbols</h2>
+<p>ایدهٔ واقعی: order یک قانون است برای گفتن اینکه کدام عنصر پایین‌تر یا بالاتر است.</p>
+<div class="box">(E, ≤)</div>
+<p>یعنی مجموعهٔ <code>E</code> با رابطهٔ order.</p>
+<div class="box">x ≤ y</div>
+<p>یعنی x پایین‌تر یا مساوی y است، ولی معنی دقیقش به relation بستگی دارد.</p>
+<div class="box">x < y ⇔ x ≤ y and x ≠ y</div>
+<div class="box">≤, <, ≼, ⪯, ⊑</div>
+<p>این‌ها فقط اسم‌های مختلف برای relation هستند. همیشه تعریف سؤال را بخوان.</p>
+</div>
+
+<div class="card">
+<h2>2. Types of order</h2>
+<p>ایدهٔ واقعی: باید بفهمی آیا هر دو عنصر قابل مقایسه‌اند یا نه.</p>
+<div class="box">ordre partiel = some elements may be non comparable
+ordre total = every two elements are comparable</div>
+<div class="box">x and y comparable ⇔ x ≤ y or y ≤ x
+x and y non comparable ⇔ x ≰ y and y ≰ x</div>
+<p>برای antisymmetry:</p>
+<div class="box">si x ≤ y et y ≤ x alors x = y</div>
+</div>
+
+<div class="card">
+<h2>3. Monotone / isomorphisme</h2>
+<p>ایدهٔ واقعی: تابع monotone ترتیب را حفظ می‌کند. isomorphisme یعنی دو order از نظر ساختار یکی هستند، فقط اسم عناصر فرق کرده است.</p>
+<div class="box">monotone:
+x ≤ y ⇒ f(x) ≤ f(y)
+
+isomorphisme:
+x ≤ y ⇔ f(x) ≤ f(y)</div>
+</div>
+
+<div class="card">
+<h2>4. min / max</h2>
+<p>ایدهٔ واقعی: minimum یعنی global bottom داخل X. maximum یعنی global top داخل X.</p>
+<div class="box">m = min(X) ⇔ m ∈ X and ∀x ∈ X, m ≤ x
+M = max(X) ⇔ M ∈ X and ∀x ∈ X, x ≤ M</div>
+<p>در divisibility:</p>
+<div class="box">X = {2,4,6,12}
+x ≤ y ⇔ x divise y
+
+min(X) = 2
+max(X) = 12</div>
+</div>
+
+<div class="card">
+<h2>5. Bounds: minorant / majorant / inf / sup</h2>
+<p>ایدهٔ واقعی: min/max باید داخل X باشند، اما minorant/majorant داخل E جستجو می‌شوند.</p>
+<div class="box">m is a minorant of X ⇔ m ∈ E and ∀x ∈ X, m ≤ x
+M is a majorant of X ⇔ M ∈ E and ∀x ∈ X, x ≤ M
+
+inf(X) = greatest minorant
+sup(X) = smallest majorant</div>
+<table>
+<tr><th>Concept</th><th>Must be in X?</th><th>Meaning</th></tr>
+<tr><td>min(X)</td><td>Yes</td><td>global bottom in X</td></tr>
+<tr><td>inf(X)</td><td>No, in E</td><td>best lower bound</td></tr>
+<tr><td>max(X)</td><td>Yes</td><td>global top in X</td></tr>
+<tr><td>sup(X)</td><td>No, in E</td><td>best upper bound</td></tr>
+</table>
+<div class="box">E = {1,2,3,4,6,12}
+X = {4,6}
+minorants(X) = {1,2}
+majorants(X) = {12}
+inf(X) = 2
+sup(X) = 12</div>
+</div>
+
+<div class="card">
+<h2>6. minimal / maximal</h2>
+<p>ایدهٔ واقعی: minimal یعنی local bottom. minimum یعنی global bottom. maximal یعنی local top. maximum یعنی global top.</p>
+<div class="box">a minimal in X ⇔ a ∈ X and there is no x ∈ X with x < a
+a maximal in X ⇔ a ∈ X and there is no x ∈ X with a < x</div>
+<div class="grid">
+<div class="mini"><h3>minimal</h3><p>هیچ عنصر داخل X پایین آن نیست.</p><div class="box">local bottom</div></div>
+<div class="mini"><h3>minimum</h3><p>خودش پایین همهٔ X است.</p><div class="box">global bottom</div></div>
+</div>
+<div class="box">X = {2,3,6}
+x ≤ y ⇔ x divise y
+
+éléments minimaux = {2,3}
+éléments maximaux = {6}
+min(X) = does not exist
+max(X) = 6</div>
+</div>
+
+<div class="card">
+<h2>7. Hasse / divisibility / pgcd / ppcm</h2>
+<p>ایدهٔ واقعی: Hasse diagram ابزار دیدن order است. در divisibility پایین یعنی divisor و بالا یعنی multiple.</p>
+<div class="box">x | y means x divise y
+x ≤ y ⇔ x | y
+
+small = diviseur
+big = multiple</div>
+<p>در Hasse diagram فقط linkهای مستقیم را می‌کشیم.</p>
+<div class="box">Hasse diagram:
+No reflexive links
+No transitive links
+Direct links only</div>
+<p>در divisibility:</p>
+<div class="box">minorants = common divisors
+majorants = common multiples
+inf = pgcd
+sup = ppcm</div>
+</div>
+
+<div class="card">
+<h2>8. Inclusion order / set operations</h2>
+<p>ایدهٔ واقعی: اینجا عناصر خودشان set هستند. پایین یعنی subset کوچک‌تر.</p>
+<div class="box">𝒫(E), ⊆
+∩, ∪
+⋂ Ai, ⋃ Ai
+E \ X</div>
+<div class="box">A ≤ B ⇔ A ⊆ B
+
+inf(A,B) = A ∩ B
+sup(A,B) = A ∪ B</div>
+<div class="box">A = {a,b}
+B = {b,c}
+
+A ∩ B = {b}
+A ∪ B = {a,b,c}
+inf(A,B) = {b}
+sup(A,B) = {a,b,c}</div>
+</div>
+
+<div class="card">
+<h2>9. Words and word orders</h2>
+<p>ایدهٔ واقعی: اینجا با کلمه‌ها کار می‌کنیم و باید بتوانی کلمه‌ها را مقایسه کنی.</p>
+<div class="box">≤lex
+préfixe
+sous-mot
+|u|
+u ≡ v
+A*/≡
+[u]</div>
+<div class="box">|u| = length of word u
+u préfixe de v ⇔ v starts with u
+u sous-mot de v ⇔ u can be obtained from v by deleting letters and keeping order
+≤lex = dictionary order, compare from left to right</div>
+<div class="box">[u] = { v ∈ A* | v ≡ u }
+A*/≡ = set of all equivalence classes</div>
+<div class="box">a < b < c
+abac <lex abba
+because a=a, b=b, then a<b</div>
+</div>
+
+<div class="card">
+<h2>10. Well-founded / sequences / product order</h2>
+<p>ایدهٔ واقعی: well-founded یعنی نمی‌شود تا بی‌نهایت پایین رفت. بالا رفتن بی‌نهایت مهم نیست.</p>
+<div class="box">ordre bien fondé
+chaîne descendante
+(en)n∈ℕ
+ℕ × ℕ
+(m1,m2) ≤ (n1,n2)</div>
+<div class="box">well-founded ⇔ no infinite descending chain
+well-founded ⇔ every non-empty subset has a minimal element</div>
+<div class="box">descending chain:
+e0 > e1 > e2 > e3 > ...
+
+(en)n∈ℕ = sequence e0, e1, e2, ...</div>
+<div class="box">ℕ × ℕ = pairs of natural numbers
+
+(m1,m2) ≤ (n1,n2)
+⇔ m1 ≤ n1 and m2 ≤ n2</div>
+<div class="box">(ℕ, ≤) is well-founded:
+5 > 4 > 3 > 2 > 1 > 0
+
+ℤ is not well-founded:
+0 > -1 > -2 > -3 > ...</div>
+</div>
+
+<div class="card rule">
+<h2>Quiz with answers</h2>
+<p>این همان quiz کوتاهی است که انجام دادیم، با جواب درست.</p>
+</div>
+
+<div class="card"><h2>Q1 — minimal</h2>
+<div class="box">Un élément minimal de X est un élément de X qui n’a aucun élément de X strictement plus petit que lui.
+
+In divisibility:
+a is minimal if no other element of X divides a.</div>
+</div>
+
+<div class="card"><h2>Q2 — minimal vs minimum</h2>
+<div class="box">minimal = local bottom
+minimum = global bottom</div>
+</div>
+
+<div class="card"><h2>Q3 — X = {2,4,6,12}</h2>
+<div class="box">éléments minimaux = {2}
+éléments maximaux = {12}
+minimum = 2
+maximum = 12</div>
+</div>
+
+<div class="card"><h2>Q4 — divisibility bounds</h2>
+<div class="box">minorants = diviseurs communs
+majorants = multiples communs
+inf = pgcd
+sup = ppcm</div>
+</div>
+
+<div class="card"><h2>Q5 — X = {4,6}</h2>
+<div class="box">E = {1,2,3,4,6,12}
+X = {4,6}
+
+minorants(X) = {1,2}
+majorants(X) = {12}
+inf(X) = 2
+sup(X) = 12</div>
+</div>
+
+<div class="card"><h2>Q6 — inclusion inf/sup</h2>
+<div class="box">A ≤ B ⇔ A ⊆ B
+
+inf(A,B) = A ∩ B
+sup(A,B) = A ∪ B</div>
+</div>
+
+<div class="card"><h2>Q7 — A={a,b}, B={b,c}</h2>
+<div class="box">A ∩ B = {b}
+A ∪ B = {a,b,c}
+
+inf(A,B) = {b}
+sup(A,B) = {a,b,c}</div>
+</div>
+
+<div class="card"><h2>Q8 — prefix / sous-mot</h2>
+<div class="box">v = abcd
+u = bc
+
+bc is not a prefix of abcd.
+bc is a sous-mot of abcd.</div>
+</div>
+
+<div class="card"><h2>Q9 — lexicographic</h2>
+<div class="box">a < b < c
+
+abac <lex abba</div>
+<p>چون از چپ به راست: a=a، b=b، سپس a&lt;b.</p>
+</div>
+
+<div class="card"><h2>Q10 — well-founded</h2>
+<div class="box">Un ordre est bien fondé si on ne peut pas descendre infiniment.
+
+(ℕ, ≤) est bien fondé.</div>
+</div>
+
+<div class="card warning">
+<h2>Final exam memory</h2>
+<div class="box">divisibility:
+small = divisor
+big = multiple
+inf = pgcd
+sup = ppcm
+
+inclusion:
+small = subset
+big = superset
+inf = intersection
+sup = union
+
+minimal/maximal:
+local bottom/top
+
+minimum/maximum:
+global bottom/top
+
+well-founded:
+no infinite descending chain</div>
+</div>
+
+</div>
+</body>
+</html>
